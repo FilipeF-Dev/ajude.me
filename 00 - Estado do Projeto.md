@@ -32,7 +32,23 @@ Plataforma de troca de favores entre pessoas, onde **habilidade vira moeda**. O 
 | Documentação conceitual (`01` a `06`) | ✅ Completa |
 | Design de telas | 🔵 Em andamento — 16 telas do loop principal |
 | Fase 0 do roadmap (fundação) | ✅ Fechada — restam apenas os itens jurídicos |
-| Código | ⬜ Nada escrito |
+| Código | 🔵 Fase 1 em andamento — fatia Identidade + Catálogo |
+
+## Como rodar
+
+O projeto vive em `plataforma/`. **Não é preciso ter PHP instalado** — tudo roda em contêiner:
+
+```
+cd plataforma
+docker compose up -d
+docker compose run --rm app php artisan migrate --seed
+```
+
+A aplicação sobe em `http://localhost:8000` e o banco em `localhost:5433` (5432 costuma estar ocupada por outro projeto).
+
+Instalar o **Laravel Herd** deixa o ciclo bem mais rápido, mas é opcional — o Docker cobre tudo.
+
+**Stack:** Laravel 13 · PHP 8.4 · PostgreSQL 16 com PostGIS · Filament (a instalar)
 | Repositório | 🟡 Iniciado com `origin` configurado — **sem nenhum commit ainda** |
 
 **Equipe:** uma pessoa. Isso é restrição de planejamento, não detalhe — pesa sobre a carga de operação manual prevista nas fases 2 e 3 do `06`.
