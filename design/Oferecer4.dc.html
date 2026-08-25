@@ -1,0 +1,94 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    body { margin: 0; }
+    a { color: #2E6B4F; } a:hover { color: #24543E; }
+  </style>
+</helmet>
+<div style="width: 375px; height: 812px; background: #FAF7F2; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif; color: #1F1C19; display: flex; flex-direction: column; overflow: hidden; position: relative;">
+
+  <div style="padding: 52px 20px 0; display: flex; align-items: center; gap: 14px;">
+    <div style="width: 42px; height: 42px; border-radius: 999px; background: #FFFFFF; border: 1px solid #EDE6DC; display: flex; align-items: center; justify-content: center;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3A342E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 5-7 7 7 7"></path></svg>
+    </div>
+    <span style="font-size: 15px; font-weight: 600; color: #857A6E;">Oferecer ajuda</span>
+  </div>
+
+  <div style="padding: 18px 20px 24px; display: flex; gap: 6px;">
+    <div style="flex-grow: 1; height: 4px; border-radius: 999px; background: {{accent}};"></div>
+    <div style="flex-grow: 1; height: 4px; border-radius: 999px; background: {{accent}};"></div>
+    <div style="flex-grow: 1; height: 4px; border-radius: 999px; background: {{accent}};"></div>
+    <div style="flex-grow: 1; height: 4px; border-radius: 999px; background: {{accent}};"></div>
+  </div>
+
+  <div style="flex-grow: 1; overflow: hidden; padding: 0 20px; display: flex; flex-direction: column; gap: 20px;">
+
+    <div style="display: flex; flex-direction: column; gap: 9px;">
+      <div style="font-size: 25px; font-weight: 700; line-height: 1.22; letter-spacing: -0.02em;">Quantas vezes você pode ajudar?</div>
+      <div style="font-size: 15px; line-height: 1.55; color: #6B6055; text-wrap: pretty;">Cada ticket é um compromisso seu. Quando um for usado, abre vaga para você oferecer outro.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #EDE6DC; border-radius: 18px; padding: 20px 16px; display: flex; align-items: center; justify-content: space-between; gap: 16px;">
+      <div style="width: 52px; height: 52px; border-radius: 999px; background: #F5F1EA; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6B6055" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14"></path></svg>
+      </div>
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 2px;">
+        <span style="font-size: 38px; font-weight: 700; line-height: 1; letter-spacing: -0.03em;">3</span>
+        <span style="font-size: 13px; color: #857A6E;">tickets ao mesmo tempo</span>
+      </div>
+      <div style="width: 52px; height: 52px; border-radius: 999px; background: {{accent}}; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 11px;">
+      <div style="font-size: 14px; font-weight: 600; color: #5E5449;">O ticket vale por</div>
+      <div style="display: flex; gap: 8px;">
+        <div style="background: #FFFFFF; border: 1px solid #EDE6DC; color: #5E5449; border-radius: 999px; padding: 11px 18px; font-size: 15px; font-weight: 500;">6 meses</div>
+        <div style="background: {{accent}}; color: #FFFFFF; border-radius: 999px; padding: 11px 18px; font-size: 15px; font-weight: 600;">1 ano</div>
+        <div style="background: #FFFFFF; border: 1px solid #EDE6DC; color: #5E5449; border-radius: 999px; padding: 11px 18px; font-size: 15px; font-weight: 500;">2 anos</div>
+      </div>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #EDE6DC; border-radius: 18px; padding: 16px; display: flex; align-items: center; gap: 14px;">
+      <div style="flex-grow: 1; display: flex; flex-direction: column; gap: 4px; min-width: 0;">
+        <div style="font-size: 15px; font-weight: 600;">Pode ser repassado</div>
+        <div style="font-size: 13px; line-height: 1.45; color: #857A6E; text-wrap: pretty;">Quem receber pode trocar seu ticket com outra pessoa.</div>
+      </div>
+      <div style="width: 52px; height: 31px; border-radius: 999px; background: {{accent}}; display: flex; align-items: center; justify-content: flex-end; padding: 0 3px; flex-shrink: 0;">
+        <div style="width: 25px; height: 25px; border-radius: 999px; background: #FFFFFF;"></div>
+      </div>
+    </div>
+
+    <div style="display: flex; gap: 11px; background: #FBF4E9; border: 1px solid #EFE2CC; border-radius: 16px; padding: 14px 15px;">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#9A7B3F" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 1px;"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5"></path><path d="M12 16.5v.01"></path></svg>
+      <div style="font-size: 14px; line-height: 1.5; color: #6B5626; text-wrap: pretty;">Depois de publicar, as condições não mudam mais. Quem tem o ticket contou com elas.</div>
+    </div>
+
+  </div>
+
+  <div style="padding: 14px 20px 26px;">
+    <div style="height: 56px; border-radius: 17px; background: {{accent}}; display: flex; align-items: center; justify-content: center; gap: 9px; box-shadow: 0 3px 12px rgba(31, 28, 25, 0.14);">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4 10-10"></path></svg>
+      <span style="font-size: 17px; font-weight: 600; color: #FFFFFF;">Publicar ajuda</span>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+<script data-dc-script data-props='{"accent":{"editor":"color","default":"#2E6B4F","options":["#2E6B4F","#B0563A","#6E6136"],"section":"Tema"}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return { accent: this.props.accent ?? '#2E6B4F' };
+  }
+}
+</script>
+</body>
+</html>

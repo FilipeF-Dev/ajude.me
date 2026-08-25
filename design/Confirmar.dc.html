@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    body { margin: 0; }
+    a { color: #2E6B4F; } a:hover { color: #24543E; }
+  </style>
+</helmet>
+<div style="width: 375px; height: 812px; background: #FAF7F2; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif; color: #1F1C19; display: flex; flex-direction: column; overflow: hidden; position: relative;">
+
+  <div style="padding: 56px 20px 16px; display: flex; align-items: center; gap: 14px;">
+    <div style="width: 42px; height: 42px; border-radius: 999px; background: #FFFFFF; border: 1px solid #EDE6DC; display: flex; align-items: center; justify-content: center;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3A342E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 5-7 7 7 7"></path></svg>
+    </div>
+    <span style="font-size: 15px; font-weight: 600; color: #857A6E;">Encerrar</span>
+  </div>
+
+  <div style="flex-grow: 1; overflow: hidden; padding: 4px 20px 0; display: flex; flex-direction: column; gap: 20px;">
+
+    <div style="font-size: 25px; font-weight: 700; line-height: 1.22; letter-spacing: -0.02em;">O favor aconteceu?</div>
+
+    <div style="background: #FFFFFF; border: 1px solid #EDE6DC; border-radius: 18px; padding: 16px; display: flex; flex-direction: column; gap: 13px;">
+      <div style="display: flex; align-items: center; gap: 13px;">
+        <div style="width: 44px; height: 44px; border-radius: 999px; background: #F2EEE7; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 600; color: #6B6055; flex-shrink: 0;">E</div>
+        <div style="flex-grow: 1; display: flex; flex-direction: column; gap: 3px; min-width: 0;">
+          <div style="font-size: 15px; font-weight: 600;">Instalações e reparos elétricos</div>
+          <div style="font-size: 13px; color: #857A6E;">Edilson Prado</div>
+        </div>
+      </div>
+      <div style="height: 1px; background: #F1EAE0;"></div>
+      <div style="display: flex; align-items: center; gap: 9px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#857A6E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>
+        <span style="font-size: 14px; color: #5E5449;">Quinta, 18 de março · 16h05 às 16h48</span>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 11px;">
+      <div style="height: 60px; border-radius: 17px; background: {{accent}}; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 3px 12px rgba(31, 28, 25, 0.14);">
+        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4 10-10"></path></svg>
+        <span style="font-size: 17px; font-weight: 600; color: #FFFFFF;">Sim, foi feito</span>
+      </div>
+      <div style="height: 60px; border-radius: 17px; background: #FFFFFF; border: 1px solid #E3DACE; display: flex; align-items: center; justify-content: center; gap: 10px;">
+        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#6B6055" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5"></path><path d="M12 16.5v.01"></path></svg>
+        <span style="font-size: 17px; font-weight: 600; color: #6B6055;">Não aconteceu</span>
+      </div>
+    </div>
+
+    <div style="display: flex; gap: 11px; background: #F5F1EA; border-radius: 16px; padding: 15px;">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#857A6E" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 1px;"><circle cx="12" cy="12" r="9"></circle><path d="M12 16v-4"></path><path d="M12 8.5v.01"></path></svg>
+      <div style="font-size: 14px; line-height: 1.55; color: #5E5449; text-wrap: pretty;">Se ninguém responder até <strong style="font-weight: 600;">domingo</strong>, vamos considerar que o favor foi feito e liberar as avaliações.</div>
+    </div>
+
+    <div style="display: flex; gap: 11px; background: #FBF4E9; border: 1px solid #EFE2CC; border-radius: 16px; padding: 15px;">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#9A7B3F" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 1px;"><path d="M12 4 3 19h18Z"></path><path d="M12 10v4"></path><path d="M12 17v.01"></path></svg>
+      <div style="font-size: 14px; line-height: 1.55; color: #6B5626; text-wrap: pretty;">Dizer que não aconteceu abre uma análise. Vocês dois contam o que houve e alguém do Ajude.me decide.</div>
+    </div>
+
+  </div>
+
+</div>
+</x-dc>
+<script data-dc-script data-props='{"accent":{"editor":"color","default":"#2E6B4F","options":["#2E6B4F","#B0563A","#6E6136"],"section":"Tema"}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return { accent: this.props.accent ?? '#2E6B4F' };
+  }
+}
+</script>
+</body>
+</html>

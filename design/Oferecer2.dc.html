@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    body { margin: 0; }
+    a { color: #2E6B4F; } a:hover { color: #24543E; }
+  </style>
+</helmet>
+<div style="width: 375px; height: 812px; background: #FAF7F2; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif; color: #1F1C19; display: flex; flex-direction: column; overflow: hidden; position: relative;">
+
+  <div style="padding: 52px 20px 0; display: flex; align-items: center; gap: 14px;">
+    <div style="width: 42px; height: 42px; border-radius: 999px; background: #FFFFFF; border: 1px solid #EDE6DC; display: flex; align-items: center; justify-content: center;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3A342E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 5-7 7 7 7"></path></svg>
+    </div>
+    <span style="font-size: 15px; font-weight: 600; color: #857A6E;">Oferecer ajuda</span>
+  </div>
+
+  <div style="padding: 18px 20px 24px; display: flex; gap: 6px;">
+    <div style="flex-grow: 1; height: 4px; border-radius: 999px; background: {{accent}};"></div>
+    <div style="flex-grow: 1; height: 4px; border-radius: 999px; background: {{accent}};"></div>
+    <div style="flex-grow: 1; height: 4px; border-radius: 999px; background: #E6DDD1;"></div>
+    <div style="flex-grow: 1; height: 4px; border-radius: 999px; background: #E6DDD1;"></div>
+  </div>
+
+  <div style="flex-grow: 1; overflow: hidden; padding: 0 20px; display: flex; flex-direction: column; gap: 22px;">
+
+    <div style="font-size: 25px; font-weight: 700; line-height: 1.22; letter-spacing: -0.02em;">Como você descreve essa ajuda?</div>
+
+    <div style="display: flex; flex-direction: column; gap: 9px;">
+      <div style="font-size: 14px; font-weight: 600; color: #5E5449;">Um nome curto</div>
+      <div style="background: #FFFFFF; border: 1px solid #EDE6DC; border-radius: 16px; padding: 15px; font-size: 16px; line-height: 1.35;">Currículo e preparo para entrevista</div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 9px;">
+      <div style="font-size: 14px; font-weight: 600; color: #5E5449;">O que você faz exatamente</div>
+      <div style="background: #FFFFFF; border: 1px solid #EDE6DC; border-radius: 16px; padding: 15px; font-size: 15px; line-height: 1.5; color: #3A342E; min-height: 92px; text-wrap: pretty;">Monto o currículo do zero ou reviso o que você já tem, e faço uma entrevista de treino com você por chamada de vídeo.</div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 11px;">
+      <div style="font-size: 14px; font-weight: 600; color: #5E5449;">Quanto tempo costuma levar?</div>
+      <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+        <div style="background: #FFFFFF; border: 1px solid #EDE6DC; color: #5E5449; border-radius: 999px; padding: 11px 18px; font-size: 15px; font-weight: 500;">30 min</div>
+        <div style="background: {{accent}}; color: #FFFFFF; border-radius: 999px; padding: 11px 18px; font-size: 15px; font-weight: 600;">1 hora</div>
+        <div style="background: #FFFFFF; border: 1px solid #EDE6DC; color: #5E5449; border-radius: 999px; padding: 11px 18px; font-size: 15px; font-weight: 500;">2 horas</div>
+        <div style="background: #FFFFFF; border: 1px solid #EDE6DC; color: #5E5449; border-radius: 999px; padding: 11px 18px; font-size: 15px; font-weight: 500;">3 horas</div>
+        <div style="background: #FFFFFF; border: 1px solid #EDE6DC; color: #5E5449; border-radius: 999px; padding: 11px 18px; font-size: 15px; font-weight: 500;">Meio dia</div>
+      </div>
+    </div>
+
+    <div style="background: #F5F1EA; border-radius: 16px; padding: 15px; display: flex; flex-direction: column; gap: 10px;">
+      <div style="font-size: 13px; color: #857A6E;">As pessoas vão ver assim</div>
+      <div style="display: flex; align-items: center; gap: 7px; background: #FFFFFF; border: 1px solid #E6DDD1; border-radius: 999px; padding: 9px 14px; align-self: flex-start;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#6B6055" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>
+        <span style="font-size: 14px; font-weight: 600; color: #3A342E;">≈ 1h</span>
+        <span style="font-size: 14px; color: #C6BCB0;">·</span>
+        <span style="font-size: 14px; font-weight: 600; color: {{accent}};">Avançado</span>
+      </div>
+      <div style="font-size: 13px; line-height: 1.5; color: #6B6055; text-wrap: pretty;">O nível vem da sua habilidade. Não existe preço — quem se interessar propõe uma troca.</div>
+    </div>
+
+  </div>
+
+  <div style="padding: 14px 20px 26px;">
+    <div style="height: 56px; border-radius: 17px; background: {{accent}}; display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 12px rgba(31, 28, 25, 0.14);">
+      <span style="font-size: 17px; font-weight: 600; color: #FFFFFF;">Continuar</span>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+<script data-dc-script data-props='{"accent":{"editor":"color","default":"#2E6B4F","options":["#2E6B4F","#B0563A","#6E6136"],"section":"Tema"}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return { accent: this.props.accent ?? '#2E6B4F' };
+  }
+}
+</script>
+</body>
+</html>

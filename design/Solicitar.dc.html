@@ -1,0 +1,97 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    body { margin: 0; }
+    a { color: #2E6B4F; } a:hover { color: #24543E; }
+  </style>
+</helmet>
+<div style="width: 375px; height: 812px; background: #FAF7F2; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif; color: #1F1C19; display: flex; flex-direction: column; overflow: hidden; position: relative;">
+
+  <div style="padding: 56px 20px 16px; display: flex; align-items: center; gap: 14px;">
+    <div style="width: 42px; height: 42px; border-radius: 999px; background: #FFFFFF; border: 1px solid #EDE6DC; display: flex; align-items: center; justify-content: center;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3A342E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 5-7 7 7 7"></path></svg>
+    </div>
+    <span style="font-size: 19px; font-weight: 700; letter-spacing: -0.01em;">Pedir o favor</span>
+  </div>
+
+  <div style="flex-grow: 1; overflow: hidden; padding: 0 20px; display: flex; flex-direction: column; gap: 22px;">
+
+    <div style="background: #FFFFFF; border: 1px solid #EDE6DC; border-radius: 18px; padding: 14px 15px; display: flex; gap: 12px; align-items: center;">
+      <div style="width: 5px; height: 42px; border-radius: 999px; background: {{accent}}; flex-shrink: 0;"></div>
+      <div style="flex-grow: 1; display: flex; flex-direction: column; gap: 4px; min-width: 0;">
+        <div style="font-size: 15px; font-weight: 600; line-height: 1.3;">Instalações e reparos elétricos</div>
+        <div style="font-size: 13px; color: #857A6E;">Edilson Prado · ≈ 40min · Especialista</div>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 11px;">
+      <div style="font-size: 15px; font-weight: 600; color: #5E5449;">Quando Edilson pode</div>
+      <div style="display: flex; gap: 9px; overflow: hidden;">
+        <sc-for list="{{dias}}" as="d" hint-placeholder-count="4">
+          <div style="{{d.estiloCartao}}">
+            <span style="font-size: 13px; font-weight: 500; color: {{d.corFraca}};">{{d.semana}}</span>
+            <span style="font-size: 21px; font-weight: 700; line-height: 1.1; color: {{d.corForte}};">{{d.dia}}</span>
+            <span style="font-size: 12px; color: {{d.corFraca}};">{{d.mes}}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 11px;">
+      <div style="font-size: 15px; font-weight: 600; color: #5E5449;">A que horas</div>
+      <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+        <div style="background: #FFFFFF; border: 1px solid #EDE6DC; color: #5E5449; border-radius: 14px; padding: 13px 20px; font-size: 16px; font-weight: 500;">14h</div>
+        <div style="background: #FFFFFF; border: 1px solid #EDE6DC; color: #5E5449; border-radius: 14px; padding: 13px 20px; font-size: 16px; font-weight: 500;">15h</div>
+        <div style="background: {{accent}}; color: #FFFFFF; border-radius: 14px; padding: 13px 20px; font-size: 16px; font-weight: 600;">16h</div>
+        <div style="background: #FFFFFF; border: 1px solid #EDE6DC; color: #5E5449; border-radius: 14px; padding: 13px 20px; font-size: 16px; font-weight: 500;">17h</div>
+        <div style="background: #FFFFFF; border: 1px solid #EDE6DC; color: #5E5449; border-radius: 14px; padding: 13px 20px; font-size: 16px; font-weight: 500;">18h</div>
+      </div>
+    </div>
+
+    <div style="display: flex; gap: 11px; background: #F5F1EA; border-radius: 16px; padding: 14px 15px;">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#857A6E" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 1px;"><circle cx="12" cy="12" r="9"></circle><path d="M12 16v-4"></path><path d="M12 8.5v.01"></path></svg>
+      <div style="font-size: 14px; line-height: 1.5; color: #5E5449; text-wrap: pretty;">Só aparecem os dias e horários que Edilson combinou quando criou o favor. Ele precisa ser avisado com 2 dias.</div>
+    </div>
+
+  </div>
+
+  <div style="padding: 14px 20px 26px;">
+    <div style="height: 56px; border-radius: 17px; background: {{accent}}; display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 12px rgba(31, 28, 25, 0.14);">
+      <span style="font-size: 17px; font-weight: 600; color: #FFFFFF;">Pedir para quinta, 16h</span>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+<script data-dc-script data-props='{"accent":{"editor":"color","default":"#2E6B4F","options":["#2E6B4F","#B0563A","#6E6136"],"section":"Tema"}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const accent = this.props.accent ?? '#2E6B4F';
+    const base = 'width: 68px; flex-shrink: 0; border-radius: 16px; padding: 13px 0; display: flex; flex-direction: column; align-items: center; gap: 3px;';
+    const dias = [
+      { semana: 'Ter', dia: '16', mes: 'mar', escolhido: false },
+      { semana: 'Qua', dia: '17', mes: 'mar', escolhido: false },
+      { semana: 'Qui', dia: '18', mes: 'mar', escolhido: true },
+      { semana: 'Sex', dia: '19', mes: 'mar', escolhido: false },
+      { semana: 'Sáb', dia: '20', mes: 'mar', escolhido: false }
+    ].map((d) => ({
+      ...d,
+      estiloCartao: d.escolhido
+        ? base + ' background: ' + accent + ';'
+        : base + ' background: #FFFFFF; border: 1px solid #EDE6DC;',
+      corFraca: d.escolhido ? 'rgba(255,255,255,0.85)' : '#857A6E',
+      corForte: d.escolhido ? '#FFFFFF' : '#1F1C19'
+    }));
+    return { accent: accent, dias: dias };
+  }
+}
+</script>
+</body>
+</html>
