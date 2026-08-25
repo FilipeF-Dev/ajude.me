@@ -31,7 +31,7 @@ Plataforma de troca de favores entre pessoas, onde **habilidade vira moeda**. O 
 |---|---|
 | Documentação conceitual (`01` a `06`) | ✅ Completa |
 | Design de telas | 🔵 Em andamento — 16 telas do loop principal |
-| Fase 0 do roadmap (fundação) | 🟡 Não iniciada — 16 pendências |
+| Fase 0 do roadmap (fundação) | ✅ Fechada — restam apenas os itens jurídicos |
 | Código | ⬜ Nada escrito |
 | Repositório | 🟡 Iniciado com `origin` configurado — **sem nenhum commit ainda** |
 
@@ -46,10 +46,10 @@ Toda a série está escrita e sincronizada entre si. Cada documento referencia o
 | Documento | Versão | Conteúdo |
 |---|---|---|
 | `01 - Visão do Produto.md` | 1.0 | Identidade, propósito, princípios |
-| `02 - Conceito e Regras de Negócio.md` | 2.2 | Conceitos e regras — **a fonte de verdade** |
-| `03 - MVP.md` | 1.2 | Escopo da primeira versão e dívidas assumidas |
-| `04 - Requisitos Funcionais.md` | 1.2 | 205 requisitos rastreáveis, 14 módulos |
-| `05 - Arquitetura Conceitual.md` | 1.1 | Contextos, entidades, 27 invariantes |
+| `02 - Conceito e Regras de Negócio.md` | 2.3 | Conceitos e regras — **a fonte de verdade** |
+| `03 - MVP.md` | 1.3 | Escopo da primeira versão e dívidas assumidas |
+| `04 - Requisitos Funcionais.md` | 1.3 | Requisitos rastreáveis em 14 módulos |
+| `05 - Arquitetura Conceitual.md` | 1.2 | Contextos, entidades, 27 invariantes, decisões técnicas |
 | `06 - Roadmap do Produto.md` | 1.0 | Seis fases com portões de evidência |
 
 `_arquivo/` guarda o rascunho fundador `CoreV1`, **encerrado e sem valor de referência**.
@@ -79,20 +79,32 @@ Estas foram tomadas com justificativa registrada. Reabri-las exige motivo novo, 
 
 # 6. Decisões abertas
 
-## 6.1 Bloqueiam a Fase 0 (afetam modelo de dados ou legalidade)
+## 6.1 Fase 0 — fechada
 
-| Pendência | Onde |
+| Decisão | Resultado | Onde |
+|---|---|---|
+| Nível de proficiência no favor | Congelado na primeira emissão | `05 §14.1` |
+| Exclusão de dados pessoais | Anonimização, preservando o histórico | `05 §11.4` |
+| Texto original das buscas | Retido 90 dias; agregado permanente | `05 §11.5` |
+| Mensagens de negociação | Retidas 1 ano após o encerramento | `05 §12` |
+| Plataforma cliente | Web responsiva instalável | `05 §15` |
+| Armazenamento | Relacional com transações fortes | `05 §15` |
+| Integração entre contextos | Aplicação única com fronteiras internas | `05 §15` |
+| Eventos de domínio | Síncronos, com fronteira preparada | `05 §15` |
+| Expiração de ticket | Avaliação por estado | `05 §15` |
+| Reconhecimento de necessidade | Termos populares curados | `05 §15` |
+
+## 6.2 Parâmetros temporais — definidos
+
+| Parâmetro | Valor |
 |---|---|
-| Congelamento do nível de proficiência no favor | `05 §14.1` |
-| Anonimização versus exclusão de dados pessoais | `05 §11.4` |
-| Base legal do contato de confiança | `05 §11.3` |
-| Retenção do texto original das buscas | `05 §11.5` |
-| Retenção de mensagens de negociação | `05 §12` |
-| Sete decisões técnicas (plataforma, armazenamento, reconhecimento de necessidade, etc.) | `05 §15` |
-
-## 6.2 Parâmetros sem valor definido
-
-Janela de contestação · prazo de manifestação em chamado · prazo para avaliar · validade da proposta · antecedência de cancelamento · prazo da conta encerrando. Todos em `04 §19.2`.
+| Janela de contestação | 72 h |
+| Manifestação das partes na análise | 5 dias |
+| Avaliação pendente antes da restrição | 7 dias |
+| Validade da proposta de troca | 7 dias |
+| Antecedência de cancelamento sem ocorrência | 24 h |
+| Validade máxima do ticket | 1 ano |
+| Conta em Encerrando | Sem prazo máximo |
 
 **Regra:** são parâmetros versionados com vigência, nunca constantes no código (`05 §9`).
 
@@ -172,8 +184,15 @@ Convenções que mantiveram a documentação coerente até aqui:
 
 ---
 
-# 10. Próximo passo recomendado
+# 10. Próximo passo
 
-**Fase 0 do roadmap.** Nenhuma linha de código antes das pendências de 6.1 estarem fechadas — todas afetam modelo de dados ou legalidade, e resolvê-las depois custa retrabalho estrutural.
+A Fase 0 está fechada. O caminho está livre para a **Fase 1 — construção do núcleo** (`06 §5`), com a ordem de construção sugerida em `06 §5.3`:
 
-Em paralelo, a escolha da **comunidade-piloto** (`06 §4.5`) determina a qualidade de toda a evidência das fases seguintes.
+> Identidade + Catálogo → Oferta → Ticket → Negociação e Consumo → Segurança e Moderação → Reputação → Descoberta e Notificações
+
+Duas coisas correm em paralelo e não devem esperar:
+
+1. **Contratar o trabalho jurídico** (seção 6.3). É o item mais lento e bloqueia a Fase 2, não a construção.
+2. **Escolher a comunidade-piloto** (`06 §4.5`). Determina a qualidade de toda a evidência das fases seguintes.
+
+Antes de construir demais, vale considerar o que está registrado em `06 §11`: as duas hipóteses que decidem o produto — reciprocidade e aceitação da troca sem dinheiro — podem ser observadas com um grupo pequeno e mediação manual, sem esperar o software ficar pronto.

@@ -79,7 +79,17 @@ As alternativas conceituais definidas são:
 - concessão de uma bonificação/compensação aos proprietários; ou
 - concessão de um prazo para que os tickets sejam consumidos.
 
-**Status:** 🟡 Regra operacional pendente de definição.
+### Regra do MVP
+
+Sem dinheiro no MVP, não existe compensação possível. A proteção é o **prazo**, e ela é integral:
+
+- A conta entra em **Encerrando** e não realiza novas atividades.
+- Continua obrigada a atender solicitações dentro das condições dos tickets emitidos.
+- Encerra definitivamente quando o último ticket for consumido ou expirar.
+
+**Não há prazo máximo.** Encurtá-lo destruiria tickets válidos, contra o princípio 3 da seção 20. O que mantém isso tolerável é a **validade máxima de 1 ano** para qualquer ticket (seção 21).
+
+A bonificação volta a ser possível quando existir mecanismo de valor, junto do modelo de dinheiro (seção 15).
 
 ---
 
@@ -161,7 +171,7 @@ A manutenção desses termos cabe à Operação, junto com o próprio catálogo 
 
 Essa abordagem foi escolhida por ser auditável, corrigível de imediato e viável em qualquer aparelho. Mecanismos de reconhecimento semântico poderão ampliar o alcance posteriormente, sem alterar o conceito.
 
-**Status:** 🟡 Mecanismo de reconhecimento pendente de confirmação. O conceito de busca por necessidade está definido.
+**Status:** ✅ Definido. O reconhecimento por termos populares curados foi confirmado na Fase 0 (`05 §15`, decisão A7).
 
 ---
 
@@ -200,7 +210,7 @@ Um favor poderá possuir, entre outras informações:
 - Categoria;
 - Subcategoria;
 - Proficiência relacionada;
-- Validade;
+- Validade do ticket, limitada a **1 ano** (seção 21);
 - Tempo estimado para realização;
 - Dias disponíveis;
 - Horários disponíveis;
@@ -626,11 +636,11 @@ Após três ocorrências, o usuário poderá entrar em um processo de análise o
 
 ## 9.2 Cancelamento pelo solicitante
 
-O solicitante poderá cancelar uma solicitação desde que respeite uma antecedência mínima.
+O solicitante poderá cancelar uma solicitação a qualquer momento.
 
-A antecedência deverá ser suficiente para não comprometer injustamente a disponibilidade e o planejamento do ajudante.
+A antecedência de **24 horas** separa o cancelamento sem consequência daquele que registra ocorrência — ela não impede o cancelamento. Bloquear o cancelamento não faz ninguém comparecer: apenas converte um aviso em ausência sem aviso, que prejudica mais o ajudante.
 
-Quando o cancelamento for realizado dentro das condições permitidas:
+Quando o cancelamento respeitar a antecedência:
 
 - o ticket retorna à carteira do solicitante;
 - o favor volta a poder ser solicitado;
@@ -897,7 +907,13 @@ Regras:
 - A análise de necessidades não atendidas (seção 3.5) utiliza dados **agregados por região e proficiência**, nunca buscas individuais atribuíveis.
 - O aviso de disponibilidade solicitado pelo usuário vincula-se à proficiência, não ao texto digitado.
 
-**Status:** 🟡 Retenção do texto original das buscas pendente de definição.
+### Retenção
+
+O texto original da busca é apagado após **90 dias**. Permanecem apenas a proficiência reconhecida, a região e se houve resultado — que é o que alimenta o mapa de cobertura (seção 3.5).
+
+O texto serve a uma única finalidade: permitir que a Operação descubra qual termo faltava no vocabulário. Cumprida essa função, ele é o dado mais sensível do produto e o de utilidade mais curta.
+
+**Status:** ✅ Definido — Fase 0.
 
 ---
 
@@ -944,27 +960,36 @@ As regras do Ajude.me deverão preservar os seguintes princípios:
 | Método de verificação de certificados | 🟡 Pendente |
 | Penalidades por cancelamentos recorrentes | 🟡 Pendente |
 | Limites baseados em reputação/confiabilidade | 🟡 Pendente |
-| Compensação quando ajudante encerra a conta | 🟡 Pendente |
+| Base legal do contato de confiança | 🟡 Pendente — apoio jurídico |
 | Modelo operacional de dinheiro | 🟡 Pendente |
 | Modelo de monetização | 🟡 Pendente |
 | Modelo de garantia/proteção | 🟡 Pendente |
 | Disputa por qualidade do favor prestado | 🟡 Pendente |
 | Regras completas de evidências | 🟡 Pendente |
-| Mecanismo de reconhecimento de necessidade | 🟡 Pendente — seção 3.4 |
-| Retenção do texto original das buscas | 🟡 Pendente — seção 18.3 |
 
-## Parâmetros temporais a definir
+## Parâmetros temporais
 
-Os mecanismos abaixo estão definidos; faltam apenas os valores. Nenhum deles bloqueia a modelagem, mas todos precisam de número antes da implementação.
+Valores definidos para o MVP. Todos são **parâmetros versionados com vigência**, nunca constantes de código: uma alteração vale para relações novas e não reescreve as que já estão em curso.
 
-| Parâmetro | Regra |
-|---|---|
-| Duração da janela de contestação | Seção 8.4 |
-| Prazo de manifestação das partes na análise | Seção 8.5 |
-| Prazo limite para avaliação pendente | Seção 11.4 |
-| Prazo de validade da proposta de troca | Seção 5.4 |
-| Antecedência mínima para cancelamento pelo solicitante | Seção 9.2 |
-| Prazo máximo da conta em estado Encerrando | Seção 2.2 |
+| Parâmetro | Valor | Regra | Por quê |
+|---|---|---|---|
+| Janela de contestação | **72 horas** | Seção 8.4 | Curto demais penaliza quem não abre o aplicativo todo dia; longo demais prende o ticket |
+| Manifestação das partes na análise | **5 dias** | Seção 8.5 | Maior que a contestação, porque exige contar uma versão dos fatos |
+| Avaliação pendente antes da restrição | **7 dias** | Seção 11.4 | Suficiente para não punir esquecimento, curto para não travar o ciclo do outro |
+| Validade da proposta de troca | **7 dias** | Seção 5.4 | Os tickets ficam bloqueados enquanto ela existe |
+| Antecedência para cancelamento pelo solicitante | **24 horas** | Seção 9.2 | Ver a regra revista abaixo |
+| Validade máxima do ticket | **1 ano** | Seção 4.2 | Limita por quanto tempo uma conta pode ficar em encerramento |
+| Prazo máximo da conta em Encerrando | **Sem prazo** | Seção 2.2 | A conta encerra quando os tickets forem consumidos ou expirarem. Encurtar esse prazo destruiria tickets válidos, contra o princípio 3 da seção 20. A validade máxima de 1 ano é o que mantém isso tolerável |
+
+### Revisão da regra de cancelamento pelo solicitante
+
+A antecedência de 24 horas **não impede** o cancelamento. Cancelar dentro da janela é permitido e registra uma ocorrência.
+
+> Bloquear o cancelamento não faz a pessoa comparecer — apenas transforma um cancelamento avisado em ausência sem aviso, que é pior para o ajudante.
+
+A regra deixa de ser permissão e passa a ser consequência: cancelar com folga não gera registro; cancelar em cima da hora gera.
+
+O mesmo raciocínio se aplica ao ajudante (seção 9.1), que já cancelava mediante justificativa e registro.
 | Redação do termo de ciência de riscos | 🟡 Pendente — apoio jurídico |
 | Escopo do acionamento de emergência | 🟡 Pendente — apoio jurídico |
 | Natureza jurídica da troca sem dinheiro | 🟡 Pendente — apoio jurídico |
@@ -976,6 +1001,10 @@ Os mecanismos abaixo estão definidos; faltam apenas os valores. Nenhum deles bl
 | Unidade formal para valor/hora | ❌ **Descartada** — substituída pelo descritor de dois eixos (seção 6) |
 | Dados compartilhados após a solicitação | ✅ **Definido** — seção 18.1 |
 | Natureza da quantidade máxima de tickets | ✅ **Definido** — limite de circulação simultânea, seção 5.1 |
+| Todos os parâmetros temporais | ✅ **Definidos** — seção 21, Fase 0 |
+| Compensação quando o ajudante encerra a conta | ✅ **Definido** — proteção por prazo integral, seção 2.2 |
+| Mecanismo de reconhecimento de necessidade | ✅ **Definido** — termos populares curados, seção 3.4 |
+| Retenção do texto original das buscas | ✅ **Definido** — 90 dias, seção 18.3 |
 | Ausência de confirmação da realização | ✅ **Definido** — confirmação tácita, seção 8.4 |
 | Divergência na confirmação da realização | ✅ **Definido** — análise por chamado, seção 8.5 |
 
@@ -1033,7 +1062,7 @@ Esses conceitos poderão ser desenvolvidos posteriormente sem alterar a essênci
 
 ---
 
-**Versão:** 2.2
+**Versão:** 2.3
 **Produto:** Ajude.me
 **Documento:** Conceito e Regras de Negócio
 
@@ -1044,6 +1073,7 @@ Esses conceitos poderão ser desenvolvidos posteriormente sem alterar a essênci
 | Versão | Alterações |
 |---|---|
 | 1.0 | Definição inicial dos conceitos e regras de negócio |
+| 2.3 | **Fase 0 fechada.** Todos os parâmetros temporais receberam valor (seção 21). Validade do ticket limitada a 1 ano. Encerramento de conta sem prazo máximo, com proteção integral ao portador. Cancelamento pelo solicitante deixa de ser bloqueado e passa a registrar ocorrência quando em cima da hora. Retenção do texto das buscas definida em 90 dias. |
 | 2.2 | Novas seções 3.4 e 3.5 — busca por necessidade e necessidade não atendida. Nova seção 18.3 — privacidade das necessidades registradas. Novos conceitos: Necessidade e Termo popular. |
 | 2.1 | Seção 5.1 — a quantidade máxima de tickets passa a ser limite de circulação simultânea, com liberação de vaga. Nova seção 8.4 — confirmação da realização por silêncio. Nova seção 8.5 — divergência e análise por chamado. Seção 14 restringida à disputa por qualidade. Consolidação dos parâmetros temporais na seção 21. |
 | 2.0 | Seção 6 reescrita: o valor deixa de ser calculado por hora e passa a ser expresso pelo descritor de dois eixos (tempo × nível de proficiência). Nova seção 5.4 — Negociação e troca. Novas seções 8.1, 8.2 e 8.3 — comparecimento, segurança presencial e curadoria de categorias. Novas seções 11.3 e 11.4 — escala, critérios e obrigatoriedade da avaliação. Novas seções 18.1 e 18.2 — momento do compartilhamento de dados, bloqueio e denúncia. Novos conceitos fundamentais e princípios 11 e 12. **Incorporação e encerramento do rascunho `CoreV1`.** |

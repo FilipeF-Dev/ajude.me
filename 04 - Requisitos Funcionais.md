@@ -2,7 +2,7 @@
 
 > Documento que traduz os conceitos e regras do Ajude.me em requisitos verificáveis. Enquanto o documento 02 define **o que vale**, este define **o que o sistema faz**.
 >
-> Base: `02 - Conceito e Regras de Negócio.md` (v2.2) e `03 - MVP.md` (v1.2).
+> Base: `02 - Conceito e Regras de Negócio.md` (v2.3) e `03 - MVP.md` (v1.3).
 
 ---
 
@@ -132,7 +132,7 @@ Requisitos marcados com `—` merecem atenção: são consequências necessária
 | RF-FAV-02 | O sistema impede a criação de favor baseado em proficiência não declarada. | 🟢 | `02 §4.1` |
 | RF-FAV-03 | O favor exige os campos obrigatórios definidos em `03 §4.3`. | 🟢 | `03 §4.3` |
 | RF-FAV-04 | O sistema calcula e exibe o **descritor** do favor a partir do tempo estimado e do nível da proficiência vinculada. | 🟢 | `02 §6.2` |
-| RF-FAV-05 | O nível de proficiência não é campo editável do favor: é herdado da proficiência vinculada. | 🟢 | `02 §6.2` |
+| RF-FAV-05 | O nível de proficiência não é campo editável do favor: é herdado da proficiência vinculada até o congelamento (RF-FAV-22). | 🟢 | `02 §6.2` |
 | RF-FAV-06 | O usuário define a quantidade máxima de tickets do favor e quantos deseja emitir no momento. | 🟢 | `02 §5.1` |
 | RF-FAV-07 | O usuário emite tickets adicionais a qualquer momento, respeitando o limite de tickets em circulação. | 🟢 | `02 §5.1` |
 | RF-FAV-08 | O usuário define o favor como **trocável** ou **não trocável**. | 🟢 | `02 §5.3` |
@@ -148,6 +148,8 @@ Requisitos marcados com `—` merecem atenção: são consequências necessária
 | RF-FAV-18 | O sistema exibe ao ajudante quantas vagas de emissão estão disponíveis no favor. | 🟢 | `—` |
 | RF-FAV-19 | O sistema impede a emissão de tickets em favor desativado, ainda que haja vaga. | 🟢 | `02 §4.3` |
 | RF-FAV-20 | O sistema impede a alteração da quantidade máxima após a emissão do primeiro ticket. | 🟢 | `—` |
+| RF-FAV-21 | O sistema limita a validade do ticket a **1 ano**. | 🟢 | `02 §21` |
+| RF-FAV-22 | O favor guarda o **nível congelado** na primeira emissão; alterações posteriores no nível declarado não afetam favores já publicados. | 🟢 | `05 §14.1` |
 
 ## 6.1 Regra de congelamento
 
@@ -438,8 +440,10 @@ A confirmação bilateral encerra a janela imediatamente, sem aguardar o prazo (
 | RF-CAN-04 | A manifestação do solicitante não impede a devolução do ticket, servindo como registro. | 🟢 | `02 §9.1` |
 | RF-CAN-05 | O cancelamento devolve o ticket ao estado `DISPONIVEL`. | 🟢 | `02 §9.1` |
 | RF-CAN-06 | O sistema registra a ocorrência no histórico do usuário que cancelou. | 🟢 | `02 §9.1` |
-| RF-CAN-07 | O solicitante cancela a solicitação respeitando a antecedência mínima estabelecida. | 🟢 | `02 §9.2` |
-| RF-CAN-08 | O cancelamento dentro das condições não gera penalidade automática a nenhuma das partes. | 🟢 | `02 §9.2` |
+| RF-CAN-07 | O solicitante cancela a solicitação a qualquer momento; o sistema não bloqueia o cancelamento. | 🟢 | `02 §9.2` |
+| RF-CAN-08 | O cancelamento com **24 horas ou mais** de antecedência não gera ocorrência nem penalidade. | 🟢 | `02 §9.2` |
+| RF-CAN-15 | O cancelamento com menos de 24 horas registra ocorrência contra quem cancelou. | 🟢 | `02 §9.2` |
+| RF-CAN-16 | O sistema informa ao solicitante, antes de confirmar o cancelamento, se ele gerará ocorrência. | 🟢 | `—` |
 | RF-CAN-09 | O sistema mantém contador de cancelamentos por usuário e por papel. | 🟢 | `03 §4.10` |
 | RF-CAN-10 | Ambas as partes registram ocorrência relacionada à prestação do favor. | 🟢 | `02 §10` |
 | RF-CAN-11 | As ocorrências são encaminhadas à fila de análise da Operação. | 🟢 | `03 §4.10` |
@@ -598,18 +602,18 @@ Questões que a redação deste documento expôs e que **não podem ser resolvid
 | L7 | O que ocorre se ninguém confirmar a realização? | **Confirmação tácita.** O silêncio confirma; apenas a contestação ativa impede o encerramento. `02 §8.4`, RF-SOL-10 |
 | L8 | Favor congelado pode ter a quantidade máxima aumentada? | **Não.** A quantidade máxima integra as condições congeladas. RF-FAV-20 |
 
-## 19.2 Parâmetros temporais a definir
+## 19.2 Parâmetros temporais — definidos na Fase 0
 
-Os mecanismos estão definidos; faltam os valores. Nenhum deles impede a modelagem de dados, mas todos precisam de número antes da implementação.
-
-| # | Parâmetro | Regra | Consideração |
+| # | Parâmetro | Valor | Regra |
 |---|---|---|---|
-| L2 | Antecedência mínima para cancelamento pelo solicitante | `02 §9.2` | Pode ser valor fixo, definido pelo ajudante no favor, ou proporcional à duração estimada |
-| L4 | Prazo para avaliar antes da restrição | `02 §11.4` | — |
-| L5 | Validade da proposta de troca | `02 §5.4` | Definir se é fixa pela plataforma ou escolhida pelo remetente |
-| L6 | Prazo máximo da conta em estado Encerrando | `02 §2.2` | Um ticket com validade longa manteria a conta encerrando pelo mesmo período |
-| L9 | Duração da janela de contestação | `02 §8.4` | Curta demais prejudica quem não acompanha o aplicativo diariamente; longa demais prende o ticket |
-| L10 | Prazo de manifestação das partes na análise | `02 §8.5` | — |
+| L2 | Antecedência para cancelamento pelo solicitante | **24 h** — não bloqueia, registra ocorrência | `02 §9.2` |
+| L4 | Prazo para avaliar antes da restrição | **7 dias** | `02 §11.4` |
+| L5 | Validade da proposta de troca | **7 dias**, fixa pela plataforma | `02 §5.4` |
+| L6 | Prazo máximo da conta em Encerrando | **Sem prazo**; validade do ticket limitada a 1 ano | `02 §2.2` |
+| L9 | Duração da janela de contestação | **72 h** | `02 §8.4` |
+| L10 | Prazo de manifestação das partes na análise | **5 dias** | `02 §8.5` |
+
+Todos são parâmetros versionados com vigência, nunca constantes de código (`05 §9`).
 
 ## 19.3 Lacuna remanescente
 
@@ -676,7 +680,7 @@ Os mecanismos estão definidos; faltam os valores. Nenhum deles impede a modelag
 
 ---
 
-**Versão:** 1.2
+**Versão:** 1.3
 **Produto:** Ajude.me
 **Documento:** Requisitos Funcionais
 
@@ -685,5 +689,6 @@ Os mecanismos estão definidos; faltam os valores. Nenhum deles impede a modelag
 | Versão | Alterações |
 |---|---|
 | 1.0 | Especificação inicial dos requisitos funcionais |
+| 1.3 | **Fase 0 fechada.** Parâmetros temporais com valor (§19.2). Cancelamento pelo solicitante deixa de ser bloqueado e passa a registrar ocorrência quando em cima da hora — RF-CAN-07, RF-CAN-08, RF-CAN-15 e RF-CAN-16. Validade do ticket limitada a 1 ano e nível congelado no favor — RF-FAV-21 e RF-FAV-22. |
 | 1.2 | Busca por necessidade — RF-BUS-16 a RF-BUS-30 e nova seção 8.1. Manutenção de termos populares e análise de cobertura no módulo ADM — RF-ADM-15 a RF-ADM-18. Nova notificação RF-NOT-18. |
 | 1.1 | Resolução das lacunas L1, L3, L7 e L8. Novo estado de ticket `EM_ANALISE`. Confirmação tácita e janela de contestação (RF-SOL-08 a RF-SOL-20). Análise por chamado (RF-ADM-11 a RF-ADM-14). Limite de circulação com liberação de vaga (RF-FAV-16 a RF-FAV-20). |
