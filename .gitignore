@@ -1,0 +1,8 @@
+# Arquivos de sistema
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Canvas gerado a partir de design/*.dc.html e design/canvas.json.
+# É reconstruível — as fontes são os .dc.html.
+design/ajude-me-telas.html
