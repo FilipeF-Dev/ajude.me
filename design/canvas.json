@@ -12,6 +12,8 @@
     { "file": "Negociacao.dc.html", "title": "Negociação", "page": "encontrar", "x": 1820, "y": 0, "w": 375, "h": 812 },
     { "file": "BuscaVazia.dc.html", "title": "Necessidade sem resposta", "page": "encontrar", "x": 455, "y": 1010, "w": 375, "h": 812 },
     { "file": "Carteira.dc.html", "title": "Carteira", "page": "encontrar", "x": 0, "y": 1010, "w": 375, "h": 812 },
+    { "file": "Conversas.dc.html", "title": "Conversas", "page": "encontrar", "x": 910, "y": 1010, "w": 375, "h": 812 },
+    { "file": "Perfil.dc.html", "title": "Perfil", "page": "encontrar", "x": 1365, "y": 1010, "w": 375, "h": 812 },
 
     { "file": "Oferecer1.dc.html", "title": "1 · A habilidade", "page": "oferecer", "x": 0, "y": 0, "w": 375, "h": 812 },
     { "file": "Oferecer2.dc.html", "title": "2 · A ajuda", "page": "oferecer", "x": 455, "y": 0, "w": 375, "h": 812 },
@@ -32,6 +34,8 @@
     { "id": "sem-preco", "page": "encontrar", "x": 1365, "y": 870, "w": 375, "text": "Nenhuma tela mostra preço, moeda ou saldo. A nota cinza explica a ausência em vez de deixá-la como estranheza." },
     { "id": "tema", "page": "encontrar", "x": 1820, "y": 870, "w": 375, "text": "A cor de acento é ajustável no controle acima de cada tela: verde quente (padrão), terracota e oliva. Dá para ver as telas inteiras mudarem de uma vez." },
     { "id": "vazio", "page": "encontrar", "x": 455, "y": 1880, "w": 375, "text": "A busca sem resposta é a tela mais estratégica do app: é ali que a necessidade não atendida é capturada. \"Avisar quando alguém oferecer\" transforma a frustração em fila de demanda, e o conjunto dessas buscas diz quais proficiências faltam no bairro." },
+    { "id": "conversas", "page": "encontrar", "x": 910, "y": 1880, "w": 375, "text": "Conversas separa o que espera ação do que apenas segue em andamento.\n\nFavor já combinado não aparece aqui — vive na Carteira, em Reservados. Conversa é sobre falar; compromisso agendado é sobre o ticket." },
+    { "id": "perfil", "page": "encontrar", "x": 1365, "y": 1880, "w": 375, "text": "Cada habilidade mostra lado a lado o nível declarado e a nota obtida — \"o que você diz\" contra \"o que dizem\". A divergência entre os dois é a informação, e é por isso que nenhuma avaliação altera o nível automaticamente.\n\nO selo diz \"Contato verificado\", não \"Identidade verificada\": no MVP não há validação documental, e um selo falso é pior do que selo nenhum." },
 
     { "id": "of-fluxo", "page": "oferecer", "x": 0, "y": -170, "w": 620, "text": "OFERECER AJUDA — 4 passos\nSão 13 campos obrigatórios. Num formulário único, quase ninguém termina. Divididos em quatro passos com uma decisão de cada vez, o fluxo fica atravessável em aparelho pequeno." },
     { "id": "of-1", "page": "oferecer", "x": 0, "y": 870, "w": 375, "text": "A primeira barreira não é o formulário — é a pessoa achar que não tem nada a oferecer. Por isso o passo 1 não pede \"profissão\": pede o que ela sabe fazer, e usa o mesmo campo de linguagem natural da busca." },
@@ -45,5 +49,5 @@
     { "id": "rec-4", "page": "receber", "x": 1365, "y": 870, "w": 375, "text": "A confirmação tácita é declarada na tela: \"se ninguém responder até domingo, vamos considerar que foi feito\". Uma regra que decide no silêncio precisa ser dita antes do silêncio acontecer." },
     { "id": "rec-5", "page": "receber", "x": 1820, "y": 870, "w": 375, "text": "A escala é de 0 a 7 — por isso barras, e não estrelas. Cinco estrelas é uma convenção tão forte que sete estrelas seriam lidas como erro.\n\nOs motivos aparecem sob Qualidade, que é o critério sujeito a acusação vaga." }
   ],
-  "launch": { "view": "canvas", "page": "receber" }
+  "launch": { "view": "canvas", "page": "encontrar" }
 }

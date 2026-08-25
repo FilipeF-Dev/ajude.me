@@ -1,0 +1,134 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    body { margin: 0; }
+    a { color: #2E6B4F; } a:hover { color: #24543E; }
+  </style>
+</helmet>
+<div style="width: 375px; height: 812px; background: #FAF7F2; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif; color: #1F1C19; display: flex; flex-direction: column; overflow: hidden; position: relative;">
+
+  <div style="padding: 52px 20px 18px; display: flex; align-items: center; gap: 15px;">
+    <div style="width: 66px; height: 66px; border-radius: 999px; background: #EDE6DC; display: flex; align-items: center; justify-content: center; font-size: 25px; font-weight: 600; color: #5E5449; flex-shrink: 0;">R</div>
+    <div style="flex-grow: 1; display: flex; flex-direction: column; gap: 6px; min-width: 0;">
+      <div style="font-size: 21px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2;">Rafael Menezes</div>
+      <div style="display: flex; align-items: center; gap: 6px;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="{{accent}}" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><path d="M12 3 5 6v6c0 4.4 3 8.2 7 9 4-.8 7-4.6 7-9V6Z"></path><path d="m9 12 2 2 4-4"></path></svg>
+        <span style="font-size: 13px; font-weight: 600; color: {{accent}};">Contato verificado</span>
+      </div>
+      <div style="font-size: 13px; color: #857A6E;">No Ajude.me desde março</div>
+    </div>
+  </div>
+
+  <div style="flex-grow: 1; overflow: hidden; padding: 0 20px; display: flex; flex-direction: column; gap: 18px;">
+
+    <div style="display: flex; gap: 11px;">
+      <div style="flex-grow: 1; background: #FFFFFF; border: 1px solid #EDE6DC; border-radius: 18px; padding: 15px; display: flex; flex-direction: column; gap: 7px;">
+        <span style="font-size: 13px; color: #857A6E;">Ajudando</span>
+        <div style="display: flex; align-items: baseline; gap: 4px;">
+          <span style="font-size: 26px; font-weight: 700; letter-spacing: -0.02em;">6,7</span>
+          <span style="font-size: 14px; color: #9A9086;">/ 7</span>
+        </div>
+        <span style="font-size: 13px; color: #857A6E;">14 favores</span>
+      </div>
+      <div style="flex-grow: 1; background: #FFFFFF; border: 1px solid #EDE6DC; border-radius: 18px; padding: 15px; display: flex; flex-direction: column; gap: 7px;">
+        <span style="font-size: 13px; color: #857A6E;">Recebendo</span>
+        <div style="display: flex; align-items: baseline; gap: 4px;">
+          <span style="font-size: 26px; font-weight: 700; letter-spacing: -0.02em;">6,2</span>
+          <span style="font-size: 14px; color: #9A9086;">/ 7</span>
+        </div>
+        <span style="font-size: 13px; color: #857A6E;">9 favores</span>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 11px;">
+      <div style="display: flex; align-items: baseline; justify-content: space-between;">
+        <span style="font-size: 15px; font-weight: 600; color: #5E5449;">Suas habilidades</span>
+        <span style="font-size: 13px; color: #857A6E;">o que você diz · o que dizem</span>
+      </div>
+
+      <sc-for list="{{habilidades}}" as="h" hint-placeholder-count="2">
+        <div style="background: #FFFFFF; border: 1px solid #EDE6DC; border-radius: 18px; padding: 15px 16px; display: flex; flex-direction: column; gap: 11px;">
+          <div style="font-size: 16px; font-weight: 600; line-height: 1.3;">{{h.nome}}</div>
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+            <div style="background: #F5F1EA; border-radius: 999px; padding: 7px 13px;">
+              <span style="font-size: 13px; font-weight: 600; color: {{accent}};">{{h.nivel}}</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="#C6BCB0" stroke="none"><path d="m12 3.5 2.6 5.6 6 .8-4.4 4.2 1.1 6-5.3-3-5.3 3 1.1-6L3.4 9.9l6-.8Z"></path></svg>
+              <span style="font-size: 15px; font-weight: 700;">{{h.nota}}</span>
+              <span style="font-size: 13px; color: #9A9086;">· {{h.quantas}}</span>
+            </div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #EDE6DC; border-radius: 18px; padding: 16px; display: flex; align-items: center; gap: 13px;">
+      <div style="width: 42px; height: 42px; border-radius: 999px; background: #F5F1EA; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5E5449" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h10"></path></svg>
+      </div>
+      <div style="flex-grow: 1; display: flex; flex-direction: column; gap: 3px; min-width: 0;">
+        <div style="font-size: 15px; font-weight: 600;">Seus favores</div>
+        <div style="font-size: 13px; color: #857A6E;">2 ativos · 5 tickets em circulação</div>
+      </div>
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#9A9086" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 5 7 7-7 7"></path></svg>
+    </div>
+
+  </div>
+
+  <div style="padding: 14px 16px 22px;">
+    <div style="background: #FFFFFF; border: 1px solid #EDE6DC; border-radius: 22px; box-shadow: 0 3px 14px rgba(31, 28, 25, 0.07); height: 68px; display: flex; align-items: center; justify-content: space-between; padding: 0 6px;">
+
+      <div style="flex-grow: 1; display: flex; flex-direction: column; align-items: center; gap: 4px;">
+        <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#9A9086" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5 12 4l8 6.5V19a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1Z"></path></svg>
+        <span style="font-size: 11px; font-weight: 500; color: #9A9086;">Início</span>
+      </div>
+
+      <div style="flex-grow: 1; display: flex; flex-direction: column; align-items: center; gap: 4px;">
+        <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#9A9086" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8a2 2 0 0 1 2-2h13a1 1 0 0 1 1 1v2"></path><path d="M3 8v9a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-6a1 1 0 0 0-1-1H5a2 2 0 0 1-2-2Z"></path></svg>
+        <span style="font-size: 11px; font-weight: 500; color: #9A9086;">Carteira</span>
+      </div>
+
+      <div style="flex-grow: 1; display: flex; align-items: center; justify-content: center;">
+        <div style="width: 56px; height: 56px; border-radius: 999px; background: {{accent}}; display: flex; align-items: center; justify-content: center; margin-top: -22px; box-shadow: 0 4px 12px rgba(31, 28, 25, 0.18); border: 4px solid #FAF7F2;">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>
+        </div>
+      </div>
+
+      <div style="flex-grow: 1; display: flex; flex-direction: column; align-items: center; gap: 4px;">
+        <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#9A9086" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 15a2 2 0 0 1-2 2H8l-4 4V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2Z"></path></svg>
+        <span style="font-size: 11px; font-weight: 500; color: #9A9086;">Conversas</span>
+      </div>
+
+      <div style="flex-grow: 1; display: flex; flex-direction: column; align-items: center; gap: 4px;">
+        <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="{{accent}}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"></circle><path d="M5 20c0-3.3 3.1-5.5 7-5.5s7 2.2 7 5.5"></path></svg>
+        <span style="font-size: 11px; font-weight: 600; color: {{accent}};">Perfil</span>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+</x-dc>
+<script data-dc-script data-props='{"accent":{"editor":"color","default":"#2E6B4F","options":["#2E6B4F","#B0563A","#6E6136"],"section":"Tema"}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      accent: this.props.accent ?? '#2E6B4F',
+      habilidades: [
+        { nome: 'Currículo e carreira', nivel: 'Avançado', nota: '6,7', quantas: '11 avaliações' },
+        { nome: 'Aulas de português', nivel: 'Intermediário', nota: '5,4', quantas: '3 avaliações' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

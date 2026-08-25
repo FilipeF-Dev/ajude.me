@@ -110,15 +110,15 @@ Termo de ciência de riscos · escopo do acionamento de emergência · natureza 
 
 ## 7.1 Telas prontas
 
-Canvas em três páginas, 16 telas:
+Canvas em três páginas, 18 telas:
 
 | Página | Telas |
 |---|---|
-| **Encontrar e trocar** | Início · Busca por necessidade · Busca sem resposta · Página do favor · Montar proposta · Negociação · Carteira |
+| **Encontrar e trocar** | Início · Busca por necessidade · Busca sem resposta · Página do favor · Montar proposta · Negociação · Carteira · Conversas · Perfil |
 | **Oferecer ajuda** | 4 passos: habilidade → a ajuda → quando e onde → os tickets |
 | **Receber a ajuda** | Pedir o favor · Combinado · Durante o atendimento · Aconteceu? · Avaliação |
 
-**Faltam:** perfil (reputação por proficiência), lista de conversas.
+Todas as telas de percurso do loop existem. O que falta agora são estados secundários — vazios, erros, carregamento — e o cadastro.
 
 **Inconsistência conhecida:** a página do favor exibe reputação com estrela; a tela de avaliação usa barras de 7 segmentos. Definir se estrela fica como símbolo compacto de leitura e barras só na atribuição da nota.
 
