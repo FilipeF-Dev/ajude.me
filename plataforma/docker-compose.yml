@@ -1,0 +1,37 @@
+services:
+  banco:
+    image: postgis/postgis:16-3.4
+    container_name: ajudeme-banco
+    environment:
+      POSTGRES_DB: ajudeme
+      POSTGRES_USER: ajudeme
+      POSTGRES_PASSWORD: ajudeme
+    # 5433 no host porque a 5432 costuma estar ocupada por outro projeto.
+    # Dentro da rede do compose o app continua usando banco:5432.
+    ports:
+      - "5433:5432"
+    volumes:
+      - dados-banco:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ajudeme -d ajudeme"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    container_name: ajudeme-app
+    working_dir: /var/www
+    volumes:
+      - .:/var/www
+    ports:
+      - "8000:8000"
+    depends_on:
+      banco:
+        condition: service_healthy
+    command: php artisan serve --host=0.0.0.0 --port=8000
+
+volumes:
+  dados-banco:

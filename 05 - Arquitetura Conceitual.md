@@ -687,6 +687,7 @@ Decididas para o MVP. O critério que atravessa todas: **uma pessoa sozinha prec
 | A5 | Provedores externos | **A escolher na implementação** | Depende de orçamento. Ver 15.1 |
 | A6 | Expiração | **Avaliação por estado** | Um ticket está expirado quando a validade passou **e** ele não está protegido (I6, I7). Condição verificável a qualquer momento, sem depender da execução pontual de um processo |
 | A7 | Reconhecimento de necessidade | **Termos populares curados** | Auditável, corrigível na hora pela Operação, sem infraestrutura. O caminho semântico fica como complemento posterior, acionado apenas quando nada for reconhecido |
+| A8 | Stack concreta | **Laravel + Filament + PostgreSQL/PostGIS** | Ver 15.2 |
 
 ## 15.1 Provedores externos
 
@@ -696,7 +697,38 @@ A escolha depende de orçamento e fica para a implementação, mas duas observa�
 
 **Geocodificação e cálculo de proximidade podem ser separados.** Converter endereço em coordenada é chamada externa pontual, feita uma vez por usuário; calcular distância é operação local e frequente. Tratá-los como o mesmo problema leva a pagar por consulta o que deveria ser conta local.
 
-## 15.2 O que estas escolhas assumem
+## 15.2 Stack concreta
+
+| Camada | Escolha |
+|---|---|
+| Backend | Laravel |
+| Painel administrativo | Filament |
+| Banco | PostgreSQL com PostGIS |
+| Interface | Blade + Livewire |
+| Empacotamento Android | Bubblewrap/TWA, quando desejado |
+
+### Por que Laravel
+
+**O módulo administrativo sai quase pronto.** Os 18 requisitos do `ADM` são um mês de trabalho que o usuário final nunca vê. O Filament entrega catálogo, termos populares, filas de chamados e denúncias, suspensões e trilha de auditoria com pouco código — e toda necessidade administrativa futura continua saindo barata.
+
+**O agendador e a fila vêm embutidos.** Este sistema tem mais trabalho agendado do que aparenta: fechar janela de contestação, aplicar confirmação tácita, avaliar expiração de ticket, cobrar avaliação pendente, alertar o contato de confiança quando o check-out não veio. Em outras opções isso seria infraestrutura adicional a manter.
+
+**Legibilidade futura.** Um projeto Laravel convencional é abrível por qualquer desenvolvedor. Uma aplicação sob medida com autenticação, filas, migrações e painel feitos à mão só é legível para quem a escreveu — risco relevante em projeto de uma pessoa.
+
+### Sobre a resiliência das telas de segurança
+
+Uma análise inicial tratou a resiliência offline como razão para escolher uma aplicação client-side. Ao detalhar o que as telas exigem, isso não se sustentou:
+
+- **O acionamento de emergência não precisa de API nativa.** A ação mais confiável em aparelho com dados ruins é ligar ou enviar SMS — um link `tel:` funciona em qualquer página. Quem entrega confiabilidade aqui é a rede de voz da operadora, que opera onde os dados já falharam.
+- **Check-in e check-out são dois registros de horário.** Guardar localmente e sincronizar depois exige armazenamento local e uma fila de reenvio, não uma arquitetura diferente.
+
+Essas telas continuam exigindo **tratamento deliberado**, e devem ser construídas com essa resiliência desde o início — mas isso é uma fatia de trabalho, não um fator de escolha de stack.
+
+### Sobre Django
+
+Perdeu por margem estreita. A vantagem real seria o GeoDjango, mas as consultas de proximidade aqui são raio e distância simples. Pesaram contra: agendamento exigindo Celery, e comunidade brasileira menor — o que importa quando alguém trabalha sozinho e precisa de resposta em português.
+
+## 15.3 O que estas escolhas assumem
 
 Todas favorecem **reversibilidade sobre otimização**. Nenhuma delas é a melhor escolha para um produto com tráfego alto — são as melhores escolhas para descobrir se o produto deve existir, sem gastar meses em infraestrutura que talvez nunca seja necessária.
 
