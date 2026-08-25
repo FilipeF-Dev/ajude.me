@@ -1,0 +1,106 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    body { margin: 0; }
+    a { color: #2E6B4F; } a:hover { color: #24543E; }
+  </style>
+</helmet>
+<div style="width: 375px; height: 812px; background: #FAF7F2; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif; color: #1F1C19; display: flex; flex-direction: column; overflow: hidden; position: relative;">
+
+  <div style="padding: 56px 20px 14px; display: flex; align-items: center; gap: 12px; background: #FAF7F2;">
+    <div style="width: 42px; height: 42px; border-radius: 999px; background: #FFFFFF; border: 1px solid #EDE6DC; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3A342E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 5-7 7 7 7"></path></svg>
+    </div>
+    <div style="width: 42px; height: 42px; border-radius: 999px; background: #F2EEE7; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 600; color: #6B6055; flex-shrink: 0;">R</div>
+    <div style="flex-grow: 1; display: flex; flex-direction: column; gap: 2px; min-width: 0;">
+      <div style="font-size: 16px; font-weight: 600;">Rafael Menezes</div>
+      <div style="font-size: 13px; color: #857A6E;">Proposta recebida há 2 h</div>
+    </div>
+  </div>
+
+  <div style="padding: 0 20px 12px;">
+    <div style="background: #FFFFFF; border: 1px solid #EDE6DC; border-radius: 16px; padding: 13px 15px; display: flex; flex-direction: column; gap: 11px; box-shadow: 0 1px 2px rgba(31, 28, 25, 0.04);">
+      <div style="display: flex; align-items: flex-start; gap: 10px;">
+        <div style="width: 22px; height: 22px; border-radius: 999px; background: #EAF1EC; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="{{accent}}" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4 10-10"></path></svg>
+        </div>
+        <div style="flex-grow: 1; min-width: 0;">
+          <div style="font-size: 12px; color: #857A6E; margin-bottom: 2px;">Você recebe</div>
+          <div style="font-size: 14px; font-weight: 600; line-height: 1.35;">Currículo e preparo para entrevista</div>
+          <div style="font-size: 12px; color: #857A6E; margin-top: 2px;">≈ 1h · Avançado</div>
+        </div>
+      </div>
+      <div style="height: 1px; background: #F1EAE0;"></div>
+      <div style="display: flex; align-items: flex-start; gap: 10px;">
+        <div style="width: 22px; height: 22px; border-radius: 999px; background: #F5F1EA; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#857A6E" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path></svg>
+        </div>
+        <div style="flex-grow: 1; min-width: 0;">
+          <div style="font-size: 12px; color: #857A6E; margin-bottom: 2px;">Você entrega</div>
+          <div style="font-size: 14px; font-weight: 600; line-height: 1.35;">Costura e ajuste de roupas</div>
+          <div style="font-size: 12px; color: #857A6E; margin-top: 2px;">≈ 1h · Especialista</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="flex-grow: 1; overflow: hidden; padding: 4px 20px 0; display: flex; flex-direction: column; gap: 9px;">
+
+    <div style="align-self: flex-start; max-width: 268px; background: #FFFFFF; border: 1px solid #EDE6DC; border-radius: 16px 16px 16px 5px; padding: 11px 14px;">
+      <div style="font-size: 15px; line-height: 1.45; text-wrap: pretty;">Oi Cleide, boa tarde! Vi que você ajusta roupa. Precisava de uma barra de calça pro meu filho.</div>
+    </div>
+
+    <div style="align-self: flex-start; max-width: 268px; background: #FFFFFF; border: 1px solid #EDE6DC; border-radius: 16px 16px 16px 5px; padding: 11px 14px;">
+      <div style="font-size: 15px; line-height: 1.45; text-wrap: pretty;">Em troca posso ajudar com currículo, trabalho com isso há uns anos.</div>
+    </div>
+
+    <div style="align-self: flex-end; max-width: 268px; background: {{accent}}; border-radius: 16px 16px 5px 16px; padding: 11px 14px;">
+      <div style="font-size: 15px; line-height: 1.45; color: #FFFFFF; text-wrap: pretty;">Boa tarde, Rafael! Consigo sim. Minha filha está procurando emprego, ia ajudar demais.</div>
+    </div>
+
+    <div style="align-self: flex-end; max-width: 268px; background: {{accent}}; border-radius: 16px 16px 5px 16px; padding: 11px 14px;">
+      <div style="font-size: 15px; line-height: 1.45; color: #FFFFFF;">Dá para ser num sábado?</div>
+    </div>
+
+    <div style="align-self: flex-start; max-width: 268px; background: #FFFFFF; border: 1px solid #EDE6DC; border-radius: 16px 16px 16px 5px; padding: 11px 14px;">
+      <div style="font-size: 15px; line-height: 1.45;">Dá sim, sábado de manhã fica ótimo.</div>
+    </div>
+
+  </div>
+
+  <div style="padding: 14px 20px 0; display: flex; gap: 10px;">
+    <div style="flex-grow: 1; height: 52px; border-radius: 15px; background: #FFFFFF; border: 1px solid #E3DACE; display: flex; align-items: center; justify-content: center;">
+      <span style="font-size: 16px; font-weight: 600; color: #6B6055;">Recusar</span>
+    </div>
+    <div style="flex-grow: 1.4; height: 52px; border-radius: 15px; background: {{accent}}; display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 12px rgba(31, 28, 25, 0.14);">
+      <span style="font-size: 16px; font-weight: 600; color: #FFFFFF;">Aceitar troca</span>
+    </div>
+  </div>
+
+  <div style="padding: 12px 20px 26px; display: flex; align-items: center; gap: 10px;">
+    <div style="flex-grow: 1; height: 48px; background: #FFFFFF; border: 1px solid #EDE6DC; border-radius: 15px; display: flex; align-items: center; padding: 0 15px;">
+      <span style="font-size: 15px; color: #9A9086;">Escrever mensagem</span>
+    </div>
+    <div style="width: 48px; height: 48px; border-radius: 999px; background: #F2EEE7; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6B6055" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12 20 4l-8 16-2-6Z"></path></svg>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+<script data-dc-script data-props='{"accent":{"editor":"color","default":"#2E6B4F","options":["#2E6B4F","#B0563A","#6E6136"],"section":"Tema"}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return { accent: this.props.accent ?? '#2E6B4F' };
+  }
+}
+</script>
+</body>
+</html>

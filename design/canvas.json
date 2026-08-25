@@ -1,0 +1,49 @@
+{
+  "pages": [
+    { "id": "encontrar", "name": "Encontrar e trocar" },
+    { "id": "oferecer", "name": "Oferecer ajuda" },
+    { "id": "receber", "name": "Receber a ajuda" }
+  ],
+  "artboards": [
+    { "file": "Main.dc.html", "title": "Início", "page": "encontrar", "x": 0, "y": 0, "w": 375, "h": 812 },
+    { "file": "Busca.dc.html", "title": "Necessidade → proficiências", "page": "encontrar", "x": 455, "y": 0, "w": 375, "h": 812 },
+    { "file": "Favor.dc.html", "title": "Página do favor", "page": "encontrar", "x": 910, "y": 0, "w": 375, "h": 812 },
+    { "file": "Proposta.dc.html", "title": "Montar proposta", "page": "encontrar", "x": 1365, "y": 0, "w": 375, "h": 812 },
+    { "file": "Negociacao.dc.html", "title": "Negociação", "page": "encontrar", "x": 1820, "y": 0, "w": 375, "h": 812 },
+    { "file": "BuscaVazia.dc.html", "title": "Necessidade sem resposta", "page": "encontrar", "x": 455, "y": 1010, "w": 375, "h": 812 },
+    { "file": "Carteira.dc.html", "title": "Carteira", "page": "encontrar", "x": 0, "y": 1010, "w": 375, "h": 812 },
+
+    { "file": "Oferecer1.dc.html", "title": "1 · A habilidade", "page": "oferecer", "x": 0, "y": 0, "w": 375, "h": 812 },
+    { "file": "Oferecer2.dc.html", "title": "2 · A ajuda", "page": "oferecer", "x": 455, "y": 0, "w": 375, "h": 812 },
+    { "file": "Oferecer3.dc.html", "title": "3 · Quando e onde", "page": "oferecer", "x": 910, "y": 0, "w": 375, "h": 812 },
+    { "file": "Oferecer4.dc.html", "title": "4 · Os tickets", "page": "oferecer", "x": 1365, "y": 0, "w": 375, "h": 812 },
+
+    { "file": "Solicitar.dc.html", "title": "1 · Pedir o favor", "page": "receber", "x": 0, "y": 0, "w": 375, "h": 812 },
+    { "file": "Agendado.dc.html", "title": "2 · Combinado", "page": "receber", "x": 455, "y": 0, "w": 375, "h": 812 },
+    { "file": "Atendimento.dc.html", "title": "3 · Durante o atendimento", "page": "receber", "x": 910, "y": 0, "w": 375, "h": 812 },
+    { "file": "Confirmar.dc.html", "title": "4 · Aconteceu?", "page": "receber", "x": 1365, "y": 0, "w": 375, "h": 812 },
+    { "file": "Avaliar.dc.html", "title": "5 · Avaliação", "page": "receber", "x": 1820, "y": 0, "w": 375, "h": 812 }
+  ],
+  "annotations": [
+    { "id": "fluxo", "page": "encontrar", "x": 0, "y": -170, "w": 620, "text": "FLUXO PRINCIPAL\nO usuário descreve a necessidade em linguagem natural → o sistema mapeia para proficiências → mostra quem pode ajudar → condições → proposta → negociação." },
+    { "id": "necessidade", "page": "encontrar", "x": 455, "y": 870, "w": 375, "text": "A busca por necessidade substitui o \"pedido de ajuda\" como entidade. A pessoa digita o sintoma (\"trocar a resistência do chuveiro\"), não a competência. O mapeamento para proficiência é o trabalho que o sistema faz — por isso os favores encontrados se chamam \"Instalações e reparos elétricos\", e não o que foi digitado." },
+    { "id": "descritor", "page": "encontrar", "x": 910, "y": 870, "w": 375, "text": "O descritor de dois eixos ocupa o lugar onde estaria o preço: tempo estimado + nível de proficiência. O nível vem colorido para forçar a leitura das DUAS dimensões — se ficasse cinza, leriam só a duração." },
+    { "id": "barra", "page": "encontrar", "x": 0, "y": 870, "w": 375, "text": "Barra inferior: Início · Carteira · [Oferecer] · Conversas · Perfil.\nO círculo central dá a ofertar o mesmo peso que a descobrir — sem isso a navegação ensina a só consumir." },
+    { "id": "sem-preco", "page": "encontrar", "x": 1365, "y": 870, "w": 375, "text": "Nenhuma tela mostra preço, moeda ou saldo. A nota cinza explica a ausência em vez de deixá-la como estranheza." },
+    { "id": "tema", "page": "encontrar", "x": 1820, "y": 870, "w": 375, "text": "A cor de acento é ajustável no controle acima de cada tela: verde quente (padrão), terracota e oliva. Dá para ver as telas inteiras mudarem de uma vez." },
+    { "id": "vazio", "page": "encontrar", "x": 455, "y": 1880, "w": 375, "text": "A busca sem resposta é a tela mais estratégica do app: é ali que a necessidade não atendida é capturada. \"Avisar quando alguém oferecer\" transforma a frustração em fila de demanda, e o conjunto dessas buscas diz quais proficiências faltam no bairro." },
+
+    { "id": "of-fluxo", "page": "oferecer", "x": 0, "y": -170, "w": 620, "text": "OFERECER AJUDA — 4 passos\nSão 13 campos obrigatórios. Num formulário único, quase ninguém termina. Divididos em quatro passos com uma decisão de cada vez, o fluxo fica atravessável em aparelho pequeno." },
+    { "id": "of-1", "page": "oferecer", "x": 0, "y": 870, "w": 375, "text": "A primeira barreira não é o formulário — é a pessoa achar que não tem nada a oferecer. Por isso o passo 1 não pede \"profissão\": pede o que ela sabe fazer, e usa o mesmo campo de linguagem natural da busca." },
+    { "id": "of-2", "page": "oferecer", "x": 455, "y": 870, "w": 375, "text": "A prévia do descritor mostra o resultado se formando enquanto a pessoa escolhe o tempo. É onde ela aprende que o nível vem da habilidade e que não há preço a definir." },
+    { "id": "of-4", "page": "oferecer", "x": 1365, "y": 870, "w": 375, "text": "\"Cada ticket é um compromisso seu. Quando um for usado, abre vaga para outro.\" — a regra de limite de circulação explicada onde ela importa.\n\nO aviso final prepara o congelamento: publicado, as condições não mudam mais." },
+
+    { "id": "rec-fluxo", "page": "receber", "x": 0, "y": -170, "w": 620, "text": "RECEBER A AJUDA — do ticket ao encerramento\nPedir → combinar → o encontro presencial → confirmar → avaliar. É o trecho do loop onde duas pessoas que não se conhecem ficam no mesmo lugar, e por isso o que carrega os mecanismos de segurança." },
+    { "id": "rec-1", "page": "receber", "x": 0, "y": 870, "w": 375, "text": "Não existe calendário livre: aparecem apenas os dias em que o ajudante combinou atender, já descontada a antecedência mínima. A regra de \"não permitir solicitação fora das condições\" vira ausência de opção inválida, em vez de mensagem de erro." },
+    { "id": "rec-2", "page": "receber", "x": 455, "y": 870, "w": 375, "text": "É aqui que telefone e endereço aparecem pela primeira vez — só depois do agendamento, e some no encerramento.\n\nO bloco de segurança não é um aviso: informa que o contato de confiança JÁ foi avisado, com nome, dia e endereço." },
+    { "id": "rec-3", "page": "receber", "x": 910, "y": 870, "w": 375, "text": "O botão de emergência é o único lugar do app com vermelho — cor reservada para isso. Fica sempre visível durante a janela, mas o check-out é que é a ação principal, para o vermelho não virar paisagem." },
+    { "id": "rec-4", "page": "receber", "x": 1365, "y": 870, "w": 375, "text": "A confirmação tácita é declarada na tela: \"se ninguém responder até domingo, vamos considerar que foi feito\". Uma regra que decide no silêncio precisa ser dita antes do silêncio acontecer." },
+    { "id": "rec-5", "page": "receber", "x": 1820, "y": 870, "w": 375, "text": "A escala é de 0 a 7 — por isso barras, e não estrelas. Cinco estrelas é uma convenção tão forte que sete estrelas seriam lidas como erro.\n\nOs motivos aparecem sob Qualidade, que é o critério sujeito a acusação vaga." }
+  ],
+  "launch": { "view": "canvas", "page": "receber" }
+}

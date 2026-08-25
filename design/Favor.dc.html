@@ -1,0 +1,106 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    body { margin: 0; }
+    a { color: #2E6B4F; } a:hover { color: #24543E; }
+  </style>
+</helmet>
+<div style="width: 375px; height: 812px; background: #FAF7F2; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif; color: #1F1C19; display: flex; flex-direction: column; overflow: hidden; position: relative;">
+
+  <div style="padding: 56px 20px 10px; display: flex; align-items: center; gap: 14px;">
+    <div style="width: 42px; height: 42px; border-radius: 999px; background: #FFFFFF; border: 1px solid #EDE6DC; display: flex; align-items: center; justify-content: center;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3A342E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 5-7 7 7 7"></path></svg>
+    </div>
+    <span style="font-size: 15px; font-weight: 600; color: #857A6E;">Favor</span>
+  </div>
+
+  <div style="flex-grow: 1; overflow: hidden; padding: 8px 20px 0; display: flex; flex-direction: column; gap: 18px;">
+
+    <div style="display: flex; flex-direction: column; gap: 13px;">
+      <div style="font-size: 25px; font-weight: 700; line-height: 1.22; letter-spacing: -0.02em;">Costura e ajuste de roupas</div>
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <div style="display: flex; align-items: center; gap: 7px; background: #F5F1EA; border-radius: 999px; padding: 9px 14px;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#6B6055" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>
+          <span style="font-size: 14px; font-weight: 600; color: #3A342E;">≈ 1h</span>
+          <span style="font-size: 14px; color: #C6BCB0;">·</span>
+          <span style="font-size: 14px; font-weight: 600; color: {{accent}};">Especialista</span>
+        </div>
+        <div style="font-size: 14px; color: #857A6E; font-weight: 500;">Presencial</div>
+      </div>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #EDE6DC; border-radius: 18px; padding: 15px; display: flex; align-items: center; gap: 13px; box-shadow: 0 1px 2px rgba(31, 28, 25, 0.04);">
+      <div style="width: 50px; height: 50px; border-radius: 999px; background: #F2EEE7; display: flex; align-items: center; justify-content: center; font-size: 19px; font-weight: 600; color: #6B6055; flex-shrink: 0;">C</div>
+      <div style="flex-grow: 1; display: flex; flex-direction: column; gap: 5px; min-width: 0;">
+        <div style="font-size: 16px; font-weight: 600;">Cleide Ramos</div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <div style="display: flex; align-items: center; gap: 5px;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="{{accent}}" stroke="none"><path d="m12 3.5 2.6 5.6 6 .8-4.4 4.2 1.1 6-5.3-3-5.3 3 1.1-6L3.4 9.9l6-.8Z"></path></svg>
+            <span style="font-size: 14px; font-weight: 600;">6,4</span>
+            <span style="font-size: 13px; color: #9A9086;">/ 7</span>
+          </div>
+          <span style="font-size: 13px; color: #C6BCB0;">·</span>
+          <span style="font-size: 13px; color: #857A6E;">31 favores prestados</span>
+        </div>
+      </div>
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#9A9086" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 5 7 7-7 7"></path></svg>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 11px;">
+      <div style="font-size: 15px; font-weight: 600; color: #5E5449;">Condições</div>
+      <div style="background: #FFFFFF; border: 1px solid #EDE6DC; border-radius: 18px; overflow: hidden;">
+        <sc-for list="{{condicoes}}" as="c" hint-placeholder-count="4">
+          <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 14px 16px; border-bottom: 1px solid #F3EDE5;">
+            <span style="font-size: 14px; color: #857A6E; flex-shrink: 0;">{{c.rotulo}}</span>
+            <span style="font-size: 14px; font-weight: 600; text-align: right; line-height: 1.4;">{{c.valor}}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 9px;">
+      <div style="font-size: 15px; font-weight: 600; color: #5E5449;">Descrição</div>
+      <div style="font-size: 15px; line-height: 1.55; color: #3A342E; text-wrap: pretty;">Ajusto barra, cintura e manga em roupa de tecido comum. Trago a máquina até você ou recebo a peça em casa. Levo linha nas cores mais usadas.</div>
+    </div>
+
+    <div style="display: flex; gap: 11px; background: #FBF4E9; border: 1px solid #EFE2CC; border-radius: 16px; padding: 14px 15px;">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#9A7B3F" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 1px;"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5"></path><path d="M12 16.5v.01"></path></svg>
+      <div style="font-size: 14px; line-height: 1.5; color: #6B5626;">Não trabalho com couro, tecido muito fino nem vestido de festa.</div>
+    </div>
+
+  </div>
+
+  <div style="padding: 14px 20px 26px; background: #FAF7F2;">
+    <div style="height: 56px; border-radius: 17px; background: {{accent}}; display: flex; align-items: center; justify-content: center; gap: 9px; box-shadow: 0 3px 12px rgba(31, 28, 25, 0.14);">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h13l-3-3"></path><path d="M20 16H7l3 3"></path></svg>
+      <span style="font-size: 17px; font-weight: 600; color: #FFFFFF;">Propor troca</span>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+<script data-dc-script data-props='{"accent":{"editor":"color","default":"#2E6B4F","options":["#2E6B4F","#B0563A","#6E6136"],"section":"Tema"}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      accent: this.props.accent ?? '#2E6B4F',
+      condicoes: [
+        { rotulo: 'Dias', valor: 'Terça a sábado' },
+        { rotulo: 'Horários', valor: '14h às 19h' },
+        { rotulo: 'Antecedência mínima', valor: '2 dias' },
+        { rotulo: 'Onde atende', valor: 'Até 3 km do Jardim das Oliveiras' },
+        { rotulo: 'Ticket vale até', valor: '12 de dezembro de 2026' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>
