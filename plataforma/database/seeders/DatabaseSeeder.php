@@ -10,6 +10,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             ParametrosNegocioSeeder::class,
+            OperadorSeeder::class,
         ]);
     }
 }

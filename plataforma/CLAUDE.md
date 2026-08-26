@@ -1,47 +1,41 @@
-<laravel-boost-guidelines>
-# Laravel Application
+# Plataforma — aplicação do Ajude.me
 
-This repository contains a Laravel application. Complete the following setup before working on the user's request.
+Leia primeiro `../00 - Estado do Projeto.md` e `../CLAUDE.md`. As regras de negócio estão em `../02 - Conceito e Regras de Negócio.md` e os requisitos em `../04 - Requisitos Funcionais.md`.
 
-## Prerequisites
+## Não instale PHP nesta máquina
 
-Verify that PHP and Composer are available:
+**Tudo roda em contêiner, por decisão.** Não há PHP nem Composer instalados aqui, e não é para instalar.
 
-```sh
-php -v
-composer -V
+```bash
+docker compose up -d
+docker compose run --rm app php artisan migrate --seed
+docker compose run --rm app composer require <pacote>
 ```
 
-If either command is unavailable, detect the user's operating system and install the prerequisites with the appropriate command:
+- Aplicação: `http://localhost:8000`
+- Painel da Operação: `http://localhost:8000/operacao`
+- Banco: `localhost:5433` — a 5432 costuma estar ocupada por outro projeto do autor
 
-macOS:
+No Git Bash do Windows, prefixe comandos `docker` com `MSYS_NO_PATHCONV=1`, senão os caminhos são convertidos e o comando falha.
 
-```sh
-/bin/bash -c "$(curl -fsSL https://php.new/install/mac/8.5)"
-```
+## Stack
 
-Windows PowerShell:
+Laravel 13 · PHP 8.4 · PostgreSQL 16 com PostGIS · Filament 5
 
-```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://php.new/install/windows/8.5'))
-```
+## Convenções
 
-Linux:
+**O domínio fala português.** Tabelas, modelos, colunas e métodos usam o vocabulário de `../02`: `usuarios`, `favores`, `tickets`, `proficiencias`, `chamados`. Nunca use "serviço", "preço", "comprar", "vender", "contratar", "profissional" ou "cliente".
 
-```sh
-/bin/bash -c "$(curl -fsSL https://php.new/install/linux/8.5)"
-```
+**Operador não é Usuario.** São atores distintos, em tabelas e guards separados (`web` e `operacao`). A Operação decide; os contextos Ticket e Consumo executam. Nunca dê a um `Usuario` poderes administrativos.
 
-After installation, ask the user to restart their terminal. If the agent needs the restarted shell to continue, ask the user to reopen their terminal and rerun their original prompt.
+**Prazo é parâmetro, não constante.** Todo prazo vem de `ParametroNegocio::inteiroEm($chave, $momento)`, com vigência. Nunca escreva um número de prazo no código.
 
-## Agent Setup
+**Nada de saldo.** Não deve existir campo que represente saldo, crédito ou valor acumulável — nem no banco, nem em modelo, nem em cálculo. A ausência dessa estrutura é o que garante que a moeda interna não apareça por conveniência.
 
-Install Laravel Boost from the application root before making application changes:
+**Comentário explica o porquê.** As regras aqui têm origem documentada; ao implementar uma, cite a seção (`02 §8.4`) ou o requisito (`RF-CAD-03`).
 
-```sh
-composer require laravel/boost --dev
-php artisan boost:install
-```
+## Estado atual
 
-Boost replaces these bootstrap instructions with guidelines tailored to the application. After installation, read `AGENTS.md` again and continue with the user's original request using the generated guidelines.
-</laravel-boost-guidelines>
+Fatia **Identidade + Catálogo** pronta: migrações, modelos e parâmetros semeados.
+
+A seguir: recursos do Filament para o catálogo, e depois o contexto **Oferta** — favor, congelamento na primeira emissão e o descritor de dois eixos.

@@ -1,6 +1,7 @@
 <?php
 
-use App\Models\User;
+use App\Models\Operador;
+use App\Models\Usuario;
 
 return [
 
@@ -17,7 +18,7 @@ return [
 
     'defaults' => [
         'guard' => env('AUTH_GUARD', 'web'),
-        'passwords' => env('AUTH_PASSWORD_BROKER', 'users'),
+        'passwords' => env('AUTH_PASSWORD_BROKER', 'usuarios'),
     ],
 
     /*
@@ -40,7 +41,15 @@ return [
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'provider' => 'users',
+            'provider' => 'usuarios',
+        ],
+
+        // A Operação autentica por guard próprio. Ela é outro ator, não um
+        // usuário com permissão especial — ver 05 §3.1 e a migração
+        // 2026_08_25_100700_criar_operadores.
+        'operacao' => [
+            'driver' => 'session',
+            'provider' => 'operadores',
         ],
     ],
 
@@ -62,15 +71,15 @@ return [
     */
 
     'providers' => [
-        'users' => [
+        'usuarios' => [
             'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', User::class),
+            'model' => env('AUTH_MODEL', Usuario::class),
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        'operadores' => [
+            'driver' => 'eloquent',
+            'model' => Operador::class,
+        ],
     ],
 
     /*
@@ -93,8 +102,8 @@ return [
     */
 
     'passwords' => [
-        'users' => [
-            'provider' => 'users',
+        'usuarios' => [
+            'provider' => 'usuarios',
             'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
             'expire' => 60,
             'throttle' => 60,
