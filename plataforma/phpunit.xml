@@ -23,8 +23,15 @@
         <env name="BCRYPT_ROUNDS" value="4"/>
         <env name="BROADCAST_CONNECTION" value="null"/>
         <env name="CACHE_STORE" value="array"/>
-        <env name="DB_CONNECTION" value="sqlite"/>
-        <env name="DB_DATABASE" value=":memory:"/>
+        <!-- Os testes rodam em PostgreSQL, não em SQLite: o esquema usa
+             PostGIS e restrições CHECK que o SQLite não reproduz. Testar
+             contra outro banco validaria um sistema que não é o nosso. -->
+        <env name="DB_CONNECTION" value="pgsql"/>
+        <env name="DB_HOST" value="banco"/>
+        <env name="DB_PORT" value="5432"/>
+        <env name="DB_DATABASE" value="ajudeme_teste"/>
+        <env name="DB_USERNAME" value="ajudeme"/>
+        <env name="DB_PASSWORD" value="ajudeme"/>
         <env name="DB_URL" value=""/>
         <env name="MAIL_MAILER" value="array"/>
         <env name="QUEUE_CONNECTION" value="sync"/>

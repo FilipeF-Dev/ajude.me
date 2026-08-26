@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * Proficiência declarada por um usuário, com nível (02 §3.1).
@@ -53,15 +54,20 @@ class ProficienciaUsuario extends Model
         return self::niveis()[$this->nivel] ?? $this->nivel;
     }
 
+    public function favores(): HasMany
+    {
+        return $this->hasMany(Favor::class);
+    }
+
     /**
-     * RF-PRO-07 — não se remove proficiência com favor ativo ou ticket em
-     * circulação, sob pena de deixar favores e tickets órfãos (I10).
+     * RF-PRO-07 e I10 — não se remove proficiência com favor vinculado.
      *
-     * O contexto Oferta ainda não existe. Quando existir, esta verificação
-     * passa a consultá-lo — e é o único lugar que precisa mudar.
+     * O banco já recusa, pela chave estrangeira com `restrictOnDelete`. Este
+     * método existe para que a interface avise **antes** de tentar, em vez de
+     * deixar o usuário topar com um erro de integridade.
      */
     public function podeSerRemovida(): bool
     {
-        return true;
+        return ! $this->favores()->exists();
     }
 }
