@@ -34,8 +34,14 @@ Laravel 13 · PHP 8.4 · PostgreSQL 16 com PostGIS · Filament 5
 
 **Comentário explica o porquê.** As regras aqui têm origem documentada; ao implementar uma, cite a seção (`02 §8.4`) ou o requisito (`RF-CAD-03`).
 
+**Regra de negócio no domínio, não no controller.** As operações que atravessam mais de um agregado ou que podem violar uma invariante sob concorrência vivem em `app/Dominio/<Contexto>/`, em ações de um método (`EmitirTickets`, `AceitarProposta`). O modelo guarda o que é dele; a ação guarda o que é da operação.
+
+**Transição de estado nunca é atribuição.** Ticket e Proposta mudam de estado por método próprio, que valida a transição contra a máquina declarada e deixa rastro (P2). Atribuir `estado` direto contorna a auditoria.
+
 ## Estado atual
 
-Fatia **Identidade + Catálogo** pronta: migrações, modelos e parâmetros semeados.
+Construídas: **Identidade + Catálogo**, **Painel da Operação**, **Oferta**, **Ticket** e **Negociação**. O acompanhamento por fatia está em `../00 - Estado do Projeto.md §3`.
 
-A seguir: recursos do Filament para o catálogo, e depois o contexto **Oferta** — favor, congelamento na primeira emissão e o descritor de dois eixos.
+A seguir, o contexto **Consumo**: solicitação, agendamento sob as condições publicadas, janela de contestação e confirmação tácita (02 §8).
+
+Dois requisitos da Negociação ficaram anotados no código à espera das fatias de que dependem: RF-NEG-14 (bloqueio entre usuários) e RF-NEG-15 (avaliação pendente).

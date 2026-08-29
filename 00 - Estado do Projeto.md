@@ -4,7 +4,7 @@
 >
 > **Atualize este documento sempre que uma decisão estrutural for tomada.**
 
-**Última atualização:** 25 de agosto de 2026
+**Última atualização:** 28 de agosto de 2026
 
 ---
 
@@ -32,7 +32,30 @@ Plataforma de troca de favores entre pessoas, onde **habilidade vira moeda**. O 
 | Documentação conceitual (`01` a `06`) | ✅ Completa |
 | Design de telas | 🔵 Em andamento — 16 telas do loop principal |
 | Fase 0 do roadmap (fundação) | ✅ Fechada — restam apenas os itens jurídicos |
-| Código | 🔵 Fase 1 em andamento — fatia Identidade + Catálogo |
+| Código | 🔵 Fase 1 em andamento — ver a ordem de construção abaixo |
+
+## Fatias construídas
+
+A ordem é a de `06 §5.3`. Cada fatia entra com migração, modelo, ação de domínio e teste das invariantes que ela protege.
+
+| Fatia | Situação | Entregue |
+|---|---|---|
+| Identidade + Catálogo | ✅ | Usuário, verificação de contato, endereço, contato de confiança, catálogo, parâmetros de negócio |
+| Painel da Operação | ✅ | Filament 5 em `/operacao`, com guard próprio e recursos do catálogo |
+| Oferta | ✅ | Favor, janelas, congelamento na primeira emissão, descritor de dois eixos |
+| Ticket | ✅ | Emissão sob limite de circulação, máquina de estados, cadeia de propriedade, expiração por avaliação de estado |
+| Negociação | ✅ | Proposta versionada, bloqueio de tickets, revisão, aceite atômico, chat |
+| Consumo | ⬜ | Solicitação, agendamento, janela de contestação, confirmação tácita |
+| Segurança e Moderação | ⬜ | Bloqueio, denúncia, chamado, ocorrência |
+| Reputação | ⬜ | Avaliação bilateral obrigatória |
+| Descoberta e Notificações | ⬜ | Busca por necessidade, termos populares |
+
+**Requisitos adiados por dependência de fatia**, não por decisão — estão anotados no próprio código:
+
+| Requisito | Espera por |
+|---|---|
+| RF-NEG-14 / I17 — sem proposta entre usuários com bloqueio | Segurança e Moderação |
+| RF-NEG-15 — avaliação pendente impede nova proposta | Reputação |
 
 ## Como rodar
 
@@ -48,8 +71,13 @@ A aplicação sobe em `http://localhost:8000` e o banco em `localhost:5433` (543
 
 Instalar o **Laravel Herd** deixa o ciclo bem mais rápido, mas é opcional — o Docker cobre tudo.
 
-**Stack:** Laravel 13 · PHP 8.4 · PostgreSQL 16 com PostGIS · Filament (a instalar)
-| Repositório | 🟡 Iniciado com `origin` configurado — **sem nenhum commit ainda** |
+Os testes rodam contra PostgreSQL, não SQLite — o esquema usa PostGIS e restrições `CHECK` que o SQLite não reproduz:
+
+```
+docker compose run --rm app php artisan test
+```
+
+**Stack:** Laravel 13 · PHP 8.4 · PostgreSQL 16 com PostGIS · Filament 5
 
 **Equipe:** uma pessoa. Isso é restrição de planejamento, não detalhe — pesa sobre a carga de operação manual prevista nas fases 2 e 3 do `06`.
 
@@ -62,9 +90,9 @@ Toda a série está escrita e sincronizada entre si. Cada documento referencia o
 | Documento | Versão | Conteúdo |
 |---|---|---|
 | `01 - Visão do Produto.md` | 1.0 | Identidade, propósito, princípios |
-| `02 - Conceito e Regras de Negócio.md` | 2.3 | Conceitos e regras — **a fonte de verdade** |
+| `02 - Conceito e Regras de Negócio.md` | 2.4 | Conceitos e regras — **a fonte de verdade** |
 | `03 - MVP.md` | 1.3 | Escopo da primeira versão e dívidas assumidas |
-| `04 - Requisitos Funcionais.md` | 1.3 | Requisitos rastreáveis em 14 módulos |
+| `04 - Requisitos Funcionais.md` | 1.4 | Requisitos rastreáveis em 14 módulos |
 | `05 - Arquitetura Conceitual.md` | 1.2 | Contextos, entidades, 27 invariantes, decisões técnicas |
 | `06 - Roadmap do Produto.md` | 1.0 | Seis fases com portões de evidência |
 

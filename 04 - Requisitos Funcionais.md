@@ -321,6 +321,9 @@ Uma busca sem correspondência é o principal sinal de demanda da plataforma (`0
 | RF-NEG-16 | O sistema impede proposta cujo remetente ou destinatário esteja com conta Encerrando, Desativada ou Suspensa. | 🟢 | `03 §4.1` |
 | RF-NEG-17 | O usuário consulta o histórico de propostas enviadas e recebidas. | 🟢 | `—` |
 | RF-NEG-18 | A contrapartida pode incluir valor em dinheiro. | ⚪ | `02 §15` |
+| RF-NEG-19 | O sistema impede a inclusão de ticket **não trocável** também entre os tickets solicitados. | 🟢 | `02 §5.4` |
+| RF-NEG-20 | O sistema exige ao menos um ticket solicitado e admite contrapartida vazia. | 🟢 | `02 §5.4` |
+| RF-NEG-21 | Após uma revisão, o aceite cabe à parte que **não** a criou. | 🟢 | `02 §5.4` |
 
 ## 9.1 Estados da proposta
 
@@ -680,7 +683,7 @@ Todos são parâmetros versionados com vigência, nunca constantes de código (`
 
 ---
 
-**Versão:** 1.3
+**Versão:** 1.4
 **Produto:** Ajude.me
 **Documento:** Requisitos Funcionais
 
@@ -689,6 +692,7 @@ Todos são parâmetros versionados com vigência, nunca constantes de código (`
 | Versão | Alterações |
 |---|---|
 | 1.0 | Especificação inicial dos requisitos funcionais |
+| 1.4 | Novos requisitos RF-NEG-19, RF-NEG-20 e RF-NEG-21, decorrentes de `02 §5.4` na versão 2.4: trocabilidade vale para os dois lados da proposta, contrapartida pode ser vazia, e o aceite após revisão cabe à outra parte. |
 | 1.3 | **Fase 0 fechada.** Parâmetros temporais com valor (§19.2). Cancelamento pelo solicitante deixa de ser bloqueado e passa a registrar ocorrência quando em cima da hora — RF-CAN-07, RF-CAN-08, RF-CAN-15 e RF-CAN-16. Validade do ticket limitada a 1 ano e nível congelado no favor — RF-FAV-21 e RF-FAV-22. |
 | 1.2 | Busca por necessidade — RF-BUS-16 a RF-BUS-30 e nova seção 8.1. Manutenção de termos populares e análise de cobertura no módulo ADM — RF-ADM-15 a RF-ADM-18. Nova notificação RF-NOT-18. |
 | 1.1 | Resolução das lacunas L1, L3, L7 e L8. Novo estado de ticket `EM_ANALISE`. Confirmação tácita e janela de contestação (RF-SOL-08 a RF-SOL-20). Análise por chamado (RF-ADM-11 a RF-ADM-14). Limite de circulação com liberação de vaga (RF-FAV-16 a RF-FAV-20). |

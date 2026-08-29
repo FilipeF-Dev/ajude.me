@@ -339,9 +339,11 @@ A transferência de tickets entre usuários ocorre por meio de uma **proposta**.
 
 - Tickets envolvidos em uma proposta ficam **bloqueados** e não poderão participar simultaneamente de outra proposta.
 - A proposta possuirá prazo de validade. Esgotado o prazo, os tickets são liberados.
-- Tickets marcados como **não trocáveis** não poderão compor uma contrapartida.
+- Tickets marcados como **não trocáveis** não circulam por proposta — nem como contrapartida, nem como item solicitado. A marca governa a transferência do ticket (seção 5.3), e não o lado em que ele aparece na oferta.
+- A proposta exige ao menos um ticket solicitado. A **contrapartida pode ser vazia**: pedir sem ter o que oferecer é o caso de quem ainda não entrou na rede de troca, e é justamente para ele que a plataforma existe (seção 1).
 - A transferência é **atômica**: ou todos os tickets envolvidos mudam de carteira, ou nenhum muda.
 - Um ticket cuja validade seja atingida durante a negociação expira, e a proposta correspondente é cancelada.
+- Revisada a oferta, a decisão passa à **outra parte**: quem revisou não aceita a própria revisão. É o que impede que uma revisão seguida de aceite imediato transforme a negociação em imposição.
 
 ### Estados da proposta
 
@@ -1062,7 +1064,7 @@ Esses conceitos poderão ser desenvolvidos posteriormente sem alterar a essênci
 
 ---
 
-**Versão:** 2.3
+**Versão:** 2.4
 **Produto:** Ajude.me
 **Documento:** Conceito e Regras de Negócio
 
@@ -1073,6 +1075,7 @@ Esses conceitos poderão ser desenvolvidos posteriormente sem alterar a essênci
 | Versão | Alterações |
 |---|---|
 | 1.0 | Definição inicial dos conceitos e regras de negócio |
+| 2.4 | Seção 5.4 — três regras que a construção da fatia Negociação obrigou a decidir: ticket não trocável não circula por proposta em nenhum dos dois lados; a contrapartida pode ser vazia, exigido ao menos um ticket solicitado; e quem revisa a oferta devolve a decisão à outra parte. |
 | 2.3 | **Fase 0 fechada.** Todos os parâmetros temporais receberam valor (seção 21). Validade do ticket limitada a 1 ano. Encerramento de conta sem prazo máximo, com proteção integral ao portador. Cancelamento pelo solicitante deixa de ser bloqueado e passa a registrar ocorrência quando em cima da hora. Retenção do texto das buscas definida em 90 dias. |
 | 2.2 | Novas seções 3.4 e 3.5 — busca por necessidade e necessidade não atendida. Nova seção 18.3 — privacidade das necessidades registradas. Novos conceitos: Necessidade e Termo popular. |
 | 2.1 | Seção 5.1 — a quantidade máxima de tickets passa a ser limite de circulação simultânea, com liberação de vaga. Nova seção 8.4 — confirmação da realização por silêncio. Nova seção 8.5 — divergência e análise por chamado. Seção 14 restringida à disputa por qualidade. Consolidação dos parâmetros temporais na seção 21. |

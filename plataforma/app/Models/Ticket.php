@@ -187,11 +187,23 @@ class Ticket extends Model
     }
 
     /**
+     * I13 e RF-NEG-03 — a condição de troca é do favor, não do ticket.
+     *
+     * Separada de `podeSerTrocado()` porque o aceite reconfere a
+     * trocabilidade com o ticket já bloqueado em `EM_NEGOCIACAO` (04 §9.2),
+     * momento em que ele legitimamente não está disponível.
+     */
+    public function ehTrocavel(): bool
+    {
+        return (bool) $this->favor->trocavel;
+    }
+
+    /**
      * RF-TIC-14 — ticket em análise não é trocado, solicitado nem excluído.
      */
     public function podeSerTrocado(): bool
     {
-        return $this->estado === self::DISPONIVEL && $this->favor->trocavel;
+        return $this->estado === self::DISPONIVEL && $this->ehTrocavel();
     }
 
     public function podeSerSolicitado(): bool

@@ -42,6 +42,19 @@ class Usuario extends Authenticatable
         'remember_token',
     ];
 
+    /**
+     * Espelha o default da coluna `estado_conta`.
+     *
+     * Sem isto, o modelo recém-criado fica com o atributo nulo enquanto o
+     * banco já gravou "ativa", e `podeOfertar()` / `podeNegociar()` reprovam
+     * uma conta que está ativa. É a diferença entre o que o esquema diz e o
+     * que o objeto em memória sabe — e quem cadastra e age em seguida paga
+     * por ela.
+     */
+    protected $attributes = [
+        'estado_conta' => self::ESTADO_ATIVA,
+    ];
+
     protected function casts(): array
     {
         return [
@@ -97,6 +110,29 @@ class Usuario extends Authenticatable
     public function proficiencias(): HasMany
     {
         return $this->hasMany(ProficienciaUsuario::class);
+    }
+
+    /**
+     * A carteira (02 §7) — não é saldo.
+     *
+     * É a lista dos tickets de que a pessoa é dona neste momento. O que
+     * existe são direitos identificáveis, cada um preso a um favor concreto;
+     * nenhuma soma deles significa coisa alguma (P8).
+     */
+    public function carteira(): HasMany
+    {
+        return $this->hasMany(Ticket::class, 'proprietario_id');
+    }
+
+    /** RF-NEG-17 — histórico de propostas enviadas e recebidas. */
+    public function propostasEnviadas(): HasMany
+    {
+        return $this->hasMany(Proposta::class, 'remetente_id');
+    }
+
+    public function propostasRecebidas(): HasMany
+    {
+        return $this->hasMany(Proposta::class, 'destinatario_id');
     }
 
     /**
