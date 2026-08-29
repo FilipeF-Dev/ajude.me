@@ -1,8 +1,15 @@
 <?php
 
-use Illuminate\Foundation\Inspiring;
-use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Schedule;
 
-Artisan::command('inspire', function () {
-    $this->comment(Inspiring::quote());
-})->purpose('Display an inspiring quote');
+/**
+ * O que corre sem ninguém clicar.
+ *
+ * A cada dez minutos porque as condições são de horas e dias, e todas são
+ * avaliação de estado (05 §15, decisão A6): atrasar uma execução adia o
+ * efeito, nunca o perde. `withoutOverlapping` evita que uma execução longa
+ * encontre a seguinte no meio do caminho.
+ */
+Schedule::command('ajudeme:rotinas')
+    ->everyTenMinutes()
+    ->withoutOverlapping();

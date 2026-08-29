@@ -1,0 +1,115 @@
+<?php
+
+namespace App\Dominio\Consumo;
+
+use App\Dominio\Notificacao\Notificar;
+use App\Dominio\Seguranca\GerirTermoDeCiencia;
+use App\Models\Favor;
+use App\Models\Notificacao;
+use App\Models\Solicitacao;
+use App\Models\Ticket;
+use App\Models\TransicaoSolicitacao;
+use App\Models\Usuario;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Database\UniqueConstraintViolationException;
+use LogicException;
+
+/**
+ * Solicitação do favor pelo portador do ticket (RF-SOL-01 a RF-SOL-03).
+ *
+ * O ticket **não** muda de estado aqui: continua `DISPONIVEL` até o ajudante
+ * confirmar (RF-SOL-06). Reservar antes da confirmação prenderia o direito
+ * por conta de um pedido que ainda pode ser recusado.
+ *
+ * O que impede dois pedidos vivos sobre o mesmo ticket é o índice único
+ * parcial da tabela (02 §5.2), não uma consulta prévia: duas requisições
+ * simultâneas passariam pela consulta e só uma passa pelo índice.
+ */
+class SolicitarFavor
+{
+    public function __construct(
+        private readonly VerificarCondicoesPublicadas $condicoes = new VerificarCondicoesPublicadas(),
+        private readonly GerirTermoDeCiencia $termo = new GerirTermoDeCiencia(),
+    ) {
+    }
+
+    /**
+     * `$cienteDosRiscos` só é exigido em favor presencial (RF-SEG-03). O
+     * momento de exibição do termo é regra, não detalhe: é aqui, no aceite do
+     * atendimento, e nunca no cadastro (02 §8.2).
+     */
+    public function executar(
+        Ticket $ticket,
+        Usuario $solicitante,
+        Carbon $inicioPrevisto,
+        ?Carbon $momento = null,
+        bool $cienteDosRiscos = false,
+    ): Solicitacao {
+        $momento ??= Carbon::now();
+
+        return DB::transaction(function () use (
+            $ticket, $solicitante, $inicioPrevisto, $momento, $cienteDosRiscos
+        ) {
+            $ticket = Ticket::query()
+                ->whereKey($ticket->getKey())
+                ->with('favor')
+                ->lockForUpdate()
+                ->firstOrFail();
+
+            $this->condicoes->executar($ticket, $solicitante, $inicioPrevisto, $momento);
+
+            $favor = $ticket->favor;
+
+            $solicitacao = new Solicitacao();
+            $solicitacao->forceFill([
+                'ticket_id' => $ticket->id,
+                'solicitante_id' => $solicitante->id,
+                'ajudante_id' => $favor->proficienciaUsuario->usuario_id,
+                'estado' => Solicitacao::SOLICITADA,
+                'inicio_previsto' => $inicioPrevisto,
+                'fim_previsto' => VerificarCondicoesPublicadas::fimPrevisto($favor, $inicioPrevisto),
+            ]);
+
+            try {
+                $solicitacao->save();
+            } catch (UniqueConstraintViolationException) {
+                throw new LogicException(
+                    "O ticket {$ticket->codigo} já tem uma solicitação em andamento. "
+                    .'Um ticket vale por uma realização.'
+                );
+            }
+
+            if ($favor->modalidade === Favor::MODALIDADE_PRESENCIAL) {
+                if (! $cienteDosRiscos) {
+                    throw new LogicException(
+                        'Favor presencial exige o aceite do termo de ciência de riscos.'
+                    );
+                }
+
+                $this->termo->aceitar($solicitacao, $solicitante, $momento);
+            }
+
+            // P2 — nem o nascimento da solicitação fica sem rastro.
+            TransicaoSolicitacao::create([
+                'solicitacao_id' => $solicitacao->id,
+                'de_estado' => null,
+                'para_estado' => Solicitacao::SOLICITADA,
+                'evento' => 'solicitacao_enviada',
+                'ator_id' => $solicitante->id,
+                'ocorrido_em' => $momento,
+            ]);
+
+            // RF-NOT-05 — o ajudante precisa saber que há pedido esperando.
+            (new Notificar())->enviar(
+                $favor->proficienciaUsuario->usuario,
+                Notificacao::SOLICITACAO_RECEBIDA,
+                $solicitacao,
+                ['quando' => $inicioPrevisto->toIso8601String()],
+                $momento,
+            );
+
+            return $solicitacao;
+        });
+    }
+}

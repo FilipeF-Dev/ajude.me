@@ -45,17 +45,110 @@ A ordem é a de `06 §5.3`. Cada fatia entra com migração, modelo, ação de d
 | Oferta | ✅ | Favor, janelas, congelamento na primeira emissão, descritor de dois eixos |
 | Ticket | ✅ | Emissão sob limite de circulação, máquina de estados, cadeia de propriedade, expiração por avaliação de estado |
 | Negociação | ✅ | Proposta versionada, bloqueio de tickets, revisão, aceite atômico, chat |
-| Consumo | ⬜ | Solicitação, agendamento, janela de contestação, confirmação tácita |
-| Segurança e Moderação | ⬜ | Bloqueio, denúncia, chamado, ocorrência |
-| Reputação | ⬜ | Avaliação bilateral obrigatória |
-| Descoberta e Notificações | ⬜ | Busca por necessidade, termos populares |
+| Consumo | ✅ | Solicitação contra a condição publicada, agendamento sem sobreposição, comparecimento, janela de contestação, confirmação tácita, cancelamento |
+| Segurança e Moderação | ✅ | Termo de ciência versionado, bloqueio, denúncia, ocorrência, chamado com decisão e efeitos, suspensão, trilha de auditoria |
+| Reputação | ✅ | Avaliação bilateral obrigatória e imutável, notas por critério, reputação calculada e segmentada, encerramento do ciclo |
+| Descoberta e Notificações | ✅ | Reconhecimento por termos populares, feed com filtros e proximidade, fila de aviso, retenção de 90 dias, notificações do loop e **rotinas temporais** |
 
 **Requisitos adiados por dependência de fatia**, não por decisão — estão anotados no próprio código:
 
 | Requisito | Espera por |
 |---|---|
-| RF-NEG-14 / I17 — sem proposta entre usuários com bloqueio | Segurança e Moderação |
-| RF-NEG-15 — avaliação pendente impede nova proposta | Reputação |
+| RF-SEG-02 / RF-SEG-10 / RF-NOT-08 / RF-NOT-11 — avisos ao **contato de confiança** | Canal externo |
+| RF-ADM-08 — convites de acesso da base restrita | Camada web |
+
+O contato de confiança não é usuário da plataforma e nunca aceitou termo algum (`05 §14.3`): o aviso a ele não cabe na tabela de notificações, que é endereçada a contas. Depende do provedor de SMS, ainda não escolhido (`05 §15.1`).
+
+**RF-ADM-08 é pré-requisito do piloto fechado** (`06 §5.2`) — não deve ficar para o fim por descuido.
+
+## O domínio está completo
+
+Todas as sete fatias de `06 §5.3` foram construídas, e as rotinas temporais fazem os prazos correrem sozinhos: proposta vencida, janela de contestação, confirmação tácita, expiração de ticket, cobrança de avaliação e fila de aviso.
+
+```
+docker compose run --rm app php artisan ajudeme:rotinas
+```
+
+Agendado a cada dez minutos em `routes/console.php`. **O agendador do Laravel precisa estar rodando em produção** — sem ele, nenhum prazo do produto se cumpre.
+
+## Camada web — primeira volta construída
+
+Blade + Livewire sobre o domínio, na linguagem visual da seção 7.2, instalável como PWA (decisão A1).
+
+| Tela | Situação |
+|---|---|
+| Entrada e cadastro | ✅ |
+| Início: feed neutro + busca por necessidade | ✅ |
+| Página do favor com todas as condições | ✅ |
+| Carteira | ✅ |
+| Oferecer ajuda | ✅ |
+| Montar proposta · Negociação com chat | ✅ |
+| Pedir o favor, com termo de ciência no presencial | ✅ |
+| Perfil próprio e público | ✅ |
+| Atendimento: contato liberado, comparecimento, emergência, confirmar/contestar | ✅ |
+| Cancelar, com a consequência dita antes | ✅ |
+| Avaliar | ✅ |
+| Diagnóstico do aparelho (instrumento de A1) | ✅ |
+| Telas de moderação: denunciar, bloquear | ⬜ |
+| Fila de chamados e denúncias na Operação (Filament) | ⬜ |
+
+```
+cd plataforma
+docker compose up -d
+docker compose run --rm app php artisan migrate --seed
+docker compose run --rm app php artisan db:seed --class=DemonstracaoSeeder
+npm install && npm run build
+```
+
+Entre em `http://localhost:8000` com `marta@exemplo.br` ou `joel@exemplo.br`, senha `segredo123`.
+
+## O que falta para a Fase 1
+
+As telas de consumo e moderação da tabela acima. Depois delas, o portão de saída (`06 §5.4`) — "duas pessoas percorrem o loop completo sem intervenção técnica" — passa a ser verificável de ponta a ponta.
+
+## Verificação de A1 em aparelho real — parcial
+
+`05 §15.3` manda verificar A1 ainda na Fase 1, com aparelho real. A tela `/diagnostico` é o instrumento dessa verificação; o que segue foi medido, não presumido.
+
+**Aparelho:** Xiaomi 2311DRK48G, Android 16, Chrome 151, 8 GB de RAM, 8 núcleos.
+
+> **Ressalva que muda a leitura:** este é um aparelho topo de linha, o oposto do "Android antigo" de que `05 §15.3` desconfia. O que passa aqui não prova que passa no aparelho do público-alvo. A verificação precisa ser repetida em aparelho de entrada antes de dar A1 por confirmada.
+
+| O que | Resultado |
+|---|---|
+| Instala e roda em modo standalone | ✅ verificado — abre com splash, sem barra de endereço |
+| Contexto seguro, manifesto com ícones PNG | ✅ |
+| Service worker registrado e ativo | ✅ |
+| Sincronização em segundo plano e periódica | ✅ disponíveis |
+| Push API presente | ✅ |
+| Carregamento da página | ✅ 1,5 s |
+| Armazenamento | ✅ cota de 10 GB |
+| Vibração e wake lock | ✅ |
+| **Notificação de fato exibida** | 🟡 **inconclusivo** |
+| **Acionamento de emergência (`tel:`)** | 🟡 não verificado |
+
+**Sobre o inconclusivo.** A notificação foi disparada pelo service worker e o navegador a reportou como postada, mas ela não apareceu no gerenciador de notificações do Android. A permissão havia sido concedida por automação (`Browser.grantPermissions` do protocolo DevTools), e o Chrome pode não percorrer o caminho real de entrega nesse modo — então **isto não é evidência de que a notificação falha**. Só um toque humano em "Pedir permissão" e depois em "Disparar notificação" resolve a dúvida.
+
+As duas linhas amarelas são exatamente os dois riscos que `05 §15.3` nomeia. **Enquanto elas não fecharem, A1 não está confirmada.**
+
+O APK de demonstração sai do empacotamento TWA sobre este mesmo PWA (`05 §15.2`).
+
+## Nota de ambiente
+
+O `vendor/` foi movido para um volume Docker. O bootstrap do Laravel abre centenas de arquivos por requisição, e a travessia do bind mount do Windows custava **15 segundos por página**; com o vendor no sistema de arquivos do Linux, caiu para **0,5s**. O ciclo de desenvolvimento era inviável antes disso.
+
+Consequência: `composer install` roda dentro do contêiner, e o `vendor/` do host fica desatualizado de propósito — coerente com a decisão de que tudo roda em contêiner.
+
+## O que falta para a Fase 1
+
+O domínio está construído até aqui. Faltam **duas coisas de natureza diferente**:
+
+| Falta | Natureza |
+|---|---|
+| Descoberta + Notificações | Última fatia de domínio |
+| **Camada web** (Blade + Livewire, PWA) | Ainda não existe uma única tela de usuário |
+
+O portão de saída da Fase 1 (`06 §5.4`) é "duas pessoas percorrem o loop completo sem intervenção técnica" — e isso depende da camada web, não de mais domínio. As 18 telas em `design/` são HTML estático e não falam com o banco.
 
 ## Como rodar
 
@@ -90,9 +183,9 @@ Toda a série está escrita e sincronizada entre si. Cada documento referencia o
 | Documento | Versão | Conteúdo |
 |---|---|---|
 | `01 - Visão do Produto.md` | 1.0 | Identidade, propósito, princípios |
-| `02 - Conceito e Regras de Negócio.md` | 2.4 | Conceitos e regras — **a fonte de verdade** |
+| `02 - Conceito e Regras de Negócio.md` | 2.8 | Conceitos e regras — **a fonte de verdade** |
 | `03 - MVP.md` | 1.3 | Escopo da primeira versão e dívidas assumidas |
-| `04 - Requisitos Funcionais.md` | 1.4 | Requisitos rastreáveis em 14 módulos |
+| `04 - Requisitos Funcionais.md` | 1.8 | Requisitos rastreáveis em 14 módulos |
 | `05 - Arquitetura Conceitual.md` | 1.2 | Contextos, entidades, 27 invariantes, decisões técnicas |
 | `06 - Roadmap do Produto.md` | 1.0 | Seis fases com portões de evidência |
 

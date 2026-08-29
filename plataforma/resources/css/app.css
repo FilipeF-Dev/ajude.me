@@ -2,8 +2,179 @@
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
+@source '../views';
+@source '../../app/Livewire';
 
+/**
+ * Linguagem visual decidida com o autor (00 §7.2): "clean com calor".
+ *
+ * Nada de glassmorphism, aero ou blur. Custa desempenho em aparelho de
+ * entrada e destrói contraste sob sol — e o público-alvo usa aparelho de
+ * entrada, na rua, de dia.
+ */
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    /**
+     * Fonte do sistema, por exigência de desempenho (05 NF-ACE-01).
+     * Nenhuma fonte externa: são bytes a baixar antes de a tela existir,
+     * numa conexão que pode ser a franquia do mês.
+     */
+    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+        'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+
+    --color-fundo: #FAF7F2;
+    --color-superficie: #FFFFFF;
+    --color-borda: #EDE6DC;
+    --color-borda-forte: #DDD3C6;
+
+    --color-tinta: #1F1C19;
+    --color-tinta-media: #5E5449;
+    --color-tinta-suave: #857A6E;
+    --color-tinta-fraca: #9A9086;
+
+    --color-acento: #2E6B4F;
+    --color-acento-escuro: #24543E;
+    --color-acento-fraco: #F2F6F3;
+
+    /** Único uso de vermelho no app (00 §7.2). */
+    --color-emergencia: #B3261E;
+
+    --color-aviso-fundo: #FBF4E9;
+    --color-aviso-borda: #EFE2CC;
+    --color-aviso-tinta: #6B5626;
+
+    --color-neutro: #F5F1EA;
+    --color-neutro-forte: #F2EEE7;
+
+    --radius-cartao: 18px;
+    --radius-campo: 16px;
+
+    --shadow-cartao: 0 1px 2px rgba(31, 28, 25, 0.04);
+    --shadow-barra: 0 3px 14px rgba(31, 28, 25, 0.07);
+}
+
+@layer base {
+    html {
+        background-color: var(--color-fundo);
+        /* O tema do navegador acompanha o fundo, sem barra branca no topo. */
+        color-scheme: light;
+    }
+
+    body {
+        background-color: var(--color-fundo);
+        color: var(--color-tinta);
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    /**
+     * Alvo de toque de 44px (00 §7.2). Vale para todo controle, e não só
+     * para os que lembramos de ajustar um a um.
+     */
+    button,
+    [role='button'],
+    a.toque,
+    input[type='submit'] {
+        min-height: 44px;
+    }
+
+    :focus-visible {
+        outline: 2px solid var(--color-acento);
+        outline-offset: 2px;
+    }
+}
+
+@layer components {
+    .cartao {
+        background-color: var(--color-superficie);
+        border: 1px solid var(--color-borda);
+        border-radius: var(--radius-cartao);
+        box-shadow: var(--shadow-cartao);
+    }
+
+    /**
+     * O descritor ocupa o lugar onde estaria o preço (00 §7.2, 02 §6).
+     * O nível vai em cor de acento para forçar a leitura das duas dimensões:
+     * tempo sozinho não diz o que o favor vale.
+     */
+    .descritor {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        background-color: var(--color-neutro);
+        border-radius: 999px;
+        padding: 8px 13px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #3A342E;
+    }
+
+    .descritor .nivel {
+        color: var(--color-acento);
+    }
+
+    .pilula {
+        border-radius: 999px;
+        padding: 9px 16px;
+        font-size: 14px;
+        font-weight: 500;
+        white-space: nowrap;
+    }
+
+    .botao {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        border-radius: 999px;
+        padding: 0 22px;
+        min-height: 52px;
+        font-size: 16px;
+        font-weight: 600;
+        transition: background-color 120ms ease;
+    }
+
+    .botao-principal {
+        background-color: var(--color-acento);
+        color: #FFFFFF;
+    }
+
+    .botao-principal:hover {
+        background-color: var(--color-acento-escuro);
+    }
+
+    .botao-secundario {
+        background-color: var(--color-superficie);
+        border: 1px solid var(--color-borda-forte);
+        color: var(--color-tinta-media);
+    }
+
+    .campo {
+        width: 100%;
+        background-color: var(--color-superficie);
+        border: 1px solid var(--color-borda);
+        border-radius: var(--radius-campo);
+        padding: 0 15px;
+        min-height: 54px;
+        font-size: 15px;
+        box-shadow: var(--shadow-cartao);
+    }
+
+    .campo::placeholder {
+        color: var(--color-tinta-fraca);
+    }
+
+    textarea.campo {
+        padding: 14px 15px;
+        min-height: 110px;
+        line-height: 1.5;
+    }
+
+    .aviso {
+        background-color: var(--color-aviso-fundo);
+        border: 1px solid var(--color-aviso-borda);
+        color: var(--color-aviso-tinta);
+        border-radius: 14px;
+        padding: 13px 15px;
+        font-size: 14px;
+        line-height: 1.5;
+    }
 }

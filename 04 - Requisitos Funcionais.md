@@ -268,6 +268,9 @@ A consequência prática é que um favor bem-sucedido **nunca se esgota**: à me
 | RF-BUS-28 | A análise de cobertura utiliza dados agregados por região e proficiência, nunca buscas individuais atribuíveis. | 🟢 | `02 §18.3` |
 | RF-BUS-29 | O aviso solicitado pelo usuário vincula-se à proficiência, não ao texto digitado. | 🟢 | `02 §18.3` |
 | RF-BUS-30 | Reconhecimento semântico de necessidade, além dos termos populares. | ⚪ | `02 §3.4` |
+| RF-BUS-31 | A proficiência que reúne mais termos acionados pela mesma frase é apresentada primeiro. | 🟢 | `—` |
+| RF-BUS-32 | O feed não exibe ao usuário os próprios favores. | 🟢 | `—` |
+| RF-BUS-33 | O descarte de uma proficiência reconhecida é registrado, e não apenas omitido. | 🟢 | `02 §3.4` |
 
 ## 8.1 Busca por necessidade
 
@@ -372,6 +375,11 @@ A verificação de elegibilidade de cada ticket — disponibilidade, validade e 
 | RF-SOL-21 | O encerramento revoga o acesso aos dados de contato liberados no agendamento. | 🟢 | `02 §18.1` |
 | RF-SOL-22 | O usuário consulta suas solicitações em andamento, como ajudante e como solicitante. | 🟢 | `—` |
 | RF-SOL-23 | O sistema impede o agendamento de solicitações sobrepostas para o mesmo ajudante no mesmo intervalo. | 🟢 | `—` |
+| RF-SOL-24 | O sistema impede que o ajudante solicite o próprio favor, ainda que possua o ticket. | 🟢 | `02 §8` |
+| RF-SOL-25 | O sistema exige que o intervalo previsto inteiro caiba dentro de uma janela de disponibilidade publicada. | 🟢 | `02 §8` |
+| RF-SOL-26 | O sistema impede solicitação cuja data prevista ultrapasse a validade do ticket. | 🟢 | `02 §8` |
+| RF-SOL-27 | O sistema recusa solicitação de favor presencial quando falta localização em qualquer das duas contas. | 🟢 | `02 §8` |
+| RF-SOL-28 | A solicitação de favor cujo favor foi desativado após a emissão continua sendo aceita. | 🟢 | `02 §4.3` |
 
 ## 10.1 Estados da solicitação
 
@@ -380,6 +388,7 @@ A verificação de elegibilidade de cada ticket — disponibilidade, validade e 
 | — | Solicitação enviada | `SOLICITADA` |
 | `SOLICITADA` | Confirmação do ajudante | `AGENDADA` |
 | `SOLICITADA` | Violação de condição | `RECUSADA` |
+| `SOLICITADA` | Cancelamento pelo solicitante | `CANCELADA_SOLICITANTE` |
 | `AGENDADA` | Cancelamento pelo ajudante | `CANCELADA_AJUDANTE` |
 | `AGENDADA` | Cancelamento pelo solicitante | `CANCELADA_SOLICITANTE` |
 | `AGENDADA` | Data alcançada | `AGUARDANDO_CONFIRMACAO` |
@@ -426,6 +435,8 @@ A confirmação bilateral encerra a janela imediatamente, sem aguardar o prazo (
 | RF-SEG-08 | O acionamento de emergência fica disponível entre o check-in e o check-out. | 🟢 | `02 §8.2` |
 | RF-SEG-09 | O registro de comparecimento compõe a evidência utilizada na confirmação de realização e na análise de ocorrências. | 🟢 | `02 §8.1` |
 | RF-SEG-10 | O sistema notifica o contato de confiança caso o check-out não ocorra em intervalo razoável após o término previsto. | 🟢 | `—` |
+| RF-SEG-11 | **Ambas** as partes aceitam o termo, e o aceite é registrado por atendimento, não por conta. | 🟢 | `02 §8.2` |
+| RF-SEG-12 | O sistema impede solicitar e agendar favor presencial sem o aceite do termo vigente. | 🟢 | `02 §8.2` |
 
 > **RF-SEG-04** existe por necessidade probatória: um termo de ciência sem registro de qual versão foi aceita não sustenta a finalidade para a qual existe.
 >
@@ -447,6 +458,8 @@ A confirmação bilateral encerra a janela imediatamente, sem aguardar o prazo (
 | RF-CAN-08 | O cancelamento com **24 horas ou mais** de antecedência não gera ocorrência nem penalidade. | 🟢 | `02 §9.2` |
 | RF-CAN-15 | O cancelamento com menos de 24 horas registra ocorrência contra quem cancelou. | 🟢 | `02 §9.2` |
 | RF-CAN-16 | O sistema informa ao solicitante, antes de confirmar o cancelamento, se ele gerará ocorrência. | 🟢 | `—` |
+| RF-CAN-17 | A justificativa é obrigatória no cancelamento pelo ajudante e opcional no cancelamento pelo solicitante. | 🟢 | `02 §9.2` |
+| RF-CAN-18 | O solicitante cancela também a solicitação ainda não confirmada, sem reserva de ticket a desfazer. | 🟢 | `02 §9.2` |
 | RF-CAN-09 | O sistema mantém contador de cancelamentos por usuário e por papel. | 🟢 | `03 §4.10` |
 | RF-CAN-10 | Ambas as partes registram ocorrência relacionada à prestação do favor. | 🟢 | `02 §10` |
 | RF-CAN-11 | As ocorrências são encaminhadas à fila de análise da Operação. | 🟢 | `03 §4.10` |
@@ -473,6 +486,9 @@ A confirmação bilateral encerra a janela imediatamente, sem aguardar o prazo (
 | RF-AVA-11 | O sistema impede o envio de novas propostas por usuário com avaliação pendente além do prazo. | 🟢 | `02 §11.4` |
 | RF-AVA-12 | O sistema notifica o usuário sobre avaliação pendente antes de aplicar a restrição. | 🟢 | `—` |
 | RF-AVA-13 | A avaliação não altera o nível de proficiência declarado. | 🟢 | `02 §11.2` |
+| RF-AVA-14 | O critério Qualidade admite motivos de uma lista fechada de descritores neutros. | 🟢 | `02 §11.3` |
+| RF-AVA-15 | A restrição por avaliação pendente alcança o **envio** de proposta, não o aceite nem a revisão. | 🟢 | `02 §11.4` |
+| RF-AVA-16 | O prazo de avaliação corre a partir da liberação, e vale o parâmetro vigente naquele instante. | 🟢 | `02 §11.4` |
 
 ---
 
@@ -505,6 +521,8 @@ A confirmação bilateral encerra a janela imediatamente, sem aguardar o prazo (
 | RF-BLO-07 | O usuário denuncia um usuário ou um favor, informando o motivo. | 🟢 | `02 §18.2` |
 | RF-BLO-08 | As denúncias são encaminhadas à fila de análise da Operação. | 🟢 | `02 §18.2` |
 | RF-BLO-09 | O usuário bloqueia endereços ou regiões. | ⚪ | `03 §4.13` |
+| RF-BLO-10 | A recusa decorrente de bloqueio não revela a existência do bloqueio nem quem o fez. | 🟢 | `02 §18.2` |
+| RF-BLO-11 | A denúncia não bloqueia automaticamente o alvo. | 🟢 | `02 §18.2` |
 
 > **RF-BLO-06** resolve um conflito real entre duas regras: o bloqueio é direito do usuário, mas o ticket já emitido não pode desaparecer arbitrariamente (`02 §20`, item 3). A relação já contratada prossegue; o bloqueio impede apenas relações novas.
 
@@ -534,6 +552,10 @@ A confirmação bilateral encerra a janela imediatamente, sem aguardar o prazo (
 
 **RF-NOT-17** 🟢 — O sistema não emite notificações de marketing, engajamento ou recomendação no MVP.
 
+**RF-NOT-19** 🟢 — Uma notificação não se repete a cada execução das rotinas temporais. As rotinas reavaliam o mesmo estado periodicamente; sem essa garantia, um lembrete viraria um lembrete a cada execução. Origem: `—`.
+
+**RF-NOT-20** 🟢 — A gravação da notificação é distinta da entrega. O registro do que precisa ser dito e a quem existe desde já; o canal de entrega — push, e-mail, SMS — depende de provedor externo ainda não escolhido (`05 §15.1`). Origem: `—`.
+
 ---
 
 # 17. ADM — Administração e curadoria
@@ -560,6 +582,9 @@ A confirmação bilateral encerra a janela imediatamente, sem aguardar o prazo (
 | RF-ADM-16 | A Operação consulta as necessidades não atendidas, agregadas por proficiência e região. | 🟢 | `02 §3.5` |
 | RF-ADM-17 | A Operação identifica buscas que não reconheceram nenhuma proficiência, para corrigir o vocabulário. | 🟢 | `02 §3.4` |
 | RF-ADM-18 | A Operação consulta a quantidade de usuários aguardando aviso por proficiência e região. | 🟢 | `02 §3.5` |
+| RF-ADM-19 | Existe no máximo um chamado por solicitação. | 🟢 | `02 §8.5` |
+| RF-ADM-20 | A suspensão de um favor impede novas emissões e **não** invalida tickets já emitidos. | 🟢 | `02 §20.3` |
+| RF-ADM-21 | A Operação decide o chamado sem depender do esgotamento do prazo de manifestação. | 🟢 | `02 §8.5` |
 
 > **RF-ADM-17 é o mecanismo de correção da busca.** Uma necessidade que não reconhece proficiência alguma é falha de vocabulário, não ausência de oferta — e as duas situações exigem respostas opostas: incluir um termo, ou recrutar um ajudante. Sem distinguir uma da outra, a análise de cobertura (RF-ADM-16) mede a coisa errada.
 
@@ -683,7 +708,7 @@ Todos são parâmetros versionados com vigência, nunca constantes de código (`
 
 ---
 
-**Versão:** 1.4
+**Versão:** 1.8
 **Produto:** Ajude.me
 **Documento:** Requisitos Funcionais
 
@@ -692,6 +717,10 @@ Todos são parâmetros versionados com vigência, nunca constantes de código (`
 | Versão | Alterações |
 |---|---|
 | 1.0 | Especificação inicial dos requisitos funcionais |
+| 1.8 | Novos RF-BUS-31 a RF-BUS-33, decorrentes de `02 §3.4` na versão 2.8. Novos RF-NOT-19 e RF-NOT-20, sobre repetição de aviso pelas rotinas temporais e a separação entre registrar e entregar a notificação. |
+| 1.7 | Novos RF-AVA-14 a RF-AVA-16, decorrentes de `02 §11.3` e `§11.4` na versão 2.7. |
+| 1.6 | Novos RF-SEG-11, RF-SEG-12, RF-BLO-10, RF-BLO-11 e RF-ADM-19 a RF-ADM-21, decorrentes de `02 §8.2`, `§18.2` e `§20.3` na versão 2.6. |
+| 1.5 | Novos RF-SOL-24 a RF-SOL-28 e RF-CAN-17 e RF-CAN-18, decorrentes de `02 §8` e `§9.2` na versão 2.5. A tabela de §10.1 passa a prever `SOLICITADA → CANCELADA_SOLICITANTE`, exigido por RF-CAN-07: o solicitante cancela a qualquer momento, e isso inclui antes da confirmação do ajudante. |
 | 1.4 | Novos requisitos RF-NEG-19, RF-NEG-20 e RF-NEG-21, decorrentes de `02 §5.4` na versão 2.4: trocabilidade vale para os dois lados da proposta, contrapartida pode ser vazia, e o aceite após revisão cabe à outra parte. |
 | 1.3 | **Fase 0 fechada.** Parâmetros temporais com valor (§19.2). Cancelamento pelo solicitante deixa de ser bloqueado e passa a registrar ocorrência quando em cima da hora — RF-CAN-07, RF-CAN-08, RF-CAN-15 e RF-CAN-16. Validade do ticket limitada a 1 ano e nível congelado no favor — RF-FAV-21 e RF-FAV-22. |
 | 1.2 | Busca por necessidade — RF-BUS-16 a RF-BUS-30 e nova seção 8.1. Manutenção de termos populares e análise de cobertura no módulo ADM — RF-ADM-15 a RF-ADM-18. Nova notificação RF-NOT-18. |

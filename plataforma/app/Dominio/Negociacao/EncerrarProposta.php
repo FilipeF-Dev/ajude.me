@@ -60,6 +60,19 @@ class EncerrarProposta
         return $this->encerrar($proposta, Proposta::EXPIRADA, null, $momento);
     }
 
+    /**
+     * 02 §5.4 — ticket cuja validade é atingida durante a negociação expira,
+     * e a proposta correspondente é cancelada.
+     *
+     * Separado de `expirar()` porque a causa é outra: aqui o prazo que venceu
+     * é o do direito, não o da resposta. A proposta ainda estava no prazo e
+     * mesmo assim não pode prosseguir — não se transfere direito vencido.
+     */
+    public function expirarPorTicketVencido(Proposta $proposta, ?Carbon $momento = null): Proposta
+    {
+        return $this->encerrar($proposta, Proposta::EXPIRADA, null, $momento);
+    }
+
     private function encerrar(
         Proposta $proposta,
         string $estadoFinal,
@@ -68,6 +81,7 @@ class EncerrarProposta
     ): Proposta {
         $momento ??= Carbon::now();
 
+        /** @var Carbon $momento */
         return DB::transaction(function () use ($proposta, $estadoFinal, $ator, $momento) {
             $proposta = Proposta::query()
                 ->whereKey($proposta->getKey())
@@ -96,7 +110,7 @@ class EncerrarProposta
                     continue;
                 }
 
-                $ticket->transicionar(Ticket::DISPONIVEL, "proposta_{$estadoFinal}", $ator?->id);
+                $ticket->transicionar(Ticket::DISPONIVEL, "proposta_{$estadoFinal}", $ator?->id, $momento);
             }
 
             $proposta->forceFill([

@@ -12,7 +12,10 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        // A tela de entrada chama-se "entrar", em português como o resto do
+        // produto. Sem isto, o middleware `auth` procuraria uma rota "login".
+        $middleware->redirectGuestsTo(fn () => route('entrar'));
+        $middleware->redirectUsersTo(fn () => route('inicio'));
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(

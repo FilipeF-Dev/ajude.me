@@ -2,7 +2,9 @@
 
 namespace App\Dominio\Negociacao;
 
+use App\Dominio\Notificacao\Notificar;
 use App\Models\ItemProposta;
+use App\Models\Notificacao;
 use App\Models\Proposta;
 use App\Models\Ticket;
 use App\Models\TransferenciaTicket;
@@ -27,8 +29,10 @@ use LogicException;
  */
 class AceitarProposta
 {
-    public function __construct(private readonly VerificarComposicao $verificador = new VerificarComposicao())
-    {
+    public function __construct(
+        private readonly VerificarComposicao $verificador = new VerificarComposicao(),
+        private readonly Notificar $notificacoes = new Notificar(),
+    ) {
     }
 
     public function executar(
@@ -116,6 +120,15 @@ class AceitarProposta
                 'versao_aceita' => $versaoAceita,
                 'encerrada_em' => $momento,
             ])->save();
+
+            // RF-NOT-02 — quem propôs precisa saber o desfecho.
+            $this->notificacoes->enviar(
+                $proposta->contraparte($aceitante),
+                Notificacao::PROPOSTA_RESPONDIDA,
+                $proposta,
+                ['desfecho' => Proposta::ACEITA],
+                $momento,
+            );
 
             return $proposta;
         });

@@ -171,6 +171,10 @@ A manutenção desses termos cabe à Operação, junto com o próprio catálogo 
 
 Essa abordagem foi escolhida por ser auditável, corrigível de imediato e viável em qualquer aparelho. Mecanismos de reconhecimento semântico poderão ampliar o alcance posteriormente, sem alterar o conceito.
 
+Quando a mesma frase aciona termos de mais de uma proficiência, apresenta-se primeiro a que reuniu **mais termos em comum** — mais coincidências é sinal mais forte, e a interpretação mais provável precisa aparecer na frente.
+
+O descarte de uma proficiência pelo usuário é **registrado**, e não apenas omitido do resultado. É o que transforma o erro de vocabulário em algo que a Operação consegue observar e corrigir.
+
 **Status:** ✅ Definido. O reconhecimento por termos populares curados foi confirmado na Fase 0 (`05 §15`, decisão A7).
 
 ---
@@ -497,6 +501,14 @@ As condições podem incluir:
 
 O ajudante deverá respeitar uma solicitação que esteja de acordo com as condições do ticket.
 
+Três consequências da medição contra a condição publicada, decididas na construção do contexto Consumo:
+
+- **O atendimento inteiro cabe dentro de uma janela publicada.** Aceitar um início dentro da janela e um fim depois dela empurraria o ajudante para além do que ele se dispôs a atender — e o tempo estimado é condição publicada como qualquer outra.
+- **A data escolhida não ultrapassa a validade do ticket.** Agendar para depois do vencimento seria prometer o exercício de um direito que já terá acabado.
+- **Ninguém solicita a si mesmo o favor que oferece.** O ticket pode voltar à carteira de quem o emitiu por uma troca; consumi-lo ali não moveria ajuda nenhuma de lugar.
+
+O favor **não** precisa continuar ativo para ser solicitado: desativar impede novas emissões e não invalida ticket já emitido (seção 4.3).
+
 O ajudante deverá informar previamente o prazo mínimo e/ou máximo para a prestação do favor.
 
 Essas informações estarão disponíveis antes da negociação do ticket, evitando alegações posteriores de desconhecimento das condições.
@@ -534,6 +546,10 @@ O termo protege a plataforma juridicamente, o que é necessário, mas **não red
 | **Termo de ciência de riscos** | Exibido no **aceite do atendimento presencial**, e não no cadastro. |
 
 O momento de exibição do termo é regra, não detalhe de implementação: um termo apresentado no cadastro não é lido, e portanto não cumpre sua função de conscientização.
+
+**As duas partes aceitam o termo, e aceitam por atendimento.** Quem recebe alguém em casa corre o mesmo tipo de risco de quem vai à casa de alguém — o termo é do encontro, não de um dos lados. O solicitante aceita ao pedir; o ajudante, ao confirmar.
+
+O texto é **versionado**, e o aceite registra qual versão foi aceita. Um termo sem esse vínculo não sustenta a finalidade probatória para a qual existe: meses depois, ninguém consegue dizer o que a pessoa leu.
 
 **Status:** 🟡 Redação do termo e escopo do acionamento de emergência pendentes de apoio jurídico.
 
@@ -650,7 +666,9 @@ Quando o cancelamento respeitar a antecedência:
 
 Cancelamentos recorrentes pelo solicitante também poderão gerar ocorrências e consequências.
 
-A lógica de justificativas e registros deverá funcionar de forma equivalente à aplicada aos ajudantes.
+A lógica de justificativas e registros deverá funcionar de forma equivalente à aplicada aos ajudantes, **com uma diferença**: a justificativa é obrigatória para o ajudante e opcional para o solicitante. Exigir texto de quem desiste é obstáculo ao cancelamento, e esta seção proíbe criar obstáculo. O registro da ocorrência independe de haver justificativa.
+
+O solicitante cancela **em qualquer estado da solicitação**, inclusive antes de o ajudante confirmar. Nesse caso não há reserva a desfazer: o ticket nunca chegou a sair da carteira.
 
 ---
 
@@ -730,6 +748,17 @@ Como usuários podem atuar nos dois papéis, os conjuntos de critérios são dis
 
 O critério **Qualidade** deverá ser acompanhado de motivos pré-determinados, de forma a reduzir acusações genéricas e infundadas.
 
+Os motivos são **descritores neutros**: dizem sobre o quê a nota fala, não que alguém foi ruim. Por isso são exigidos em qualquer nota, alta ou baixa — apontar a dimensão avaliada é o que torna a avaliação legível para quem a lê depois, sem transformar o formulário em lista de defeitos.
+
+| Motivo |
+|---|
+| Pontualidade |
+| Acabamento |
+| Preparo técnico |
+| Cuidado com o espaço |
+| Clareza do combinado |
+| Tempo de execução |
+
 As notas por critério são obrigatórias. O comentário em texto é opcional.
 
 ---
@@ -744,7 +773,11 @@ A obrigatoriedade será garantida por **restrição de novas operações**: o us
 
 O objetivo é assegurar o cumprimento sem recorrer a penalidades punitivas.
 
-**Status:** 🟡 Prazo limite para avaliação pendente de definição.
+A restrição alcança **enviar** proposta, e não aceitar nem revisar proposta já recebida. O propósito é destravar o ciclo de quem está esperando; travar a resposta a uma proposta já enviada prenderia tickets de terceiros por conta de uma pendência que não é deles.
+
+A restrição cai sozinha assim que a avaliação é registrada. Nada se perde e nada é retirado de quem se atrasou.
+
+**Prazo:** 7 dias, contados a partir da liberação da avaliação (seção 21).
 
 ---
 
@@ -893,6 +926,12 @@ O bloqueio impedirá o envio de propostas entre as partes e ocultará mutuamente
 O usuário poderá ainda **denunciar** um usuário ou um favor, gerando registro para análise da plataforma.
 
 O bloqueio é uma decisão individual e não constitui, por si só, avaliação negativa nem ocorrência.
+
+**A recusa decorrente de um bloqueio não revela que existe bloqueio nem quem o fez.** Informar isso entregaria a uma pessoa a decisão que a outra tomou — exatamente o que o bloqueio existe para evitar.
+
+**Denunciar não bloqueia automaticamente.** São dois atos com propósitos diferentes: bloquear não pede nada à plataforma, denunciar aciona a Operação. Presumir um a partir do outro decidiria pela pessoa algo que ela não pediu.
+
+O bloqueio **não** interrompe solicitação já agendada nem invalida ticket já transferido entre as partes. Se bloquear apagasse compromissos, bloquear viraria forma de escapar de um atendimento combinado.
 
 ---
 
@@ -1064,7 +1103,7 @@ Esses conceitos poderão ser desenvolvidos posteriormente sem alterar a essênci
 
 ---
 
-**Versão:** 2.4
+**Versão:** 2.8
 **Produto:** Ajude.me
 **Documento:** Conceito e Regras de Negócio
 
@@ -1075,6 +1114,10 @@ Esses conceitos poderão ser desenvolvidos posteriormente sem alterar a essênci
 | Versão | Alterações |
 |---|---|
 | 1.0 | Definição inicial dos conceitos e regras de negócio |
+| 2.8 | Seção 3.4 — critério de ordenação quando a frase aciona mais de uma proficiência, e registro do descarte feito pelo usuário. Decidido na construção da fatia Descoberta. |
+| 2.7 | Seção 11.3 — a lista fechada de motivos do critério Qualidade, como descritores neutros exigidos em qualquer nota. Seção 11.4 — a restrição por avaliação pendente alcança o envio de proposta, não o aceite nem a revisão; prazo de 7 dias contado da liberação. Decidido na construção da fatia Reputação. |
+| 2.6 | Seção 8.2 — o termo de ciência é aceito pelas **duas** partes e por atendimento, e o texto é versionado com registro de qual versão foi aceita. Seção 18.2 — a recusa por bloqueio não revela o bloqueio nem quem o fez; denunciar não bloqueia automaticamente; o bloqueio não interrompe compromisso já agendado. Decidido na construção da fatia Segurança e Moderação. |
+| 2.5 | Seção 8 — três consequências da medição contra a condição publicada, decididas na construção do contexto Consumo: o atendimento inteiro cabe na janela, a data não ultrapassa a validade do ticket, e ninguém solicita a si mesmo. Explicitado que favor desativado continua atendendo ticket já emitido. Seção 9.2 — justificativa obrigatória para o ajudante e opcional para o solicitante, e cancelamento admitido também antes da confirmação. |
 | 2.4 | Seção 5.4 — três regras que a construção da fatia Negociação obrigou a decidir: ticket não trocável não circula por proposta em nenhum dos dois lados; a contrapartida pode ser vazia, exigido ao menos um ticket solicitado; e quem revisa a oferta devolve a decisão à outra parte. |
 | 2.3 | **Fase 0 fechada.** Todos os parâmetros temporais receberam valor (seção 21). Validade do ticket limitada a 1 ano. Encerramento de conta sem prazo máximo, com proteção integral ao portador. Cancelamento pelo solicitante deixa de ser bloqueado e passa a registrar ocorrência quando em cima da hora. Retenção do texto das buscas definida em 90 dias. |
 | 2.2 | Novas seções 3.4 e 3.5 — busca por necessidade e necessidade não atendida. Nova seção 18.3 — privacidade das necessidades registradas. Novos conceitos: Necessidade e Termo popular. |

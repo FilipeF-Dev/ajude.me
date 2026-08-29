@@ -136,6 +136,22 @@ class Usuario extends Authenticatable
     }
 
     /**
+     * RF-SOL-22 — os dois lados da mesma pessoa.
+     *
+     * Não existe papel fixo (02 §1): quem hoje pede é quem amanhã atende, e
+     * as duas listas convivem na mesma conta.
+     */
+    public function solicitacoesFeitas(): HasMany
+    {
+        return $this->hasMany(Solicitacao::class, 'solicitante_id');
+    }
+
+    public function atendimentos(): HasMany
+    {
+        return $this->hasMany(Solicitacao::class, 'ajudante_id');
+    }
+
+    /**
      * RF-CAD-06 — o selo é derivado, nunca armazenado.
      */
     public function contatoVerificado(): bool
