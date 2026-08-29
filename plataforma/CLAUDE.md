@@ -46,7 +46,9 @@ Laravel 13 · PHP 8.4 · PostgreSQL 16 com PostGIS · Filament 5
 
 **O domínio está completo** e a **camada web tem sua primeira volta**: entrada, cadastro, feed com busca por necessidade, página do favor, carteira, oferecer, propor, negociar, pedir o favor, perfil próprio e público. O acompanhamento por fatia está em `../00 - Estado do Projeto.md §3`.
 
-A seguir: as telas de consumo que faltam — comparecimento, confirmar/contestar e avaliar — e as telas de moderação.
+A seguir: convites de acesso (RF-ADM-08, pré-requisito do piloto fechado), métricas no painel e as telas de vocabulário/cobertura da Operação.
+
+**O painel da Operação decide, não edita.** Os recursos do Filament em `app/Filament/Resources/` recusam `create`/`edit`/`delete` onde a regra manda: chamado nasce de contestação e sai por decisão fundamentada; ocorrência é consequência de um ato; a trilha de auditoria não se edita. Toda ação da Operação chama a ação de domínio e passa por `RegistroAuditoria::registrar()`.
 
 **Interface em Livewire, uma classe por tela**, em `app/Livewire/`. Todas declaram `#[Layout(...)]` explicitamente. As ações de domínio nunca são reimplementadas na tela: o componente valida a entrada, chama a ação e traduz `LogicException` em erro de formulário.
 

@@ -89,8 +89,11 @@ Blade + Livewire sobre o domínio, na linguagem visual da seção 7.2, instaláv
 | Cancelar, com a consequência dita antes | ✅ |
 | Avaliar | ✅ |
 | Diagnóstico do aparelho (instrumento de A1) | ✅ |
-| Telas de moderação: denunciar, bloquear | ⬜ |
-| Fila de chamados e denúncias na Operação (Filament) | ⬜ |
+| Moderação no aplicativo: denunciar e bloquear | ✅ |
+| Painel da Operação: chamados, denúncias, ocorrências, termo, auditoria | ✅ |
+| Convites de acesso da base restrita (RF-ADM-08) | ⬜ **pré-requisito do piloto** |
+| Métricas de `03 §7` no painel (RF-ADM-09) | ⬜ |
+| Necessidades não atendidas e vocabulário (RF-ADM-16 a 18) | ⬜ |
 
 ```
 cd plataforma

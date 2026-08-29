@@ -384,6 +384,53 @@ class CamadaWebTest extends TestCase
         $this->assertSame(1, $solicitacao->avaliacoes()->count());
     }
 
+    // ------------------------------------------------------------ Moderação
+
+    public function test_bloquear_e_desbloquear_do_perfil(): void
+    {
+        $eu = $this->usuario('Joel Batista');
+        $outro = $this->usuario('Marta Vilela');
+
+        $tela = Livewire::actingAs($eu)->test(\App\Livewire\Moderar::class, ['alvo' => $outro]);
+
+        $tela->call('bloquear')->assertSet('bloqueado', true);
+        $this->assertTrue(\App\Models\Bloqueio::existeEntre($eu->id, $outro->id));
+
+        $tela->call('desbloquear')->assertSet('bloqueado', false);
+        $this->assertFalse(\App\Models\Bloqueio::existeEntre($eu->id, $outro->id));
+    }
+
+    public function test_denunciar_nao_bloqueia_e_a_tela_diz_isso(): void
+    {
+        $eu = $this->usuario('Joel Batista');
+        $outro = $this->usuario('Marta Vilela');
+
+        Livewire::actingAs($eu)
+            ->test(\App\Livewire\Moderar::class, ['alvo' => $outro])
+            ->call('abrirDenuncia')
+            // RF-BLO-11 — são dois atos com propósitos diferentes, e a tela
+            // precisa deixar isso claro.
+            ->assertSee('não bloqueia')
+            ->set('motivo', 'Pediu dinheiro por fora.')
+            ->call('denunciar')
+            ->assertSet('denunciando', false);
+
+        $this->assertSame(1, \App\Models\Denuncia::count());
+        $this->assertFalse(\App\Models\Bloqueio::existeEntre($eu->id, $outro->id));
+    }
+
+    public function test_o_perfil_publico_avisa_o_que_o_bloqueio_nao_faz(): void
+    {
+        $eu = $this->usuario('Joel Batista');
+        $outro = $this->usuario('Marta Vilela');
+
+        // RF-BLO-06 — dito antes, para ninguém bloquear esperando escapar de
+        // um atendimento combinado.
+        Livewire::actingAs($eu)
+            ->test(\App\Livewire\Moderar::class, ['alvo' => $outro])
+            ->assertSee('não cancela atendimento já combinado');
+    }
+
     /** Leva um atendimento até `REALIZADA`, quando a avaliação é liberada. */
     private function realizado(): Solicitacao
     {
