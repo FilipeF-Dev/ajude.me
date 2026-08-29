@@ -152,7 +152,7 @@ Criação de favor vinculado obrigatoriamente a uma proficiência declarada no p
 | Área de atendimento ou raio de distância | Sim, se presencial |
 | Dias e horários disponíveis | Sim |
 | Prazo mínimo de antecedência para solicitação | Sim |
-| Validade do ticket | Sim |
+| Validade do ticket, até 1 ano | Sim |
 | Quantidade máxima de tickets | Sim |
 | Tickets a emitir agora | Sim |
 | Ticket é trocável | Sim |
@@ -690,7 +690,7 @@ Estas decisões continuam abertas e **não bloqueiam** o MVP:
 
 ---
 
-**Versão:** 1.2  
+**Versão:** 1.3  
 **Produto:** Ajude.me  
 **Documento:** MVP
 
@@ -699,5 +699,6 @@ Estas decisões continuam abertas e **não bloqueiam** o MVP:
 | Versão | Alterações |
 |---|---|
 | 1.0 | Definição inicial do escopo do MVP |
+| 1.3 | Fase 0 fechada: validade do ticket limitada a 1 ano e conta em Encerrando sem prazo máximo. |
 | 1.2 | Limite de tickets passa a ser de circulação simultânea. Novo estado de ticket `EM_ANALISE`, com validade suspensa. Confirmação tácita da realização e análise por chamado em caso de contestação. |
 | 1.1 | Seção 4.4 reescrita: modelo de valor passa a ser descritor de dois eixos (tempo × nível de proficiência), substituindo o valor por hora. Nova seção 4.9 — Segurança em atendimento presencial. Nova dívida D7. |

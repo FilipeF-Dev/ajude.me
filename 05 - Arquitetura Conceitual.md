@@ -2,7 +2,7 @@
 
 > Documento que traduz os requisitos funcionais em estrutura: quais conceitos existem no sistema, como se relacionam, o que nunca pode ser violado e quais decisões técnicas permanecem em aberto.
 >
-> Base: `02 - Conceito e Regras de Negócio.md` (v2.2), `03 - MVP.md` (v1.2) e `04 - Requisitos Funcionais.md` (v1.2).
+> Base: `02 - Conceito e Regras de Negócio.md` (v2.3), `03 - MVP.md` (v1.3) e `04 - Requisitos Funcionais.md` (v1.3).
 
 ---
 
@@ -490,9 +490,24 @@ As duas exigências colidem diretamente. Caminhos possíveis:
 | **Retenção por obrigação legítima** | Sustenta a manutenção enquanto houver relações e prazos aplicáveis; exige fundamentação. |
 | **Exclusão com quebra de histórico** | Conforme à eliminação, mas viola `02 §20.6` e inviabiliza a apuração de conflitos passados. |
 
-**Recomendação:** anonimização, preservando os registros e removendo a vinculação identificável. A decisão exige validação jurídica.
+**Decisão: anonimização.** A pedido de eliminação, o vínculo identificável é removido e os registros permanecem.
 
-**Status:** 🟡 Pendente de definição jurídica e de produto.
+O que some: nome, CPF, contato, endereço, foto, contato de confiança. O que fica: avaliações, ocorrências, cancelamentos, comparecimentos, cadeia de propriedade dos tickets — atribuídos a um usuário removido.
+
+Isso preserva as duas coisas que não podem cair juntas:
+
+| Preservado | Como |
+|---|---|
+| Direito do titular | A pessoa deixa de ser identificável na plataforma |
+| Integridade do histórico | A contraparte de cada favor mantém a própria reputação e as evidências de conflitos passados |
+
+Se o registro fosse apagado, a avaliação que **outra pessoa** recebeu naquele favor desapareceria junto — o direito de um titular apagaria o histórico de um terceiro que não pediu nada.
+
+Um ticket ainda em circulação impede a anonimização: a conta entra em Encerrando primeiro (`02 §2.2`), porque o portador tem direito adquirido a um favor que alguém precisa prestar.
+
+> A decisão de produto está tomada. **A validação jurídica continua necessária** e integra o pacote da seção 15 do roadmap — mas ela confirma ou ajusta esta escolha, não parte do zero.
+
+**Status:** ✅ Decidido — Fase 0. Sujeito a validação jurídica.
 
 ---
 
@@ -515,9 +530,20 @@ Regras de arquitetura decorrentes de `02 §18.3`:
 - A análise de cobertura consome **agregados por proficiência e região**, não registros individuais.
 - `AvisoNecessidade` armazena proficiência e região, jamais o texto.
 
-> **Consequência a decidir:** o texto original só é necessário para corrigir vocabulário (`04 RF-ADM-17`). Cumprida essa função, ele deixa de ter uso e passa a ser apenas passivo. A recomendação é reter o texto por prazo curto e preservar indefinidamente apenas o par (proficiência reconhecida, região) — mas isso precisa de decisão.
+### Retenção
 
-**Status:** 🟡 Retenção do texto original das buscas pendente.
+**Decisão: 90 dias para o texto, permanente para o agregado.**
+
+| Dado | Retenção |
+|---|---|
+| Texto original da busca | 90 dias, depois apagado |
+| Proficiência reconhecida + região + houve resultado | Permanente |
+
+O texto só serve para uma coisa: a Operação descobrir que palavra faltava no vocabulário (`04 RF-ADM-17`). Cumprida essa função, ele vira passivo sem contrapartida — é o dado mais sensível do produto e o de utilidade mais curta.
+
+O agregado, que é o que alimenta o mapa de cobertura (`02 §3.5`), não precisa do texto para existir.
+
+**Status:** ✅ Decidido — Fase 0.
 
 ---
 
@@ -531,8 +557,8 @@ Regras de arquitetura decorrentes de `02 §18.3`:
 | Ocorrências e chamados | Permanente | `02 §20.6` |
 | Registros de comparecimento | Permanente | Evidência em disputa |
 | Aceites de termo | Permanente | Necessidade probatória |
-| Mensagens de negociação | A definir | Conteúdo pessoal sem função probatória permanente |
-| Texto original das buscas | A definir | Dado sensível com utilidade curta — ver 11.5 |
+| Mensagens de negociação | Enquanto a relação existir, e 1 ano após o encerramento | Podem conter o que foi combinado fora das condições formais; servem à análise de ocorrência |
+| Texto original das buscas | 90 dias | Dado sensível com utilidade curta — ver 11.5 |
 | Necessidade agregada por proficiência e região | Permanente | Mapa de cobertura da rede (`02 §3.5`) |
 | Termos populares | Permanente | Vocabulário de reconhecimento |
 | Notificações | Curta | Sem valor histórico |
@@ -597,9 +623,9 @@ Os requisitos abaixo estão qualificados. Metas numéricas dependem de escala es
 
 ---
 
-# 14. Tensões arquiteturais em aberto
+# 14. Tensões arquiteturais
 
-Contradições reais entre requisitos já aprovados. Cada uma exige decisão.
+Contradições reais entre requisitos já aprovados. As três primeiras foram resolvidas na Fase 0; a quarta permanece aberta por ser decisão de produto sem prazo no MVP.
 
 ## 14.1 Alteração de nível e descritor retroativo
 
@@ -611,17 +637,32 @@ O descritor é derivado do nível declarado (`RF-FAV-05`), e o nível é alterá
 | Manter derivação viva | Perfil sempre coerente; condição publicada muda retroativamente |
 | Impedir alteração de nível com favores ativos | Preserva ambos; restringe demais o usuário |
 
-**Recomendação:** congelar o nível no favor junto com as demais condições, exibindo-o como condição histórica daquele favor.
+**Decisão: congelar o nível no favor** junto com as demais condições, na primeira emissão de ticket.
 
-**Status:** 🟡 Pendente.
+O favor passa a guardar o nível como atributo próprio, capturado no congelamento. `Favor.nivel_congelado` deixa de ser derivação viva e passa a ser condição histórica.
+
+Consequências aceitas:
+
+- O perfil pode dizer **Especialista** enquanto um favor antigo continua exibindo **Avançado**. Isso é correto: quem adquiriu aquele ticket contou com o que estava publicado.
+- A reputação por proficiência continua viva e agregada no perfil — o congelamento afeta a **condição do favor**, não a exibição da reputação.
+
+A alternativa de impedir a alteração de nível enquanto houver favores ativos foi descartada: puniria quem evolui, que é exatamente o comportamento que a plataforma quer.
+
+**Status:** ✅ Decidido — Fase 0.
 
 ## 14.2 Imutabilidade do histórico e direito à eliminação
 
-Detalhada em 11.4. **Status:** 🟡 Pendente.
+Resolvida por anonimização. Detalhada em 11.4. **Status:** ✅ Decidido — Fase 0.
 
 ## 14.3 Dados do contato de confiança
 
-Detalhada em 11.3. **Status:** 🟡 Pendente de definição jurídica.
+Detalhada em 11.3. O comportamento de produto está definido; a base legal não.
+
+**Decisão de produto:** ao cadastrar o contato de confiança, o usuário declara ter a permissão da pessoa. No primeiro aviso enviado, o contato recebe a explicação do que é o Ajude.me, por que recebeu aquela mensagem e como pedir para não receber mais. A recusa remove o vínculo e a pessoa deixa de ser contato de confiança de qualquer usuário.
+
+Isso não substitui a base legal — apenas garante que ela não seja invocada sobre alguém que nunca soube que seus dados estavam ali.
+
+**Status:** 🟡 Base legal pendente de definição jurídica. Comportamento de produto definido.
 
 ## 14.4 Avaliação imutável e disputa por qualidade
 
@@ -633,21 +674,65 @@ Isso é sustentável no MVP, com base restrita. Não é sustentável em escala.
 
 ---
 
-# 15. Decisões técnicas pendentes
+# 15. Decisões técnicas
 
-Não decididas neste documento por dependerem de contexto de equipe, prazo e orçamento.
+Decididas para o MVP. O critério que atravessa todas: **uma pessoa sozinha precisa conseguir construir e operar isto.**
 
-| # | Decisão | Consideração |
-|---|---|---|
-| A1 | **Plataforma cliente** | O público-alvo é majoritariamente móvel. Uma aplicação web responsiva reduz atrito de instalação e custo de distribuição; aplicação nativa favorece notificação e recursos de segurança presencial. |
-| A2 | **Natureza do armazenamento** | As invariantes da seção 5 são majoritariamente relacionais e transacionais. Um armazenamento com garantias transacionais fortes atende diretamente I4, I14, I16 e I19. |
-| A3 | **Estilo de integração entre contextos** | Os contextos podem coexistir em uma aplicação única com fronteiras internas. Separação física não é exigida pelo domínio nesta fase. |
-| A4 | **Tratamento dos eventos de domínio** | Síncrono no início, com fronteira preparada para processamento assíncrono. |
-| A5 | **Provedores de SMS, push e geocodificação** | Considerar custo por mensagem, dado o volume de verificação. |
-| A6 | **Estratégia de expiração** | Avaliação por estado, conforme recomendação de 7.4, ou processo temporal. |
-| A7 | **Mecanismo de reconhecimento de necessidade** | Termos populares curados (auditável, corrigível de imediato, sem custo de infraestrutura) ou reconhecimento semântico (maior alcance, exige infraestrutura e não é corrigível pontualmente). Os dois podem coexistir: termos primeiro, semântica como complemento quando nada for reconhecido. |
+| # | Decisão | Escolha | Por quê |
+|---|---|---|---|
+| A1 | Plataforma cliente | **Web responsiva instalável (PWA)** | Uma base de código, sem loja de aplicativos, sem ciclo de revisão, atualização imediata. Nativo dobraria o trabalho e o público não instala aplicativos com facilidade |
+| A2 | Armazenamento | **Relacional com transações fortes** | As invariantes I4, I14, I16 e I19 são transacionais por natureza. Garanti-las na aplicação em vez do armazenamento seria reimplementar o que o banco já faz melhor |
+| A3 | Integração entre contextos | **Aplicação única com fronteiras internas** | A divisão em contextos organiza responsabilidade e linguagem. Separá-los fisicamente agora criaria coordenação distribuída exatamente onde o domínio exige atomicidade (I16) |
+| A4 | Eventos de domínio | **Síncronos, com fronteira preparada** | Publicados por uma interface própria desde o início; a troca para processamento assíncrono não deve exigir mudança em quem publica |
+| A5 | Provedores externos | **A escolher na implementação** | Depende de orçamento. Ver 15.1 |
+| A6 | Expiração | **Avaliação por estado** | Um ticket está expirado quando a validade passou **e** ele não está protegido (I6, I7). Condição verificável a qualquer momento, sem depender da execução pontual de um processo |
+| A7 | Reconhecimento de necessidade | **Termos populares curados** | Auditável, corrigível na hora pela Operação, sem infraestrutura. O caminho semântico fica como complemento posterior, acionado apenas quando nada for reconhecido |
+| A8 | Stack concreta | **Laravel + Filament + PostgreSQL/PostGIS** | Ver 15.2 |
 
-> **Observação sobre A3:** a divisão em contextos é conceitual e serve para organizar responsabilidade e linguagem. Traduzi-la prematuramente em separação física acrescentaria complexidade de coordenação — justamente onde o domínio exige atomicidade (I16).
+## 15.1 Provedores externos
+
+A escolha depende de orçamento e fica para a implementação, mas duas observações orientam a decisão:
+
+**Verificação por SMS custa por mensagem.** Em piloto fechado com dezenas de pessoas é irrelevante; em cadastro aberto vira item de custo recorrente e alvo de abuso. Vale limitar tentativas desde o início (`NF-SEG-06`) e reavaliar o canal antes da Fase 4.
+
+**Geocodificação e cálculo de proximidade podem ser separados.** Converter endereço em coordenada é chamada externa pontual, feita uma vez por usuário; calcular distância é operação local e frequente. Tratá-los como o mesmo problema leva a pagar por consulta o que deveria ser conta local.
+
+## 15.2 Stack concreta
+
+| Camada | Escolha |
+|---|---|
+| Backend | Laravel |
+| Painel administrativo | Filament |
+| Banco | PostgreSQL com PostGIS |
+| Interface | Blade + Livewire |
+| Empacotamento Android | Bubblewrap/TWA, quando desejado |
+
+### Por que Laravel
+
+**O módulo administrativo sai quase pronto.** Os 18 requisitos do `ADM` são um mês de trabalho que o usuário final nunca vê. O Filament entrega catálogo, termos populares, filas de chamados e denúncias, suspensões e trilha de auditoria com pouco código — e toda necessidade administrativa futura continua saindo barata.
+
+**O agendador e a fila vêm embutidos.** Este sistema tem mais trabalho agendado do que aparenta: fechar janela de contestação, aplicar confirmação tácita, avaliar expiração de ticket, cobrar avaliação pendente, alertar o contato de confiança quando o check-out não veio. Em outras opções isso seria infraestrutura adicional a manter.
+
+**Legibilidade futura.** Um projeto Laravel convencional é abrível por qualquer desenvolvedor. Uma aplicação sob medida com autenticação, filas, migrações e painel feitos à mão só é legível para quem a escreveu — risco relevante em projeto de uma pessoa.
+
+### Sobre a resiliência das telas de segurança
+
+Uma análise inicial tratou a resiliência offline como razão para escolher uma aplicação client-side. Ao detalhar o que as telas exigem, isso não se sustentou:
+
+- **O acionamento de emergência não precisa de API nativa.** A ação mais confiável em aparelho com dados ruins é ligar ou enviar SMS — um link `tel:` funciona em qualquer página. Quem entrega confiabilidade aqui é a rede de voz da operadora, que opera onde os dados já falharam.
+- **Check-in e check-out são dois registros de horário.** Guardar localmente e sincronizar depois exige armazenamento local e uma fila de reenvio, não uma arquitetura diferente.
+
+Essas telas continuam exigindo **tratamento deliberado**, e devem ser construídas com essa resiliência desde o início — mas isso é uma fatia de trabalho, não um fator de escolha de stack.
+
+### Sobre Django
+
+Perdeu por margem estreita. A vantagem real seria o GeoDjango, mas as consultas de proximidade aqui são raio e distância simples. Pesaram contra: agendamento exigindo Celery, e comunidade brasileira menor — o que importa quando alguém trabalha sozinho e precisa de resposta em português.
+
+## 15.3 O que estas escolhas assumem
+
+Todas favorecem **reversibilidade sobre otimização**. Nenhuma delas é a melhor escolha para um produto com tráfego alto — são as melhores escolhas para descobrir se o produto deve existir, sem gastar meses em infraestrutura que talvez nunca seja necessária.
+
+A decisão que mais cedo pode precisar ser revista é **A1**: se a segurança presencial exigir recursos que a web não entrega bem em Android antigo — notificação confiável e acionamento de emergência em segundo plano — o aplicativo nativo deixa de ser luxo e passa a ser requisito. Isso deve ser verificado ainda na Fase 1, com aparelho real, e não presumido.
 
 ---
 
@@ -682,16 +767,17 @@ Não decididas neste documento por dependerem de contexto de equipe, prazo e or�
 | Retenção do texto das buscas | 🟡 Pendente |
 | Requisitos não funcionais | ✅ Qualificados |
 | Metas numéricas | 🟡 Dependem do roadmap |
+| Congelamento do nível no favor | ✅ Decidido — congelar |
+| Imutabilidade × direito à eliminação | ✅ Decidido — anonimização |
+| Retenção de dados | ✅ Definida — seção 12 |
+| Decisões técnicas | ✅ Decididas — seção 15 |
 | Base legal do contato de confiança | 🟡 Pendente — apoio jurídico |
-| Imutabilidade × direito à eliminação | 🟡 Pendente |
-| Congelamento do nível no favor | 🟡 Pendente |
-| Retenção de mensagens de negociação | 🟡 Pendente |
-| Decisões técnicas | 🟡 6 decisões em aberto — seção 15 |
-| Roadmap | 🟡 Próxima etapa (`06`) |
+| Disputa por qualidade | 🟡 Pendente — Fase 4 |
+| Provedores externos | 🟡 A escolher na implementação |
 
 ---
 
-**Versão:** 1.1
+**Versão:** 1.2
 **Produto:** Ajude.me
 **Documento:** Arquitetura Conceitual
 
@@ -701,3 +787,4 @@ Não decididas neste documento por dependerem de contexto de equipe, prazo e or�
 |---|---|
 | 1.0 | Definição inicial da arquitetura conceitual |
 | 1.1 | Busca por necessidade modelada no contexto Catálogo, com `TermoPopular`, `BuscaNecessidade` e `AvisoNecessidade`. Nova seção 11.5 — privacidade das necessidades registradas. Novos eventos de domínio e nova decisão técnica A7. |
+| 1.2 | **Fase 0 fechada.** Sete decisões técnicas resolvidas (seção 15). Congelamento do nível no favor, anonimização em vez de exclusão e retenção de dados definidos. Comportamento de produto do contato de confiança definido. |
