@@ -432,6 +432,8 @@ A confirmação bilateral encerra a janela imediatamente, sem aguardar o prazo (
 | RF-SEG-08 | O acionamento de emergência fica disponível entre o check-in e o check-out. | 🟢 | `02 §8.2` |
 | RF-SEG-09 | O registro de comparecimento compõe a evidência utilizada na confirmação de realização e na análise de ocorrências. | 🟢 | `02 §8.1` |
 | RF-SEG-10 | O sistema notifica o contato de confiança caso o check-out não ocorra em intervalo razoável após o término previsto. | 🟢 | `—` |
+| RF-SEG-11 | **Ambas** as partes aceitam o termo, e o aceite é registrado por atendimento, não por conta. | 🟢 | `02 §8.2` |
+| RF-SEG-12 | O sistema impede solicitar e agendar favor presencial sem o aceite do termo vigente. | 🟢 | `02 §8.2` |
 
 > **RF-SEG-04** existe por necessidade probatória: um termo de ciência sem registro de qual versão foi aceita não sustenta a finalidade para a qual existe.
 >
@@ -513,6 +515,8 @@ A confirmação bilateral encerra a janela imediatamente, sem aguardar o prazo (
 | RF-BLO-07 | O usuário denuncia um usuário ou um favor, informando o motivo. | 🟢 | `02 §18.2` |
 | RF-BLO-08 | As denúncias são encaminhadas à fila de análise da Operação. | 🟢 | `02 §18.2` |
 | RF-BLO-09 | O usuário bloqueia endereços ou regiões. | ⚪ | `03 §4.13` |
+| RF-BLO-10 | A recusa decorrente de bloqueio não revela a existência do bloqueio nem quem o fez. | 🟢 | `02 §18.2` |
+| RF-BLO-11 | A denúncia não bloqueia automaticamente o alvo. | 🟢 | `02 §18.2` |
 
 > **RF-BLO-06** resolve um conflito real entre duas regras: o bloqueio é direito do usuário, mas o ticket já emitido não pode desaparecer arbitrariamente (`02 §20`, item 3). A relação já contratada prossegue; o bloqueio impede apenas relações novas.
 
@@ -568,6 +572,9 @@ A confirmação bilateral encerra a janela imediatamente, sem aguardar o prazo (
 | RF-ADM-16 | A Operação consulta as necessidades não atendidas, agregadas por proficiência e região. | 🟢 | `02 §3.5` |
 | RF-ADM-17 | A Operação identifica buscas que não reconheceram nenhuma proficiência, para corrigir o vocabulário. | 🟢 | `02 §3.4` |
 | RF-ADM-18 | A Operação consulta a quantidade de usuários aguardando aviso por proficiência e região. | 🟢 | `02 §3.5` |
+| RF-ADM-19 | Existe no máximo um chamado por solicitação. | 🟢 | `02 §8.5` |
+| RF-ADM-20 | A suspensão de um favor impede novas emissões e **não** invalida tickets já emitidos. | 🟢 | `02 §20.3` |
+| RF-ADM-21 | A Operação decide o chamado sem depender do esgotamento do prazo de manifestação. | 🟢 | `02 §8.5` |
 
 > **RF-ADM-17 é o mecanismo de correção da busca.** Uma necessidade que não reconhece proficiência alguma é falha de vocabulário, não ausência de oferta — e as duas situações exigem respostas opostas: incluir um termo, ou recrutar um ajudante. Sem distinguir uma da outra, a análise de cobertura (RF-ADM-16) mede a coisa errada.
 
@@ -691,7 +698,7 @@ Todos são parâmetros versionados com vigência, nunca constantes de código (`
 
 ---
 
-**Versão:** 1.5
+**Versão:** 1.6
 **Produto:** Ajude.me
 **Documento:** Requisitos Funcionais
 
@@ -700,6 +707,7 @@ Todos são parâmetros versionados com vigência, nunca constantes de código (`
 | Versão | Alterações |
 |---|---|
 | 1.0 | Especificação inicial dos requisitos funcionais |
+| 1.6 | Novos RF-SEG-11, RF-SEG-12, RF-BLO-10, RF-BLO-11 e RF-ADM-19 a RF-ADM-21, decorrentes de `02 §8.2`, `§18.2` e `§20.3` na versão 2.6. |
 | 1.5 | Novos RF-SOL-24 a RF-SOL-28 e RF-CAN-17 e RF-CAN-18, decorrentes de `02 §8` e `§9.2` na versão 2.5. A tabela de §10.1 passa a prever `SOLICITADA → CANCELADA_SOLICITANTE`, exigido por RF-CAN-07: o solicitante cancela a qualquer momento, e isso inclui antes da confirmação do ajudante. |
 | 1.4 | Novos requisitos RF-NEG-19, RF-NEG-20 e RF-NEG-21, decorrentes de `02 §5.4` na versão 2.4: trocabilidade vale para os dois lados da proposta, contrapartida pode ser vazia, e o aceite após revisão cabe à outra parte. |
 | 1.3 | **Fase 0 fechada.** Parâmetros temporais com valor (§19.2). Cancelamento pelo solicitante deixa de ser bloqueado e passa a registrar ocorrência quando em cima da hora — RF-CAN-07, RF-CAN-08, RF-CAN-15 e RF-CAN-16. Validade do ticket limitada a 1 ano e nível congelado no favor — RF-FAV-21 e RF-FAV-22. |

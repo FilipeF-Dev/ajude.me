@@ -543,6 +543,10 @@ O termo protege a plataforma juridicamente, o que é necessário, mas **não red
 
 O momento de exibição do termo é regra, não detalhe de implementação: um termo apresentado no cadastro não é lido, e portanto não cumpre sua função de conscientização.
 
+**As duas partes aceitam o termo, e aceitam por atendimento.** Quem recebe alguém em casa corre o mesmo tipo de risco de quem vai à casa de alguém — o termo é do encontro, não de um dos lados. O solicitante aceita ao pedir; o ajudante, ao confirmar.
+
+O texto é **versionado**, e o aceite registra qual versão foi aceita. Um termo sem esse vínculo não sustenta a finalidade probatória para a qual existe: meses depois, ninguém consegue dizer o que a pessoa leu.
+
 **Status:** 🟡 Redação do termo e escopo do acionamento de emergência pendentes de apoio jurídico.
 
 ---
@@ -904,6 +908,12 @@ O usuário poderá ainda **denunciar** um usuário ou um favor, gerando registro
 
 O bloqueio é uma decisão individual e não constitui, por si só, avaliação negativa nem ocorrência.
 
+**A recusa decorrente de um bloqueio não revela que existe bloqueio nem quem o fez.** Informar isso entregaria a uma pessoa a decisão que a outra tomou — exatamente o que o bloqueio existe para evitar.
+
+**Denunciar não bloqueia automaticamente.** São dois atos com propósitos diferentes: bloquear não pede nada à plataforma, denunciar aciona a Operação. Presumir um a partir do outro decidiria pela pessoa algo que ela não pediu.
+
+O bloqueio **não** interrompe solicitação já agendada nem invalida ticket já transferido entre as partes. Se bloquear apagasse compromissos, bloquear viraria forma de escapar de um atendimento combinado.
+
 ---
 
 ## 18.3 Necessidades registradas
@@ -1074,7 +1084,7 @@ Esses conceitos poderão ser desenvolvidos posteriormente sem alterar a essênci
 
 ---
 
-**Versão:** 2.5
+**Versão:** 2.6
 **Produto:** Ajude.me
 **Documento:** Conceito e Regras de Negócio
 
@@ -1085,6 +1095,7 @@ Esses conceitos poderão ser desenvolvidos posteriormente sem alterar a essênci
 | Versão | Alterações |
 |---|---|
 | 1.0 | Definição inicial dos conceitos e regras de negócio |
+| 2.6 | Seção 8.2 — o termo de ciência é aceito pelas **duas** partes e por atendimento, e o texto é versionado com registro de qual versão foi aceita. Seção 18.2 — a recusa por bloqueio não revela o bloqueio nem quem o fez; denunciar não bloqueia automaticamente; o bloqueio não interrompe compromisso já agendado. Decidido na construção da fatia Segurança e Moderação. |
 | 2.5 | Seção 8 — três consequências da medição contra a condição publicada, decididas na construção do contexto Consumo: o atendimento inteiro cabe na janela, a data não ultrapassa a validade do ticket, e ninguém solicita a si mesmo. Explicitado que favor desativado continua atendendo ticket já emitido. Seção 9.2 — justificativa obrigatória para o ajudante e opcional para o solicitante, e cancelamento admitido também antes da confirmação. |
 | 2.4 | Seção 5.4 — três regras que a construção da fatia Negociação obrigou a decidir: ticket não trocável não circula por proposta em nenhum dos dois lados; a contrapartida pode ser vazia, exigido ao menos um ticket solicitado; e quem revisa a oferta devolve a decisão à outra parte. |
 | 2.3 | **Fase 0 fechada.** Todos os parâmetros temporais receberam valor (seção 21). Validade do ticket limitada a 1 ano. Encerramento de conta sem prazo máximo, com proteção integral ao portador. Cancelamento pelo solicitante deixa de ser bloqueado e passa a registrar ocorrência quando em cima da hora. Retenção do texto das buscas definida em 90 dias. |

@@ -2,6 +2,8 @@
 
 namespace App\Dominio\Consumo;
 
+use App\Dominio\Seguranca\GerirTermoDeCiencia;
+use App\Models\Favor;
 use App\Models\Solicitacao;
 use App\Models\Ticket;
 use App\Models\Usuario;
@@ -22,17 +24,26 @@ class ResponderSolicitacao
 {
     public function __construct(
         private readonly VerificarCondicoesPublicadas $condicoes = new VerificarCondicoesPublicadas(),
+        private readonly GerirTermoDeCiencia $termo = new GerirTermoDeCiencia(),
     ) {
     }
 
     /**
      * RF-SOL-04 e RF-SOL-06 — confirmar agenda e reserva o ticket.
+     *
+     * Em favor presencial, o ajudante também aceita o termo de ciência
+     * (RF-SEG-03): quem recebe alguém em casa corre o mesmo tipo de risco de
+     * quem vai à casa de alguém, e o termo é do atendimento, não de um lado.
      */
-    public function agendar(Solicitacao $solicitacao, Usuario $ajudante, ?Carbon $momento = null): Solicitacao
-    {
+    public function agendar(
+        Solicitacao $solicitacao,
+        Usuario $ajudante,
+        ?Carbon $momento = null,
+        bool $cienteDosRiscos = false,
+    ): Solicitacao {
         $momento ??= Carbon::now();
 
-        return DB::transaction(function () use ($solicitacao, $ajudante, $momento) {
+        return DB::transaction(function () use ($solicitacao, $ajudante, $momento, $cienteDosRiscos) {
             $solicitacao = $this->travar($solicitacao, $ajudante);
 
             if (! $solicitacao->podeSerTransicionadaPara(Solicitacao::AGENDADA)) {
@@ -82,6 +93,16 @@ class ResponderSolicitacao
                 $solicitacao->inicio_previsto,
                 $momento,
             );
+
+            if ($ticket->favor->modalidade === Favor::MODALIDADE_PRESENCIAL) {
+                if (! $cienteDosRiscos) {
+                    throw new LogicException(
+                        'Favor presencial exige o aceite do termo de ciência de riscos.'
+                    );
+                }
+
+                $this->termo->aceitar($solicitacao, $ajudante, $momento);
+            }
 
             try {
                 $solicitacao->transicionar(Solicitacao::AGENDADA, 'solicitacao_agendada', $ajudante->id);

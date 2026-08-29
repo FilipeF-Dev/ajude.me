@@ -2,6 +2,8 @@
 
 namespace App\Dominio\Consumo;
 
+use App\Dominio\Moderacao\RegistrarOcorrencia;
+use App\Models\Ocorrencia;
 use App\Models\ParametroNegocio;
 use App\Models\Solicitacao;
 use App\Models\Ticket;
@@ -20,14 +22,17 @@ use LogicException;
  * hora (RF-CAN-07). Bloquear não faz ninguém comparecer — apenas converte um
  * aviso em ausência sem aviso, que prejudica mais o ajudante (02 §9.2).
  *
- * Pendência conhecida: RF-CAN-06 e RF-CAN-15 mandam registrar ocorrência
- * contra quem cancela — o ajudante sempre, o solicitante quando em cima da
- * hora. `Ocorrencia` pertence ao contexto Moderação (05 §4.7) e entra com
- * aquela fatia. `geraOcorrencia()` já responde a pergunta que RF-CAN-16 exige
- * fazer antes de confirmar, e é o ponto onde o registro será plugado.
+ * A ocorrência é registrada dentro da mesma transação do cancelamento
+ * (RF-CAN-06, RF-CAN-15): cancelar sem deixar o registro faria o histórico
+ * mentir sobre o que aconteceu.
  */
 class CancelarSolicitacao
 {
+    public function __construct(
+        private readonly RegistrarOcorrencia $ocorrencias = new RegistrarOcorrencia(),
+    ) {
+    }
+
     /**
      * RF-CAN-01 — o cancelamento pelo ajudante exige justificativa.
      *
@@ -122,7 +127,7 @@ class CancelarSolicitacao
     ): Solicitacao {
         $momento ??= Carbon::now();
 
-        return DB::transaction(function () use ($solicitacao, $autor, $estadoFinal, $justificativa) {
+        return DB::transaction(function () use ($solicitacao, $autor, $estadoFinal, $justificativa, $momento) {
             $solicitacao = Solicitacao::query()
                 ->whereKey($solicitacao->getKey())
                 ->lockForUpdate()
@@ -144,12 +149,32 @@ class CancelarSolicitacao
 
             $estadoAnterior = $solicitacao->estado;
 
+            // Apurado antes da transição: depois do cancelamento a pergunta
+            // "qual era o papel de quem cancelou" continua respondível, mas a
+            // resposta de RF-CAN-16 precisa ser a mesma que foi mostrada à
+            // pessoa antes de ela confirmar.
+            $geraOcorrencia = $this->geraOcorrencia($solicitacao, $autor, $momento);
+
             $solicitacao->forceFill([
                 'justificativa_cancelamento' => $justificativa,
                 'cancelada_por_id' => $autor->id,
             ])->save();
 
             $solicitacao->transicionar($estadoFinal, $estadoFinal, $autor->id);
+
+            if ($geraOcorrencia) {
+                $ehAjudante = $estadoFinal === Solicitacao::CANCELADA_AJUDANTE;
+
+                $this->ocorrencias->peloSistema(
+                    $ehAjudante
+                        ? Ocorrencia::CANCELAMENTO_DO_AJUDANTE
+                        : Ocorrencia::CANCELAMENTO_EM_CIMA_DA_HORA,
+                    $autor,
+                    $solicitacao,
+                    $justificativa,
+                    $momento,
+                );
+            }
 
             // O ticket só estava reservado se houve agendamento; cancelar um
             // pedido ainda não confirmado não tem reserva a desfazer.

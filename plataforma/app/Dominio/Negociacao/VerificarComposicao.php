@@ -2,6 +2,7 @@
 
 namespace App\Dominio\Negociacao;
 
+use App\Models\Bloqueio;
 use App\Models\Ticket;
 use App\Models\Usuario;
 use Illuminate\Support\Carbon;
@@ -42,6 +43,18 @@ class VerificarComposicao
                     "A conta de {$parte->nome} não está ativa e não pode participar de uma troca."
                 );
             }
+        }
+
+        /**
+         * I17 e RF-NEG-14 — não existe proposta entre usuários com bloqueio
+         * em qualquer direção.
+         *
+         * A mensagem não diz quem bloqueou quem: revelar isso entregaria a
+         * decisão de uma pessoa à outra, que é justamente o que o bloqueio
+         * evita (02 §18.2).
+         */
+        if (Bloqueio::existeEntre($remetente->id, $destinatario->id)) {
+            throw new LogicException('Não é possível negociar com este usuário.');
         }
 
         $tickets = Ticket::query()

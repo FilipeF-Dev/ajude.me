@@ -606,13 +606,53 @@ class ConsumoTest extends TestCase
     {
         $this->enderecoCom($this->ajudante, -23.5505, -46.6333);
         $this->enderecoCom($this->solicitante, -23.5610, -46.6560); // ~2,5 km
+        $this->publicarTermo();
 
         $ticket = $this->ticketNaCarteiraDoSolicitante($this->favor([
             'modalidade' => Favor::MODALIDADE_PRESENCIAL,
             'area_atendimento_km' => 5,
         ]));
 
-        $this->assertSame(Solicitacao::SOLICITADA, $this->solicitar($ticket)->estado);
+        $solicitacao = (new SolicitarFavor())->executar(
+            $ticket,
+            $this->solicitante,
+            $this->proximaData(),
+            cienteDosRiscos: true,
+        );
+
+        $this->assertSame(Solicitacao::SOLICITADA, $solicitacao->estado);
+    }
+
+    public function test_favor_presencial_exige_o_aceite_do_termo_de_ciencia(): void
+    {
+        $this->enderecoCom($this->ajudante, -23.5505, -46.6333);
+        $this->enderecoCom($this->solicitante, -23.5610, -46.6560);
+        $this->publicarTermo();
+
+        $ticket = $this->ticketNaCarteiraDoSolicitante($this->favor([
+            'modalidade' => Favor::MODALIDADE_PRESENCIAL,
+            'area_atendimento_km' => 5,
+        ]));
+
+        // RF-SEG-03 — o termo é exibido no aceite do atendimento presencial.
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessageMatches('/termo de ciência de riscos/');
+
+        $this->solicitar($ticket);
+    }
+
+    private function publicarTermo(): void
+    {
+        $operador = \App\Models\Operador::create([
+            'nome' => 'Operação',
+            'email' => uniqid('op').'@ajude.me',
+            'senha' => 'segredo123',
+        ]);
+
+        (new \App\Dominio\Seguranca\GerirTermoDeCiencia())->publicar(
+            'Atendimento presencial envolve risco. Leia com atenção.',
+            $operador,
+        );
     }
 
     private function enderecoCom(Usuario $usuario, float $latitude, float $longitude): void

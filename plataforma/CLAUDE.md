@@ -40,6 +40,8 @@ Laravel 13 · PHP 8.4 · PostgreSQL 16 com PostGIS · Filament 5
 
 ## Estado atual
 
-Construídas: **Identidade + Catálogo**, **Painel da Operação**, **Oferta**, **Ticket**, **Negociação** e **Consumo**. O acompanhamento por fatia está em `../00 - Estado do Projeto.md §3`, junto com os requisitos que ficaram à espera das fatias de que dependem.
+Construídas: **Identidade + Catálogo**, **Painel da Operação**, **Oferta**, **Ticket**, **Negociação**, **Consumo** e **Segurança + Moderação**. O acompanhamento por fatia está em `../00 - Estado do Projeto.md §3`, junto com os requisitos que ficaram à espera das fatias de que dependem.
 
-A seguir, o contexto **Segurança e Moderação**: chamado, ocorrência, bloqueio e denúncia (02 §8.5, §10, §18.2). É a fatia que fecha as pontas deixadas em aberto pelo Consumo — a contestação já move a solicitação e bloqueia o ticket, mas o chamado que a Operação analisa ainda não existe.
+A seguir, o contexto **Reputação**: avaliação bilateral obrigatória, imutável, por favor, com escala de 0 a 7 (02 §11). É a fatia que fecha o ciclo — a solicitação só chega a `ENCERRADA` com as duas avaliações (I21).
+
+**Cuidado com defaults de coluna.** Um `->default()` na migração não preenche o atributo do modelo recém-criado: o banco grava, o objeto em memória fica nulo, e qualquer checagem feita logo em seguida responde errado. Onde o default importa para uma regra, espelhe-o em `protected $attributes` (ver `Usuario` e `Denuncia`). Esse defeito já apareceu duas vezes.

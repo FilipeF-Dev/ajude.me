@@ -2,6 +2,8 @@
 
 namespace App\Dominio\Consumo;
 
+use App\Dominio\Seguranca\GerirTermoDeCiencia;
+use App\Models\Favor;
 use App\Models\Solicitacao;
 use App\Models\Ticket;
 use App\Models\TransicaoSolicitacao;
@@ -26,18 +28,27 @@ class SolicitarFavor
 {
     public function __construct(
         private readonly VerificarCondicoesPublicadas $condicoes = new VerificarCondicoesPublicadas(),
+        private readonly GerirTermoDeCiencia $termo = new GerirTermoDeCiencia(),
     ) {
     }
 
+    /**
+     * `$cienteDosRiscos` só é exigido em favor presencial (RF-SEG-03). O
+     * momento de exibição do termo é regra, não detalhe: é aqui, no aceite do
+     * atendimento, e nunca no cadastro (02 §8.2).
+     */
     public function executar(
         Ticket $ticket,
         Usuario $solicitante,
         Carbon $inicioPrevisto,
         ?Carbon $momento = null,
+        bool $cienteDosRiscos = false,
     ): Solicitacao {
         $momento ??= Carbon::now();
 
-        return DB::transaction(function () use ($ticket, $solicitante, $inicioPrevisto, $momento) {
+        return DB::transaction(function () use (
+            $ticket, $solicitante, $inicioPrevisto, $momento, $cienteDosRiscos
+        ) {
             $ticket = Ticket::query()
                 ->whereKey($ticket->getKey())
                 ->with('favor')
@@ -65,6 +76,16 @@ class SolicitarFavor
                     "O ticket {$ticket->codigo} já tem uma solicitação em andamento. "
                     .'Um ticket vale por uma realização.'
                 );
+            }
+
+            if ($favor->modalidade === Favor::MODALIDADE_PRESENCIAL) {
+                if (! $cienteDosRiscos) {
+                    throw new LogicException(
+                        'Favor presencial exige o aceite do termo de ciência de riscos.'
+                    );
+                }
+
+                $this->termo->aceitar($solicitacao, $solicitante, $momento);
             }
 
             // P2 — nem o nascimento da solicitação fica sem rastro.

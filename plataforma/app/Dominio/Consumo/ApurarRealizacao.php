@@ -2,6 +2,7 @@
 
 namespace App\Dominio\Consumo;
 
+use App\Dominio\Moderacao\AbrirChamado;
 use App\Models\ManifestacaoRealizacao;
 use App\Models\ParametroNegocio;
 use App\Models\Solicitacao;
@@ -23,6 +24,11 @@ use LogicException;
  */
 class ApurarRealizacao
 {
+    public function __construct(
+        private readonly AbrirChamado $chamados = new AbrirChamado(),
+    ) {
+    }
+
     /**
      * RF-SOL-08 — alcançada a data prevista, abre-se a janela de contestação.
      *
@@ -124,7 +130,7 @@ class ApurarRealizacao
             $solicitacao->refresh();
 
             if ($tipo === ManifestacaoRealizacao::CONTESTA) {
-                return $this->contestar($solicitacao, $parte);
+                return $this->contestar($solicitacao, $parte, $momento);
             }
 
             // RF-SOL-09 — a confirmação bilateral encerra a janela na hora.
@@ -164,14 +170,14 @@ class ApurarRealizacao
     }
 
     /**
-     * RF-SOL-12 — a contestação leva à análise e bloqueia o ticket.
+     * RF-SOL-12 — a contestação leva à análise, bloqueia o ticket e abre um
+     * chamado para a Operação.
      *
-     * A abertura do chamado para a Operação pertence ao contexto Moderação e
-     * entra com aquela fatia. O que é do Consumo — mover a solicitação e
-     * bloquear o ticket — acontece aqui e agora, para que o direito em
-     * disputa fique protegido desde o primeiro instante.
+     * As três coisas em uma transação: uma solicitação em análise sem chamado
+     * seria disputa que ninguém apura, e um ticket livre durante a disputa
+     * poderia ser trocado antes da decisão.
      */
-    private function contestar(Solicitacao $solicitacao, Usuario $parte): Solicitacao
+    private function contestar(Solicitacao $solicitacao, Usuario $parte, Carbon $momento): Solicitacao
     {
         $solicitacao->transicionar(Solicitacao::EM_ANALISE, 'realizacao_contestada', $parte->id);
 
@@ -183,6 +189,8 @@ class ApurarRealizacao
             'realizacao_contestada',
             $parte->id,
         );
+
+        $this->chamados->executar($solicitacao, $parte, $momento);
 
         return $solicitacao;
     }

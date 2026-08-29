@@ -46,7 +46,7 @@ A ordem é a de `06 §5.3`. Cada fatia entra com migração, modelo, ação de d
 | Ticket | ✅ | Emissão sob limite de circulação, máquina de estados, cadeia de propriedade, expiração por avaliação de estado |
 | Negociação | ✅ | Proposta versionada, bloqueio de tickets, revisão, aceite atômico, chat |
 | Consumo | ✅ | Solicitação contra a condição publicada, agendamento sem sobreposição, comparecimento, janela de contestação, confirmação tácita, cancelamento |
-| Segurança e Moderação | ⬜ | Bloqueio, denúncia, chamado, ocorrência |
+| Segurança e Moderação | ✅ | Termo de ciência versionado, bloqueio, denúncia, ocorrência, chamado com decisão e efeitos, suspensão, trilha de auditoria |
 | Reputação | ⬜ | Avaliação bilateral obrigatória |
 | Descoberta e Notificações | ⬜ | Busca por necessidade, termos populares |
 
@@ -54,15 +54,14 @@ A ordem é a de `06 §5.3`. Cada fatia entra com migração, modelo, ação de d
 
 | Requisito | Espera por |
 |---|---|
-| RF-NEG-14 / I17 — sem proposta entre usuários com bloqueio | Segurança e Moderação |
 | RF-NEG-15 — avaliação pendente impede nova proposta | Reputação |
-| RF-SOL-12 — a contestação abre chamado para a Operação | Segurança e Moderação |
-| RF-SOL-16 a RF-SOL-19 — desfechos da análise pela Operação | Segurança e Moderação |
-| RF-CAN-06 / RF-CAN-15 — registro da ocorrência de cancelamento | Segurança e Moderação |
-| RF-SEG-02 / RF-SEG-10 — avisos ao contato de confiança | Descoberta e Notificações |
 | RF-AVA-10 / I21 — solicitação encerra com as duas avaliações | Reputação |
+| RF-SEG-02 / RF-SEG-10 — avisos ao contato de confiança | Descoberta e Notificações |
+| RF-ADM-08 — convites de acesso da base restrita | Descoberta e Notificações |
 
-O que o Consumo já faz nesses pontos é o que é dele: a contestação move a solicitação e bloqueia o ticket no ato, e `CancelarSolicitacao::geraOcorrencia()` já responde a pergunta de RF-CAN-16. Falta o registro do outro lado da fronteira.
+A fatia Segurança e Moderação fechou as pendências que o Consumo e a Negociação tinham deixado: RF-NEG-14/I17, RF-SOL-12, RF-SOL-16 a 19 e RF-CAN-06/15 estão ligados.
+
+**RF-ADM-08 é pré-requisito do piloto fechado** (`06 §5.2`) — não deve ficar para o fim por descuido.
 
 ## Como rodar
 
@@ -97,9 +96,9 @@ Toda a série está escrita e sincronizada entre si. Cada documento referencia o
 | Documento | Versão | Conteúdo |
 |---|---|---|
 | `01 - Visão do Produto.md` | 1.0 | Identidade, propósito, princípios |
-| `02 - Conceito e Regras de Negócio.md` | 2.5 | Conceitos e regras — **a fonte de verdade** |
+| `02 - Conceito e Regras de Negócio.md` | 2.6 | Conceitos e regras — **a fonte de verdade** |
 | `03 - MVP.md` | 1.3 | Escopo da primeira versão e dívidas assumidas |
-| `04 - Requisitos Funcionais.md` | 1.5 | Requisitos rastreáveis em 14 módulos |
+| `04 - Requisitos Funcionais.md` | 1.6 | Requisitos rastreáveis em 14 módulos |
 | `05 - Arquitetura Conceitual.md` | 1.2 | Contextos, entidades, 27 invariantes, decisões técnicas |
 | `06 - Roadmap do Produto.md` | 1.0 | Seis fases com portões de evidência |
 
