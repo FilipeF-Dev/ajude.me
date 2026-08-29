@@ -71,13 +71,44 @@ docker compose run --rm app php artisan ajudeme:rotinas
 
 Agendado a cada dez minutos em `routes/console.php`. **O agendador do Laravel precisa estar rodando em produção** — sem ele, nenhum prazo do produto se cumpre.
 
+## Camada web — primeira volta construída
+
+Blade + Livewire sobre o domínio, na linguagem visual da seção 7.2, instalável como PWA (decisão A1).
+
+| Tela | Situação |
+|---|---|
+| Entrada e cadastro | ✅ |
+| Início: feed neutro + busca por necessidade | ✅ |
+| Página do favor com todas as condições | ✅ |
+| Carteira | ✅ |
+| Oferecer ajuda | ✅ |
+| Montar proposta · Negociação com chat | ✅ |
+| Pedir o favor, com termo de ciência no presencial | ✅ |
+| Perfil próprio e público | ✅ |
+| Comparecimento · Confirmar/contestar · Avaliar | ⬜ |
+| Telas de moderação: denunciar, bloquear | ⬜ |
+
+```
+cd plataforma
+docker compose up -d
+docker compose run --rm app php artisan migrate --seed
+docker compose run --rm app php artisan db:seed --class=DemonstracaoSeeder
+npm install && npm run build
+```
+
+Entre em `http://localhost:8000` com `marta@exemplo.br` ou `joel@exemplo.br`, senha `segredo123`.
+
 ## O que falta para a Fase 1
 
-**Só a camada web.** Não existe uma única tela de usuário fora do painel da Operação: `routes/web.php` tem apenas a página `welcome` do Laravel, e as 18 telas em `design/` são HTML estático que não fala com o banco.
+As telas de consumo e moderação da tabela acima. Depois delas, o portão de saída (`06 §5.4`) — "duas pessoas percorrem o loop completo sem intervenção técnica" — passa a ser verificável de ponta a ponta.
 
-O portão de saída (`06 §5.4`) é "duas pessoas percorrem o loop completo sem intervenção técnica". O domínio sustenta isso hoje; falta por onde as duas pessoas entrarem.
+**O teste de A1 com aparelho real continua pendente**, e agora é possível: `05 §15.3` diz que essa é a decisão que mais cedo pode precisar ser revista, e que a verificação deve acontecer ainda na Fase 1. O APK de demonstração sai do empacotamento TWA sobre este mesmo PWA (`05 §15.2`).
 
-Vale lembrar `05 §15.3`: **A1 é a decisão que mais cedo pode precisar ser revista**, e o teste com aparelho real ainda não aconteceu — depende de existir um PWA para instalar.
+## Nota de ambiente
+
+O `vendor/` foi movido para um volume Docker. O bootstrap do Laravel abre centenas de arquivos por requisição, e a travessia do bind mount do Windows custava **15 segundos por página**; com o vendor no sistema de arquivos do Linux, caiu para **0,5s**. O ciclo de desenvolvimento era inviável antes disso.
+
+Consequência: `composer install` roda dentro do contêiner, e o `vendor/` do host fica desatualizado de propósito — coerente com a decisão de que tudo roda em contêiner.
 
 ## O que falta para a Fase 1
 

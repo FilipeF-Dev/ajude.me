@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Ajude.me">
+  <rect width="512" height="512" rx="112" fill="#2E6B4F"/>
+  <!-- Duas mãos que se encontram: ninguém tem papel fixo (02 §1). -->
+  <path d="M150 300c0-52 42-94 94-94h24c52 0 94 42 94 94"
+        fill="none" stroke="#FAF7F2" stroke-width="34" stroke-linecap="round"/>
+  <circle cx="196" cy="196" r="30" fill="#FAF7F2"/>
+  <circle cx="316" cy="196" r="30" fill="#FAF7F2"/>
+  <path d="M256 330v42" stroke="#FAF7F2" stroke-width="34" stroke-linecap="round"/>
+</svg>

@@ -26,12 +26,33 @@ services:
     working_dir: /var/www
     volumes:
       - .:/var/www
+      # O `vendor/` fica no sistema de arquivos do Linux, não no bind mount.
+      #
+      # O bootstrap do Laravel abre centenas de arquivos do vendor por
+      # requisição, e cada travessia do mount do Windows custa caro: o health
+      # check sozinho levava 5s, e uma página, 15s. Com o vendor deste lado,
+      # o ciclo volta a ser utilizável.
+      #
+      # Consequência: `composer install` roda **dentro do contêiner**, e o
+      # `vendor/` do host fica desatualizado de propósito. Coerente com a
+      # decisão de que tudo roda em contêiner.
+      - dependencias:/var/www/vendor
     ports:
       - "8000:8000"
     depends_on:
       banco:
         condition: service_healthy
-    command: php artisan serve --host=0.0.0.0 --port=8000
+    environment:
+      # `artisan serve` atende uma requisição por vez por padrão, e a página
+      # dispara várias em paralelo — Livewire, assets, service worker. Com um
+      # processo só, elas se bloqueiam e a tela trava.
+      #
+      # Os workers só valem com `--no-reload`, e o recarregamento não faz
+      # falta: o código está montado por volume e o PHP é interpretado a cada
+      # requisição. Alterar o `.env` continua exigindo reiniciar o contêiner.
+      PHP_CLI_SERVER_WORKERS: 6
+    command: php artisan serve --host=0.0.0.0 --port=8000 --no-reload
 
 volumes:
   dados-banco:
+  dependencias:

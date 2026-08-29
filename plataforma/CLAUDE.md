@@ -9,8 +9,12 @@ Leia primeiro `../00 - Estado do Projeto.md` e `../CLAUDE.md`. As regras de neg�
 ```bash
 docker compose up -d
 docker compose run --rm app php artisan migrate --seed
+docker compose run --rm app php artisan db:seed --class=DemonstracaoSeeder
 docker compose run --rm app composer require <pacote>
+npm install && npm run build   # os assets compilam no host
 ```
+
+**O `vendor/` mora num volume Docker, não no bind mount.** O bootstrap do Laravel abre centenas de arquivos por requisição, e a travessia do mount do Windows custava 15s por página — agora são 0,5s. Consequência: `composer install` roda **dentro do contêiner** e o `vendor/` do host fica desatualizado de propósito. Depois de mexer no `composer.json`, rode `docker compose run --rm app composer install`.
 
 - Aplicação: `http://localhost:8000`
 - Painel da Operação: `http://localhost:8000/operacao`
@@ -40,9 +44,13 @@ Laravel 13 · PHP 8.4 · PostgreSQL 16 com PostGIS · Filament 5
 
 ## Estado atual
 
-**O domínio está completo.** As sete fatias de `06 §5.3` foram construídas e o loop de `03 §3` fecha ponta a ponta. O acompanhamento por fatia está em `../00 - Estado do Projeto.md §3`.
+**O domínio está completo** e a **camada web tem sua primeira volta**: entrada, cadastro, feed com busca por necessidade, página do favor, carteira, oferecer, propor, negociar, pedir o favor, perfil próprio e público. O acompanhamento por fatia está em `../00 - Estado do Projeto.md §3`.
 
-A seguir, a **camada web** (Blade + Livewire, PWA): não existe uma única tela de usuário fora do painel da Operação.
+A seguir: as telas de consumo que faltam — comparecimento, confirmar/contestar e avaliar — e as telas de moderação.
+
+**Interface em Livewire, uma classe por tela**, em `app/Livewire/`. Todas declaram `#[Layout(...)]` explicitamente. As ações de domínio nunca são reimplementadas na tela: o componente valida a entrada, chama a ação e traduz `LogicException` em erro de formulário.
+
+**Nenhuma fonte externa e nada de blur.** Fonte do sistema por exigência de desempenho (`05 NF-ACE-01`), e a proibição de glassmorphism/aero é decisão de produto (`00 §7.2`), não gosto.
 
 **Reputação é calculada, nunca armazenada.** Não deve existir coluna de média, nota consolidada ou contador de estrelas. Se um dia pesar, a saída é cache reconstruível a partir das avaliações — nunca uma coluna que vira a verdade.
 
