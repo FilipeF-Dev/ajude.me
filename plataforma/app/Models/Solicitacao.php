@@ -143,6 +143,11 @@ class Solicitacao extends Model
         };
     }
 
+    public function ehParte(Usuario $usuario): bool
+    {
+        return in_array($usuario->id, [$this->ajudante_id, $this->solicitante_id], true);
+    }
+
     public function contraparteDe(Usuario $usuario): Usuario
     {
         return $this->papelDe($usuario) === self::PARTE_AJUDANTE

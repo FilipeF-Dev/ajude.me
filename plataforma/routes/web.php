@@ -1,8 +1,11 @@
 <?php
 
+use App\Livewire\Atendimento;
+use App\Livewire\Avaliar;
 use App\Livewire\Cadastrar;
 use App\Livewire\Carteira;
 use App\Livewire\Conversas;
+use App\Livewire\Diagnostico;
 use App\Livewire\Entrar;
 use App\Livewire\Inicio;
 use App\Livewire\Negociacao;
@@ -45,7 +48,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/favor/{favor}/propor', Propor::class)->name('propor');
     Route::get('/negociacao/{proposta}', Negociacao::class)->name('negociacao');
     Route::get('/ticket/{ticket}/pedir', Solicitar::class)->name('solicitar');
+    Route::get('/atendimento/{solicitacao}', Atendimento::class)->name('atendimento');
+    Route::get('/atendimento/{solicitacao}/avaliar', Avaliar::class)->name('avaliar');
     Route::get('/pessoa/{usuario}', PerfilPublico::class)->name('perfil.publico');
+
+    // Fora do loop do produto e fora da barra de navegação: é o instrumento
+    // de verificação da decisão A1 (05 §15.3), usado em aparelho real.
+    Route::get('/diagnostico', Diagnostico::class)->name('diagnostico');
 });
 
 // Quem não entrou cai na tela de entrada, não em um 404.

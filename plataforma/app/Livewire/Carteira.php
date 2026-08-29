@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Solicitacao;
 use App\Models\Ticket;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -36,6 +37,23 @@ class Carteira extends Component
             ->get();
 
         return view('livewire.carteira', [
+            // Os atendimentos vivos aparecem acima dos tickets: é o que exige
+            // ação hoje. Os dois papéis juntos, porque a mesma pessoa atende e
+            // é atendida (02 §1).
+            'atendimentos' => Solicitacao::query()
+                ->where(fn ($consulta) => $consulta
+                    ->where('ajudante_id', auth()->id())
+                    ->orWhere('solicitante_id', auth()->id()))
+                ->whereIn('estado', [
+                    Solicitacao::SOLICITADA,
+                    Solicitacao::AGENDADA,
+                    Solicitacao::AGUARDANDO_CONFIRMACAO,
+                    Solicitacao::EM_ANALISE,
+                    Solicitacao::REALIZADA,
+                ])
+                ->with(['ticket.favor', 'ajudante', 'solicitante'])
+                ->orderBy('inicio_previsto')
+                ->get(),
             'disponiveis' => $carteira->where('estado', Ticket::DISPONIVEL),
             'emUso' => $carteira->whereIn('estado', [
                 Ticket::EM_NEGOCIACAO,

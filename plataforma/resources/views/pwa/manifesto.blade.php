@@ -13,18 +13,33 @@
         'background_color' => '#FAF7F2',
         'theme_color' => '#FAF7F2',
         'categories' => ['social', 'lifestyle'],
+        // O Chrome exige PNG de 192 e 512 para considerar a página
+        // instalável. Sem eles o convite de instalação não aparece — e a
+        // decisão A1 depende de a instalação funcionar no aparelho real.
         'icons' => [
+            [
+                'src' => asset('icone-192.png'),
+                'sizes' => '192x192',
+                'type' => 'image/png',
+                'purpose' => 'any',
+            ],
+            [
+                'src' => asset('icone-512.png'),
+                'sizes' => '512x512',
+                'type' => 'image/png',
+                'purpose' => 'any',
+            ],
+            [
+                'src' => asset('icone-mascara-512.png'),
+                'sizes' => '512x512',
+                'type' => 'image/png',
+                'purpose' => 'maskable',
+            ],
             [
                 'src' => asset('icone.svg'),
                 'sizes' => 'any',
                 'type' => 'image/svg+xml',
                 'purpose' => 'any',
-            ],
-            [
-                'src' => asset('icone-mascara.svg'),
-                'sizes' => 'any',
-                'type' => 'image/svg+xml',
-                'purpose' => 'maskable',
             ],
         ],
         'shortcuts' => [

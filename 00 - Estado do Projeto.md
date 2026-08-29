@@ -85,8 +85,12 @@ Blade + Livewire sobre o domínio, na linguagem visual da seção 7.2, instaláv
 | Montar proposta · Negociação com chat | ✅ |
 | Pedir o favor, com termo de ciência no presencial | ✅ |
 | Perfil próprio e público | ✅ |
-| Comparecimento · Confirmar/contestar · Avaliar | ⬜ |
+| Atendimento: contato liberado, comparecimento, emergência, confirmar/contestar | ✅ |
+| Cancelar, com a consequência dita antes | ✅ |
+| Avaliar | ✅ |
+| Diagnóstico do aparelho (instrumento de A1) | ✅ |
 | Telas de moderação: denunciar, bloquear | ⬜ |
+| Fila de chamados e denúncias na Operação (Filament) | ⬜ |
 
 ```
 cd plataforma
@@ -102,7 +106,32 @@ Entre em `http://localhost:8000` com `marta@exemplo.br` ou `joel@exemplo.br`, se
 
 As telas de consumo e moderação da tabela acima. Depois delas, o portão de saída (`06 §5.4`) — "duas pessoas percorrem o loop completo sem intervenção técnica" — passa a ser verificável de ponta a ponta.
 
-**O teste de A1 com aparelho real continua pendente**, e agora é possível: `05 §15.3` diz que essa é a decisão que mais cedo pode precisar ser revista, e que a verificação deve acontecer ainda na Fase 1. O APK de demonstração sai do empacotamento TWA sobre este mesmo PWA (`05 §15.2`).
+## Verificação de A1 em aparelho real — parcial
+
+`05 §15.3` manda verificar A1 ainda na Fase 1, com aparelho real. A tela `/diagnostico` é o instrumento dessa verificação; o que segue foi medido, não presumido.
+
+**Aparelho:** Xiaomi 2311DRK48G, Android 16, Chrome 151, 8 GB de RAM, 8 núcleos.
+
+> **Ressalva que muda a leitura:** este é um aparelho topo de linha, o oposto do "Android antigo" de que `05 §15.3` desconfia. O que passa aqui não prova que passa no aparelho do público-alvo. A verificação precisa ser repetida em aparelho de entrada antes de dar A1 por confirmada.
+
+| O que | Resultado |
+|---|---|
+| Instala e roda em modo standalone | ✅ verificado — abre com splash, sem barra de endereço |
+| Contexto seguro, manifesto com ícones PNG | ✅ |
+| Service worker registrado e ativo | ✅ |
+| Sincronização em segundo plano e periódica | ✅ disponíveis |
+| Push API presente | ✅ |
+| Carregamento da página | ✅ 1,5 s |
+| Armazenamento | ✅ cota de 10 GB |
+| Vibração e wake lock | ✅ |
+| **Notificação de fato exibida** | 🟡 **inconclusivo** |
+| **Acionamento de emergência (`tel:`)** | 🟡 não verificado |
+
+**Sobre o inconclusivo.** A notificação foi disparada pelo service worker e o navegador a reportou como postada, mas ela não apareceu no gerenciador de notificações do Android. A permissão havia sido concedida por automação (`Browser.grantPermissions` do protocolo DevTools), e o Chrome pode não percorrer o caminho real de entrega nesse modo — então **isto não é evidência de que a notificação falha**. Só um toque humano em "Pedir permissão" e depois em "Disparar notificação" resolve a dúvida.
+
+As duas linhas amarelas são exatamente os dois riscos que `05 §15.3` nomeia. **Enquanto elas não fecharem, A1 não está confirmada.**
+
+O APK de demonstração sai do empacotamento TWA sobre este mesmo PWA (`05 §15.2`).
 
 ## Nota de ambiente
 

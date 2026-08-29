@@ -28,6 +28,29 @@ self.addEventListener('activate', (evento) => {
     );
 });
 
+/**
+ * Tocar a notificação traz a pessoa de volta para dentro do aplicativo, e
+ * não para uma aba nova. Se já houver janela aberta, é ela que é focada.
+ */
+self.addEventListener('notificationclick', (evento) => {
+    evento.notification.close();
+
+    const destino = evento.notification.data?.url ?? '/';
+
+    evento.waitUntil(
+        self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((janelas) => {
+            for (const janela of janelas) {
+                if ('focus' in janela) {
+                    janela.navigate?.(destino);
+                    return janela.focus();
+                }
+            }
+
+            return self.clients.openWindow(destino);
+        }),
+    );
+});
+
 self.addEventListener('fetch', (evento) => {
     const requisicao = evento.request;
 

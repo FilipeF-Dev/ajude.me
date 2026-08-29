@@ -2,10 +2,20 @@
 
 namespace Tests\Feature;
 
+use App\Dominio\Consumo\ApurarRealizacao;
+use App\Dominio\Consumo\RegistrarComparecimento;
+use App\Dominio\Consumo\ResponderSolicitacao;
+use App\Dominio\Consumo\SolicitarFavor;
+use App\Livewire\Atendimento;
+use App\Livewire\Avaliar;
 use App\Livewire\Cadastrar;
+use App\Livewire\CancelarAtendimento;
 use App\Livewire\Carteira;
 use App\Livewire\Entrar;
 use App\Livewire\Inicio;
+use App\Models\ManifestacaoRealizacao;
+use App\Models\Solicitacao;
+use Illuminate\Support\Carbon;
 use App\Models\Categoria;
 use App\Models\Favor;
 use App\Models\Proficiencia;
@@ -230,5 +240,170 @@ class CamadaWebTest extends TestCase
             ->assertOk()
             ->assertHeader('Content-Type', 'application/manifest+json; charset=utf-8')
             ->assertSee('standalone');
+    }
+
+    public function test_o_manifesto_traz_os_icones_png_que_o_chrome_exige(): void
+    {
+        $manifesto = $this->get('/manifesto.webmanifest')->json();
+
+        // Sem PNG de 192 e 512 o Chrome não oferece a instalação — e a
+        // decisão A1 (05 §15.3) depende de a instalação funcionar.
+        $tamanhos = collect($manifesto['icons'])
+            ->where('type', 'image/png')
+            ->pluck('sizes');
+
+        $this->assertTrue($tamanhos->contains('192x192'));
+        $this->assertTrue($tamanhos->contains('512x512'));
+
+        foreach ($manifesto['icons'] as $icone) {
+            $caminho = public_path(parse_url($icone['src'], PHP_URL_PATH));
+            $this->assertFileExists($caminho);
+        }
+    }
+
+    // ------------------------------------------------ Telas do atendimento
+
+    /** Deixa uma solicitação agendada entre duas pessoas. */
+    private function atendimentoAgendado(): Solicitacao
+    {
+        $ajudante = $this->usuario('Marta Vilela');
+        $solicitante = $this->usuario('Joel Batista');
+
+        $favor = $this->favorComTicket($ajudante);
+
+        \App\Models\Ticket::where('favor_id', $favor->id)
+            ->first()
+            ->transferirPara($solicitante, 'proposta_aceita');
+
+        $ticket = \App\Models\Ticket::where('proprietario_id', $solicitante->id)->first();
+
+        $solicitacao = (new SolicitarFavor())->executar(
+            $ticket,
+            $solicitante,
+            now()->addDays(10)->next(Carbon::WEDNESDAY)->setTime(10, 0),
+        );
+
+        return (new ResponderSolicitacao())->agendar($solicitacao, $ajudante);
+    }
+
+    public function test_o_contato_so_aparece_depois_do_agendamento(): void
+    {
+        $solicitacao = $this->atendimentoAgendado();
+
+        // RF-SOL-07 e 02 §18.1 — telefone e endereço são liberados no
+        // agendamento, e só às partes.
+        Livewire::actingAs($solicitacao->solicitante)
+            ->test(Atendimento::class, ['solicitacao' => $solicitacao])
+            ->assertSee('Contato liberado')
+            ->assertSee('Ligar para Marta Vilela');
+    }
+
+    public function test_quem_nao_e_parte_nao_ve_o_atendimento(): void
+    {
+        $solicitacao = $this->atendimentoAgendado();
+
+        $this->actingAs($this->usuario('Ana Prado'))
+            ->get(route('atendimento', $solicitacao))
+            ->assertForbidden();
+    }
+
+    public function test_a_emergencia_so_aparece_entre_o_inicio_e_o_fim(): void
+    {
+        $solicitacao = $this->atendimentoAgendado();
+        $registro = new RegistrarComparecimento();
+
+        $tela = Livewire::actingAs($solicitacao->solicitante)
+            ->test(Atendimento::class, ['solicitacao' => $solicitacao]);
+
+        // RF-SEG-08 — a janela do acionamento é a do atendimento em curso.
+        $tela->assertDontSee('Ligar para a emergência');
+
+        $registro->inicio($solicitacao, $solicitacao->solicitante);
+
+        Livewire::actingAs($solicitacao->solicitante)
+            ->test(Atendimento::class, ['solicitacao' => $solicitacao->fresh()])
+            ->assertSee('Ligar para a emergência');
+
+        $registro->fim($solicitacao, $solicitacao->solicitante);
+
+        Livewire::actingAs($solicitacao->solicitante)
+            ->test(Atendimento::class, ['solicitacao' => $solicitacao->fresh()])
+            ->assertDontSee('Ligar para a emergência');
+    }
+
+    public function test_o_cancelamento_avisa_da_ocorrencia_antes_de_confirmar(): void
+    {
+        $solicitacao = $this->atendimentoAgendado();
+
+        // RF-CAN-16 — quem cancela precisa saber o que vai acontecer antes de
+        // decidir. Aqui é o ajudante, que gera ocorrência em qualquer prazo.
+        Livewire::actingAs($solicitacao->ajudante)
+            ->test(CancelarAtendimento::class, ['solicitacao' => $solicitacao])
+            ->call('abrir')
+            ->assertSee('registra uma ocorrência no seu histórico');
+    }
+
+    public function test_a_avaliacao_avisa_da_imutabilidade_antes_do_envio(): void
+    {
+        $solicitacao = $this->realizado();
+
+        Livewire::actingAs($solicitacao->solicitante)
+            ->test(Avaliar::class, ['solicitacao' => $solicitacao])
+            // 02 §11.1 — dito antes, não depois.
+            ->assertSee('não pode ser alterada')
+            // RF-AVA-03 — quem recebeu avalia estes três critérios.
+            ->assertSee('Comunicação')
+            ->assertSee('Qualidade')
+            ->assertSee('Satisfação');
+    }
+
+    public function test_a_avaliacao_do_ajudante_exige_motivo_de_qualidade(): void
+    {
+        $solicitacao = $this->realizado();
+
+        Livewire::actingAs($solicitacao->solicitante)
+            ->test(Avaliar::class, ['solicitacao' => $solicitacao])
+            ->set('notas', ['comunicacao' => 6, 'qualidade' => 3, 'satisfacao' => 5])
+            ->set('motivos', [])
+            ->call('enviar')
+            // RF-AVA-05
+            ->assertHasErrors('avaliacao');
+    }
+
+    public function test_a_avaliacao_completa_e_registrada(): void
+    {
+        $solicitacao = $this->realizado();
+
+        Livewire::actingAs($solicitacao->solicitante)
+            ->test(Avaliar::class, ['solicitacao' => $solicitacao])
+            ->set('notas', ['comunicacao' => 6, 'qualidade' => 7, 'satisfacao' => 6])
+            ->set('motivos', ['acabamento'])
+            ->call('enviar')
+            ->assertRedirect(route('carteira'));
+
+        $this->assertSame(1, $solicitacao->avaliacoes()->count());
+    }
+
+    /** Leva um atendimento até `REALIZADA`, quando a avaliação é liberada. */
+    private function realizado(): Solicitacao
+    {
+        $solicitacao = $this->atendimentoAgendado();
+        $apurar = new ApurarRealizacao();
+
+        $solicitacao = $apurar->abrirJanela(
+            $solicitacao,
+            $solicitacao->fim_previsto->copy()->addMinute(),
+        );
+
+        $momento = $solicitacao->fim_previsto->copy()->addHour();
+
+        $apurar->manifestar($solicitacao, $solicitacao->ajudante, ManifestacaoRealizacao::CONFIRMA, $momento);
+
+        return $apurar->manifestar(
+            $solicitacao->fresh(),
+            $solicitacao->solicitante,
+            ManifestacaoRealizacao::CONFIRMA,
+            $momento,
+        );
     }
 }
