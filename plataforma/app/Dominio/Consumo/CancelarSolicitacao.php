@@ -3,6 +3,8 @@
 namespace App\Dominio\Consumo;
 
 use App\Dominio\Moderacao\RegistrarOcorrencia;
+use App\Dominio\Notificacao\Notificar;
+use App\Models\Notificacao;
 use App\Models\Ocorrencia;
 use App\Models\ParametroNegocio;
 use App\Models\Solicitacao;
@@ -160,7 +162,7 @@ class CancelarSolicitacao
                 'cancelada_por_id' => $autor->id,
             ])->save();
 
-            $solicitacao->transicionar($estadoFinal, $estadoFinal, $autor->id);
+            $solicitacao->transicionar($estadoFinal, $estadoFinal, $autor->id, $momento);
 
             if ($geraOcorrencia) {
                 $ehAjudante = $estadoFinal === Solicitacao::CANCELADA_AJUDANTE;
@@ -183,8 +185,18 @@ class CancelarSolicitacao
                     ->whereKey($solicitacao->ticket_id)
                     ->lockForUpdate()
                     ->firstOrFail()
-                    ->transicionar(Ticket::DISPONIVEL, $estadoFinal, $autor->id);
+                    ->transicionar(Ticket::DISPONIVEL, $estadoFinal, $autor->id, $momento);
             }
+
+            // RF-NOT-07 — quem contava com o encontro precisa saber que ele
+            // não vai acontecer, e com que justificativa.
+            (new Notificar())->enviar(
+                $solicitacao->contraparteDe($autor),
+                Notificacao::PRESTACAO_CANCELADA,
+                $solicitacao,
+                ['justificativa' => $justificativa],
+                $momento,
+            );
 
             return $solicitacao;
         });

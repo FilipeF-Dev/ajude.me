@@ -2,8 +2,10 @@
 
 namespace App\Dominio\Negociacao;
 
+use App\Dominio\Notificacao\Notificar;
 use App\Dominio\Reputacao\AvaliacaoPendente;
 use App\Models\ItemProposta;
+use App\Models\Notificacao;
 use App\Models\ParametroNegocio;
 use App\Models\Proposta;
 use App\Models\Ticket;
@@ -29,6 +31,7 @@ class EnviarProposta
     public function __construct(
         private readonly VerificarComposicao $verificador = new VerificarComposicao(),
         private readonly AvaliacaoPendente $avaliacoes = new AvaliacaoPendente(),
+        private readonly Notificar $notificacoes = new Notificar(),
     ) {
     }
 
@@ -101,6 +104,15 @@ class EnviarProposta
                     $remetente->id,
                 );
             }
+
+            // RF-NOT-01 — a proposta só existe para quem sabe que a recebeu.
+            $this->notificacoes->enviar(
+                $destinatario,
+                Notificacao::PROPOSTA_RECEBIDA,
+                $proposta,
+                ['remetente' => $remetente->nome],
+                $momento,
+            );
 
             return $proposta;
         });

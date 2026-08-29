@@ -68,6 +68,7 @@ class ApurarRealizacao
             $solicitacao->transicionar(
                 Solicitacao::AGUARDANDO_CONFIRMACAO,
                 'janela_de_contestacao_aberta',
+                momento: $momento,
             );
 
             return $solicitacao;
@@ -135,7 +136,7 @@ class ApurarRealizacao
 
             // RF-SOL-09 — a confirmação bilateral encerra a janela na hora.
             if ($solicitacao->ambasConfirmaram()) {
-                return $this->realizar($solicitacao, 'realizacao_confirmada', $parte->id);
+                return $this->realizar($solicitacao, 'realizacao_confirmada', $parte->id, $momento);
             }
 
             return $solicitacao;
@@ -165,7 +166,11 @@ class ApurarRealizacao
                 );
             }
 
-            return $this->realizar($solicitacao, 'realizacao_tacitamente_confirmada');
+            return $this->realizar(
+                $solicitacao,
+                'realizacao_tacitamente_confirmada',
+                momento: $momento,
+            );
         });
     }
 
@@ -179,7 +184,7 @@ class ApurarRealizacao
      */
     private function contestar(Solicitacao $solicitacao, Usuario $parte, Carbon $momento): Solicitacao
     {
-        $solicitacao->transicionar(Solicitacao::EM_ANALISE, 'realizacao_contestada', $parte->id);
+        $solicitacao->transicionar(Solicitacao::EM_ANALISE, 'realizacao_contestada', $parte->id, $momento);
 
         // 05 §6.1 — Solicitacao.EM_ANALISE → Ticket.EM_ANALISE.
         // I7: a partir daqui a validade do ticket para de correr. A demora da
@@ -188,6 +193,7 @@ class ApurarRealizacao
             Ticket::EM_ANALISE,
             'realizacao_contestada',
             $parte->id,
+            $momento,
         );
 
         $this->chamados->executar($solicitacao, $parte, $momento);
@@ -195,14 +201,24 @@ class ApurarRealizacao
         return $solicitacao;
     }
 
-    private function realizar(Solicitacao $solicitacao, string $evento, ?int $atorId = null): Solicitacao
-    {
-        $solicitacao->transicionar(Solicitacao::REALIZADA, $evento, $atorId);
+    /**
+     * O momento importa aqui mais do que em qualquer outra transição: é dele
+     * que sai `realizadaEm()`, e é de `realizadaEm()` que corre o prazo de
+     * avaliação (RF-AVA-16). Gravar a hora em que a rotina passou encurtaria
+     * o prazo de quem não tem culpa de a rotina ter demorado.
+     */
+    private function realizar(
+        Solicitacao $solicitacao,
+        string $evento,
+        ?int $atorId = null,
+        ?Carbon $momento = null,
+    ): Solicitacao {
+        $solicitacao->transicionar(Solicitacao::REALIZADA, $evento, $atorId, $momento);
 
         // 05 §6.1 — Solicitacao.REALIZADA → Ticket.CONSUMIDO. É aqui que a
         // vaga de circulação do favor é liberada (02 §5.1) e as avaliações
         // ficam disponíveis (RF-SOL-20).
-        $this->ticket($solicitacao)->transicionar(Ticket::CONSUMIDO, $evento, $atorId);
+        $this->ticket($solicitacao)->transicionar(Ticket::CONSUMIDO, $evento, $atorId, $momento);
 
         return $solicitacao;
     }

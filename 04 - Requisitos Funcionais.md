@@ -268,6 +268,9 @@ A consequência prática é que um favor bem-sucedido **nunca se esgota**: à me
 | RF-BUS-28 | A análise de cobertura utiliza dados agregados por região e proficiência, nunca buscas individuais atribuíveis. | 🟢 | `02 §18.3` |
 | RF-BUS-29 | O aviso solicitado pelo usuário vincula-se à proficiência, não ao texto digitado. | 🟢 | `02 §18.3` |
 | RF-BUS-30 | Reconhecimento semântico de necessidade, além dos termos populares. | ⚪ | `02 §3.4` |
+| RF-BUS-31 | A proficiência que reúne mais termos acionados pela mesma frase é apresentada primeiro. | 🟢 | `—` |
+| RF-BUS-32 | O feed não exibe ao usuário os próprios favores. | 🟢 | `—` |
+| RF-BUS-33 | O descarte de uma proficiência reconhecida é registrado, e não apenas omitido. | 🟢 | `02 §3.4` |
 
 ## 8.1 Busca por necessidade
 
@@ -549,6 +552,10 @@ A confirmação bilateral encerra a janela imediatamente, sem aguardar o prazo (
 
 **RF-NOT-17** 🟢 — O sistema não emite notificações de marketing, engajamento ou recomendação no MVP.
 
+**RF-NOT-19** 🟢 — Uma notificação não se repete a cada execução das rotinas temporais. As rotinas reavaliam o mesmo estado periodicamente; sem essa garantia, um lembrete viraria um lembrete a cada execução. Origem: `—`.
+
+**RF-NOT-20** 🟢 — A gravação da notificação é distinta da entrega. O registro do que precisa ser dito e a quem existe desde já; o canal de entrega — push, e-mail, SMS — depende de provedor externo ainda não escolhido (`05 §15.1`). Origem: `—`.
+
 ---
 
 # 17. ADM — Administração e curadoria
@@ -701,7 +708,7 @@ Todos são parâmetros versionados com vigência, nunca constantes de código (`
 
 ---
 
-**Versão:** 1.7
+**Versão:** 1.8
 **Produto:** Ajude.me
 **Documento:** Requisitos Funcionais
 
@@ -710,6 +717,7 @@ Todos são parâmetros versionados com vigência, nunca constantes de código (`
 | Versão | Alterações |
 |---|---|
 | 1.0 | Especificação inicial dos requisitos funcionais |
+| 1.8 | Novos RF-BUS-31 a RF-BUS-33, decorrentes de `02 §3.4` na versão 2.8. Novos RF-NOT-19 e RF-NOT-20, sobre repetição de aviso pelas rotinas temporais e a separação entre registrar e entregar a notificação. |
 | 1.7 | Novos RF-AVA-14 a RF-AVA-16, decorrentes de `02 §11.3` e `§11.4` na versão 2.7. |
 | 1.6 | Novos RF-SEG-11, RF-SEG-12, RF-BLO-10, RF-BLO-11 e RF-ADM-19 a RF-ADM-21, decorrentes de `02 §8.2`, `§18.2` e `§20.3` na versão 2.6. |
 | 1.5 | Novos RF-SOL-24 a RF-SOL-28 e RF-CAN-17 e RF-CAN-18, decorrentes de `02 §8` e `§9.2` na versão 2.5. A tabela de §10.1 passa a prever `SOLICITADA → CANCELADA_SOLICITANTE`, exigido por RF-CAN-07: o solicitante cancela a qualquer momento, e isso inclui antes da confirmação do ajudante. |

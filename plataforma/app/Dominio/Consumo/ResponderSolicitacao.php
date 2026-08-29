@@ -2,8 +2,10 @@
 
 namespace App\Dominio\Consumo;
 
+use App\Dominio\Notificacao\Notificar;
 use App\Dominio\Seguranca\GerirTermoDeCiencia;
 use App\Models\Favor;
+use App\Models\Notificacao;
 use App\Models\Solicitacao;
 use App\Models\Ticket;
 use App\Models\Usuario;
@@ -105,7 +107,7 @@ class ResponderSolicitacao
             }
 
             try {
-                $solicitacao->transicionar(Solicitacao::AGENDADA, 'solicitacao_agendada', $ajudante->id);
+                $solicitacao->transicionar(Solicitacao::AGENDADA, 'solicitacao_agendada', $ajudante->id, $momento);
             } catch (QueryException $erro) {
                 if (str_contains($erro->getMessage(), 'solicitacoes_sem_sobreposicao_do_ajudante')) {
                     throw new LogicException(
@@ -117,7 +119,17 @@ class ResponderSolicitacao
             }
 
             // 05 §6.1 — Solicitacao.AGENDADA → Ticket.RESERVADO.
-            $ticket->transicionar(Ticket::RESERVADO, 'solicitacao_agendada', $ajudante->id);
+            $ticket->transicionar(Ticket::RESERVADO, 'solicitacao_agendada', $ajudante->id, $momento);
+
+            // RF-NOT-06. O agendamento é também o momento em que telefone e
+            // endereço são liberados às partes (RF-SOL-07, 02 §18.1).
+            (new Notificar())->enviar(
+                $solicitacao->solicitante,
+                Notificacao::SOLICITACAO_RESPONDIDA,
+                $solicitacao,
+                ['desfecho' => Solicitacao::AGENDADA],
+                $momento,
+            );
 
             return $solicitacao;
         });
@@ -154,6 +166,15 @@ class ResponderSolicitacao
 
             $solicitacao->forceFill(['motivo_recusa' => $motivo])->save();
             $solicitacao->transicionar(Solicitacao::RECUSADA, 'solicitacao_recusada', $ajudante->id);
+
+            // RF-NOT-06 — a recusa vai com o motivo, que é o que permite ao
+            // solicitante pedir de novo dentro das condições.
+            (new Notificar())->enviar(
+                $solicitacao->solicitante,
+                Notificacao::SOLICITACAO_RESPONDIDA,
+                $solicitacao,
+                ['desfecho' => Solicitacao::RECUSADA, 'motivo' => $motivo],
+            );
 
             return $solicitacao;
         });

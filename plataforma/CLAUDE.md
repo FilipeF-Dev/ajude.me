@@ -40,10 +40,14 @@ Laravel 13 · PHP 8.4 · PostgreSQL 16 com PostGIS · Filament 5
 
 ## Estado atual
 
-Construídas: **Identidade + Catálogo**, **Painel da Operação**, **Oferta**, **Ticket**, **Negociação**, **Consumo**, **Segurança + Moderação** e **Reputação**. O loop de domínio de `03 §3` fecha ponta a ponta. O acompanhamento por fatia está em `../00 - Estado do Projeto.md §3`.
+**O domínio está completo.** As sete fatias de `06 §5.3` foram construídas e o loop de `03 §3` fecha ponta a ponta. O acompanhamento por fatia está em `../00 - Estado do Projeto.md §3`.
 
-A seguir, **Descoberta + Notificações** — a última fatia de domínio — e depois a **camada web**, que ainda não existe: não há uma única tela de usuário fora do painel da Operação.
+A seguir, a **camada web** (Blade + Livewire, PWA): não existe uma única tela de usuário fora do painel da Operação.
 
 **Reputação é calculada, nunca armazenada.** Não deve existir coluna de média, nota consolidada ou contador de estrelas. Se um dia pesar, a saída é cache reconstruível a partir das avaliações — nunca uma coluna que vira a verdade.
+
+**O momento é sempre parâmetro.** Toda ação de domínio aceita `?Carbon $momento`, e `transicionar()` grava esse instante na trilha — o do evento, não o do processamento. As rotinas temporais rodam a cada dez minutos e reavaliam condições que já valiam antes; gravar a hora da execução faria a trilha mentir, e prazos contados a partir dela sairiam errados.
+
+**Prazo só corre se o agendador rodar.** `ajudeme:rotinas` é o que encerra proposta vencida, abre janela de contestação, aplica confirmação tácita e expira ticket. Sem `schedule:work` em produção, nenhum prazo do produto se cumpre.
 
 **Cuidado com defaults de coluna.** Um `->default()` na migração não preenche o atributo do modelo recém-criado: o banco grava, o objeto em memória fica nulo, e qualquer checagem feita logo em seguida responde errado. Onde o default importa para uma regra, espelhe-o em `protected $attributes` (ver `Usuario` e `Denuncia`). Esse defeito já apareceu duas vezes.

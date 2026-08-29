@@ -2,7 +2,9 @@
 
 namespace App\Dominio\Moderacao;
 
+use App\Dominio\Notificacao\Notificar;
 use App\Models\Chamado;
+use App\Models\Notificacao;
 use App\Models\Ocorrencia;
 use App\Models\Operador;
 use App\Models\RegistroAuditoria;
@@ -104,6 +106,17 @@ class DecidirChamado
                 "chamado_decidido:{$decisao}",
                 $chamado,
                 $fundamento,
+                $momento,
+            );
+
+            // RF-SOL-19 — a decisão e seu fundamento são comunicados às duas
+            // partes. Decidir sem comunicar deixaria quem perdeu sem saber
+            // por quê, e quem ganhou sem saber que ganhou.
+            (new Notificar())->enviarA(
+                [$solicitacao->ajudante, $solicitacao->solicitante],
+                Notificacao::CHAMADO_DECIDIDO,
+                $chamado,
+                ['decisao' => $decisao, 'fundamento' => $fundamento],
                 $momento,
             );
 

@@ -2,8 +2,10 @@
 
 namespace App\Dominio\Moderacao;
 
+use App\Dominio\Notificacao\Notificar;
 use App\Models\Chamado;
 use App\Models\ManifestacaoChamado;
+use App\Models\Notificacao;
 use App\Models\ParametroNegocio;
 use App\Models\Solicitacao;
 use App\Models\Usuario;
@@ -57,6 +59,16 @@ class AbrirChamado
         } catch (UniqueConstraintViolationException) {
             throw new LogicException('Esta solicitação já tem chamado aberto.');
         }
+
+        // RF-SOL-14 — as duas partes são chamadas a apresentar sua versão,
+        // inclusive quem contestou.
+        (new Notificar())->enviarA(
+            [$solicitacao->ajudante, $solicitacao->solicitante],
+            Notificacao::CHAMADO_ABERTO,
+            $chamado,
+            ['manifestacao_ate' => $chamado->manifestacao_ate->toIso8601String()],
+            $momento,
+        );
 
         return $chamado;
     }

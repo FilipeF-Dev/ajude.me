@@ -48,21 +48,36 @@ A ordem é a de `06 §5.3`. Cada fatia entra com migração, modelo, ação de d
 | Consumo | ✅ | Solicitação contra a condição publicada, agendamento sem sobreposição, comparecimento, janela de contestação, confirmação tácita, cancelamento |
 | Segurança e Moderação | ✅ | Termo de ciência versionado, bloqueio, denúncia, ocorrência, chamado com decisão e efeitos, suspensão, trilha de auditoria |
 | Reputação | ✅ | Avaliação bilateral obrigatória e imutável, notas por critério, reputação calculada e segmentada, encerramento do ciclo |
-| Descoberta e Notificações | ⬜ | Busca por necessidade, termos populares, convites, avisos |
+| Descoberta e Notificações | ✅ | Reconhecimento por termos populares, feed com filtros e proximidade, fila de aviso, retenção de 90 dias, notificações do loop e **rotinas temporais** |
 
 **Requisitos adiados por dependência de fatia**, não por decisão — estão anotados no próprio código:
 
 | Requisito | Espera por |
 |---|---|
-| RF-SEG-02 / RF-SEG-10 — avisos ao contato de confiança | Descoberta e Notificações |
-| RF-AVA-12 — aviso de avaliação pendente antes da restrição | Descoberta e Notificações |
-| RF-ADM-08 — convites de acesso da base restrita | Descoberta e Notificações |
+| RF-SEG-02 / RF-SEG-10 / RF-NOT-08 / RF-NOT-11 — avisos ao **contato de confiança** | Canal externo |
+| RF-ADM-08 — convites de acesso da base restrita | Camada web |
 
-Todas as pendências anteriores foram fechadas: a fatia Reputação ligou RF-NEG-15 e I21, e a fatia Segurança e Moderação já havia ligado RF-NEG-14/I17, RF-SOL-12, RF-SOL-16 a 19 e RF-CAN-06/15.
-
-Do que resta, **só falta o disparo**: `AvaliacaoPendente::aAvisar()` já sabe quem avisar; falta o canal que envia.
+O contato de confiança não é usuário da plataforma e nunca aceitou termo algum (`05 §14.3`): o aviso a ele não cabe na tabela de notificações, que é endereçada a contas. Depende do provedor de SMS, ainda não escolhido (`05 §15.1`).
 
 **RF-ADM-08 é pré-requisito do piloto fechado** (`06 §5.2`) — não deve ficar para o fim por descuido.
+
+## O domínio está completo
+
+Todas as sete fatias de `06 §5.3` foram construídas, e as rotinas temporais fazem os prazos correrem sozinhos: proposta vencida, janela de contestação, confirmação tácita, expiração de ticket, cobrança de avaliação e fila de aviso.
+
+```
+docker compose run --rm app php artisan ajudeme:rotinas
+```
+
+Agendado a cada dez minutos em `routes/console.php`. **O agendador do Laravel precisa estar rodando em produção** — sem ele, nenhum prazo do produto se cumpre.
+
+## O que falta para a Fase 1
+
+**Só a camada web.** Não existe uma única tela de usuário fora do painel da Operação: `routes/web.php` tem apenas a página `welcome` do Laravel, e as 18 telas em `design/` são HTML estático que não fala com o banco.
+
+O portão de saída (`06 §5.4`) é "duas pessoas percorrem o loop completo sem intervenção técnica". O domínio sustenta isso hoje; falta por onde as duas pessoas entrarem.
+
+Vale lembrar `05 §15.3`: **A1 é a decisão que mais cedo pode precisar ser revista**, e o teste com aparelho real ainda não aconteceu — depende de existir um PWA para instalar.
 
 ## O que falta para a Fase 1
 
@@ -108,9 +123,9 @@ Toda a série está escrita e sincronizada entre si. Cada documento referencia o
 | Documento | Versão | Conteúdo |
 |---|---|---|
 | `01 - Visão do Produto.md` | 1.0 | Identidade, propósito, princípios |
-| `02 - Conceito e Regras de Negócio.md` | 2.7 | Conceitos e regras — **a fonte de verdade** |
+| `02 - Conceito e Regras de Negócio.md` | 2.8 | Conceitos e regras — **a fonte de verdade** |
 | `03 - MVP.md` | 1.3 | Escopo da primeira versão e dívidas assumidas |
-| `04 - Requisitos Funcionais.md` | 1.7 | Requisitos rastreáveis em 14 módulos |
+| `04 - Requisitos Funcionais.md` | 1.8 | Requisitos rastreáveis em 14 módulos |
 | `05 - Arquitetura Conceitual.md` | 1.2 | Contextos, entidades, 27 invariantes, decisões técnicas |
 | `06 - Roadmap do Produto.md` | 1.0 | Seis fases com portões de evidência |
 

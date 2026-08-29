@@ -143,6 +143,13 @@ class Solicitacao extends Model
         };
     }
 
+    public function contraparteDe(Usuario $usuario): Usuario
+    {
+        return $this->papelDe($usuario) === self::PARTE_AJUDANTE
+            ? $this->solicitante
+            : $this->ajudante;
+    }
+
     public function podeSerTransicionadaPara(string $estado): bool
     {
         return in_array($estado, self::TRANSICOES[$this->estado] ?? [], true);
@@ -205,9 +212,22 @@ class Solicitacao extends Model
 
     /**
      * P2 — nenhuma transição sem rastro, aqui como no ticket.
+     *
+     * `$momento` é o instante do **evento**, não o do processamento. As
+     * rotinas temporais rodam a cada dez minutos e reavaliam condições que já
+     * valiam antes; gravar a hora da execução faria a trilha dizer que o
+     * favor foi dado por realizado quando o processo passou por ali, e não
+     * quando a janela de contestação de fato se fechou.
+     *
+     * A diferença deixa de ser detalhe quando um prazo é contado a partir
+     * daqui — é o caso do prazo de avaliação (RF-AVA-16).
      */
-    public function transicionar(string $paraEstado, string $evento, ?int $atorId = null): void
-    {
+    public function transicionar(
+        string $paraEstado,
+        string $evento,
+        ?int $atorId = null,
+        ?Carbon $momento = null,
+    ): void {
         $deEstado = $this->estado;
 
         if (! $this->podeSerTransicionadaPara($paraEstado)) {
@@ -216,7 +236,9 @@ class Solicitacao extends Model
             );
         }
 
-        DB::transaction(function () use ($deEstado, $paraEstado, $evento, $atorId) {
+        $momento ??= Carbon::now();
+
+        DB::transaction(function () use ($deEstado, $paraEstado, $evento, $atorId, $momento) {
             $this->estado = $paraEstado;
             $this->save();
 
@@ -226,7 +248,7 @@ class Solicitacao extends Model
                 'para_estado' => $paraEstado,
                 'evento' => $evento,
                 'ator_id' => $atorId,
-                'ocorrido_em' => Carbon::now(),
+                'ocorrido_em' => $momento,
             ]);
         });
     }

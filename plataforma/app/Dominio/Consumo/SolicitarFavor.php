@@ -2,8 +2,10 @@
 
 namespace App\Dominio\Consumo;
 
+use App\Dominio\Notificacao\Notificar;
 use App\Dominio\Seguranca\GerirTermoDeCiencia;
 use App\Models\Favor;
+use App\Models\Notificacao;
 use App\Models\Solicitacao;
 use App\Models\Ticket;
 use App\Models\TransicaoSolicitacao;
@@ -97,6 +99,15 @@ class SolicitarFavor
                 'ator_id' => $solicitante->id,
                 'ocorrido_em' => $momento,
             ]);
+
+            // RF-NOT-05 — o ajudante precisa saber que há pedido esperando.
+            (new Notificar())->enviar(
+                $favor->proficienciaUsuario->usuario,
+                Notificacao::SOLICITACAO_RECEBIDA,
+                $solicitacao,
+                ['quando' => $inicioPrevisto->toIso8601String()],
+                $momento,
+            );
 
             return $solicitacao;
         });

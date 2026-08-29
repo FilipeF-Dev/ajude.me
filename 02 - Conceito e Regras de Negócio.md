@@ -171,6 +171,10 @@ A manutenção desses termos cabe à Operação, junto com o próprio catálogo 
 
 Essa abordagem foi escolhida por ser auditável, corrigível de imediato e viável em qualquer aparelho. Mecanismos de reconhecimento semântico poderão ampliar o alcance posteriormente, sem alterar o conceito.
 
+Quando a mesma frase aciona termos de mais de uma proficiência, apresenta-se primeiro a que reuniu **mais termos em comum** — mais coincidências é sinal mais forte, e a interpretação mais provável precisa aparecer na frente.
+
+O descarte de uma proficiência pelo usuário é **registrado**, e não apenas omitido do resultado. É o que transforma o erro de vocabulário em algo que a Operação consegue observar e corrigir.
+
 **Status:** ✅ Definido. O reconhecimento por termos populares curados foi confirmado na Fase 0 (`05 §15`, decisão A7).
 
 ---
@@ -1099,7 +1103,7 @@ Esses conceitos poderão ser desenvolvidos posteriormente sem alterar a essênci
 
 ---
 
-**Versão:** 2.7
+**Versão:** 2.8
 **Produto:** Ajude.me
 **Documento:** Conceito e Regras de Negócio
 
@@ -1110,6 +1114,7 @@ Esses conceitos poderão ser desenvolvidos posteriormente sem alterar a essênci
 | Versão | Alterações |
 |---|---|
 | 1.0 | Definição inicial dos conceitos e regras de negócio |
+| 2.8 | Seção 3.4 — critério de ordenação quando a frase aciona mais de uma proficiência, e registro do descarte feito pelo usuário. Decidido na construção da fatia Descoberta. |
 | 2.7 | Seção 11.3 — a lista fechada de motivos do critério Qualidade, como descritores neutros exigidos em qualquer nota. Seção 11.4 — a restrição por avaliação pendente alcança o envio de proposta, não o aceite nem a revisão; prazo de 7 dias contado da liberação. Decidido na construção da fatia Reputação. |
 | 2.6 | Seção 8.2 — o termo de ciência é aceito pelas **duas** partes e por atendimento, e o texto é versionado com registro de qual versão foi aceita. Seção 18.2 — a recusa por bloqueio não revela o bloqueio nem quem o fez; denunciar não bloqueia automaticamente; o bloqueio não interrompe compromisso já agendado. Decidido na construção da fatia Segurança e Moderação. |
 | 2.5 | Seção 8 — três consequências da medição contra a condição publicada, decididas na construção do contexto Consumo: o atendimento inteiro cabe na janela, a data não ultrapassa a validade do ticket, e ninguém solicita a si mesmo. Explicitado que favor desativado continua atendendo ticket já emitido. Seção 9.2 — justificativa obrigatória para o ajudante e opcional para o solicitante, e cancelamento admitido também antes da confirmação. |

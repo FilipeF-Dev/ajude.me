@@ -111,8 +111,12 @@ class Ticket extends Model
      * P2 exige que toda transição seja registrada; por isso mudar de estado
      * passa obrigatoriamente por aqui, e nunca por atribuição direta.
      */
-    public function transicionar(string $paraEstado, string $evento, ?int $atorId = null): void
-    {
+    public function transicionar(
+        string $paraEstado,
+        string $evento,
+        ?int $atorId = null,
+        ?Carbon $momento = null,
+    ): void {
         $deEstado = $this->estado;
 
         if (! in_array($paraEstado, self::TRANSICOES[$deEstado] ?? [], true)) {
@@ -121,12 +125,16 @@ class Ticket extends Model
             );
         }
 
-        DB::transaction(function () use ($deEstado, $paraEstado, $evento, $atorId) {
+        // O instante do evento, não o do processamento: as rotinas temporais
+        // reavaliam condições que já valiam antes de elas rodarem.
+        $momento ??= Carbon::now();
+
+        DB::transaction(function () use ($deEstado, $paraEstado, $evento, $atorId, $momento) {
             $this->estado = $paraEstado;
 
             // I7 — a validade só corre fora da análise.
             $this->validade_suspensa_em = $paraEstado === self::EM_ANALISE
-                ? Carbon::now()
+                ? $momento
                 : null;
 
             $this->save();
@@ -137,7 +145,7 @@ class Ticket extends Model
                 'para_estado' => $paraEstado,
                 'evento' => $evento,
                 'ator_id' => $atorId,
-                'ocorrido_em' => Carbon::now(),
+                'ocorrido_em' => $momento,
             ]);
         });
     }

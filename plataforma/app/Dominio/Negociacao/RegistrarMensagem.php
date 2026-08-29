@@ -2,7 +2,9 @@
 
 namespace App\Dominio\Negociacao;
 
+use App\Dominio\Notificacao\Notificar;
 use App\Models\MensagemNegociacao;
+use App\Models\Notificacao;
 use App\Models\Proposta;
 use App\Models\Usuario;
 use Illuminate\Support\Carbon;
@@ -39,11 +41,25 @@ class RegistrarMensagem
             throw new LogicException('A mensagem não pode ser vazia.');
         }
 
-        return MensagemNegociacao::create([
+        $momento ??= Carbon::now();
+
+        $mensagem = MensagemNegociacao::create([
             'proposta_id' => $proposta->id,
             'autor_id' => $autor->id,
             'texto' => $texto,
-            'enviada_em' => $momento ?? Carbon::now(),
+            'enviada_em' => $momento,
         ]);
+
+        // RF-NOT-04 — a conversa só serve se a contraparte souber que ela
+        // aconteceu. O texto não vai na notificação: quem lê, lê no chat.
+        (new Notificar())->enviar(
+            $proposta->contraparte($autor),
+            Notificacao::MENSAGEM_NA_NEGOCIACAO,
+            $proposta,
+            ['autor' => $autor->nome],
+            $momento,
+        );
+
+        return $mensagem;
     }
 }
