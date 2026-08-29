@@ -497,6 +497,14 @@ As condições podem incluir:
 
 O ajudante deverá respeitar uma solicitação que esteja de acordo com as condições do ticket.
 
+Três consequências da medição contra a condição publicada, decididas na construção do contexto Consumo:
+
+- **O atendimento inteiro cabe dentro de uma janela publicada.** Aceitar um início dentro da janela e um fim depois dela empurraria o ajudante para além do que ele se dispôs a atender — e o tempo estimado é condição publicada como qualquer outra.
+- **A data escolhida não ultrapassa a validade do ticket.** Agendar para depois do vencimento seria prometer o exercício de um direito que já terá acabado.
+- **Ninguém solicita a si mesmo o favor que oferece.** O ticket pode voltar à carteira de quem o emitiu por uma troca; consumi-lo ali não moveria ajuda nenhuma de lugar.
+
+O favor **não** precisa continuar ativo para ser solicitado: desativar impede novas emissões e não invalida ticket já emitido (seção 4.3).
+
 O ajudante deverá informar previamente o prazo mínimo e/ou máximo para a prestação do favor.
 
 Essas informações estarão disponíveis antes da negociação do ticket, evitando alegações posteriores de desconhecimento das condições.
@@ -650,7 +658,9 @@ Quando o cancelamento respeitar a antecedência:
 
 Cancelamentos recorrentes pelo solicitante também poderão gerar ocorrências e consequências.
 
-A lógica de justificativas e registros deverá funcionar de forma equivalente à aplicada aos ajudantes.
+A lógica de justificativas e registros deverá funcionar de forma equivalente à aplicada aos ajudantes, **com uma diferença**: a justificativa é obrigatória para o ajudante e opcional para o solicitante. Exigir texto de quem desiste é obstáculo ao cancelamento, e esta seção proíbe criar obstáculo. O registro da ocorrência independe de haver justificativa.
+
+O solicitante cancela **em qualquer estado da solicitação**, inclusive antes de o ajudante confirmar. Nesse caso não há reserva a desfazer: o ticket nunca chegou a sair da carteira.
 
 ---
 
@@ -1064,7 +1074,7 @@ Esses conceitos poderão ser desenvolvidos posteriormente sem alterar a essênci
 
 ---
 
-**Versão:** 2.4
+**Versão:** 2.5
 **Produto:** Ajude.me
 **Documento:** Conceito e Regras de Negócio
 
@@ -1075,6 +1085,7 @@ Esses conceitos poderão ser desenvolvidos posteriormente sem alterar a essênci
 | Versão | Alterações |
 |---|---|
 | 1.0 | Definição inicial dos conceitos e regras de negócio |
+| 2.5 | Seção 8 — três consequências da medição contra a condição publicada, decididas na construção do contexto Consumo: o atendimento inteiro cabe na janela, a data não ultrapassa a validade do ticket, e ninguém solicita a si mesmo. Explicitado que favor desativado continua atendendo ticket já emitido. Seção 9.2 — justificativa obrigatória para o ajudante e opcional para o solicitante, e cancelamento admitido também antes da confirmação. |
 | 2.4 | Seção 5.4 — três regras que a construção da fatia Negociação obrigou a decidir: ticket não trocável não circula por proposta em nenhum dos dois lados; a contrapartida pode ser vazia, exigido ao menos um ticket solicitado; e quem revisa a oferta devolve a decisão à outra parte. |
 | 2.3 | **Fase 0 fechada.** Todos os parâmetros temporais receberam valor (seção 21). Validade do ticket limitada a 1 ano. Encerramento de conta sem prazo máximo, com proteção integral ao portador. Cancelamento pelo solicitante deixa de ser bloqueado e passa a registrar ocorrência quando em cima da hora. Retenção do texto das buscas definida em 90 dias. |
 | 2.2 | Novas seções 3.4 e 3.5 — busca por necessidade e necessidade não atendida. Nova seção 18.3 — privacidade das necessidades registradas. Novos conceitos: Necessidade e Termo popular. |

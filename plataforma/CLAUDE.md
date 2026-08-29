@@ -40,8 +40,6 @@ Laravel 13 · PHP 8.4 · PostgreSQL 16 com PostGIS · Filament 5
 
 ## Estado atual
 
-Construídas: **Identidade + Catálogo**, **Painel da Operação**, **Oferta**, **Ticket** e **Negociação**. O acompanhamento por fatia está em `../00 - Estado do Projeto.md §3`.
+Construídas: **Identidade + Catálogo**, **Painel da Operação**, **Oferta**, **Ticket**, **Negociação** e **Consumo**. O acompanhamento por fatia está em `../00 - Estado do Projeto.md §3`, junto com os requisitos que ficaram à espera das fatias de que dependem.
 
-A seguir, o contexto **Consumo**: solicitação, agendamento sob as condições publicadas, janela de contestação e confirmação tácita (02 §8).
-
-Dois requisitos da Negociação ficaram anotados no código à espera das fatias de que dependem: RF-NEG-14 (bloqueio entre usuários) e RF-NEG-15 (avaliação pendente).
+A seguir, o contexto **Segurança e Moderação**: chamado, ocorrência, bloqueio e denúncia (02 §8.5, §10, §18.2). É a fatia que fecha as pontas deixadas em aberto pelo Consumo — a contestação já move a solicitação e bloqueia o ticket, mas o chamado que a Operação analisa ainda não existe.

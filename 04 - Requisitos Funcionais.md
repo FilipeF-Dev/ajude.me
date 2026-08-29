@@ -372,6 +372,11 @@ A verificação de elegibilidade de cada ticket — disponibilidade, validade e 
 | RF-SOL-21 | O encerramento revoga o acesso aos dados de contato liberados no agendamento. | 🟢 | `02 §18.1` |
 | RF-SOL-22 | O usuário consulta suas solicitações em andamento, como ajudante e como solicitante. | 🟢 | `—` |
 | RF-SOL-23 | O sistema impede o agendamento de solicitações sobrepostas para o mesmo ajudante no mesmo intervalo. | 🟢 | `—` |
+| RF-SOL-24 | O sistema impede que o ajudante solicite o próprio favor, ainda que possua o ticket. | 🟢 | `02 §8` |
+| RF-SOL-25 | O sistema exige que o intervalo previsto inteiro caiba dentro de uma janela de disponibilidade publicada. | 🟢 | `02 §8` |
+| RF-SOL-26 | O sistema impede solicitação cuja data prevista ultrapasse a validade do ticket. | 🟢 | `02 §8` |
+| RF-SOL-27 | O sistema recusa solicitação de favor presencial quando falta localização em qualquer das duas contas. | 🟢 | `02 §8` |
+| RF-SOL-28 | A solicitação de favor cujo favor foi desativado após a emissão continua sendo aceita. | 🟢 | `02 §4.3` |
 
 ## 10.1 Estados da solicitação
 
@@ -380,6 +385,7 @@ A verificação de elegibilidade de cada ticket — disponibilidade, validade e 
 | — | Solicitação enviada | `SOLICITADA` |
 | `SOLICITADA` | Confirmação do ajudante | `AGENDADA` |
 | `SOLICITADA` | Violação de condição | `RECUSADA` |
+| `SOLICITADA` | Cancelamento pelo solicitante | `CANCELADA_SOLICITANTE` |
 | `AGENDADA` | Cancelamento pelo ajudante | `CANCELADA_AJUDANTE` |
 | `AGENDADA` | Cancelamento pelo solicitante | `CANCELADA_SOLICITANTE` |
 | `AGENDADA` | Data alcançada | `AGUARDANDO_CONFIRMACAO` |
@@ -447,6 +453,8 @@ A confirmação bilateral encerra a janela imediatamente, sem aguardar o prazo (
 | RF-CAN-08 | O cancelamento com **24 horas ou mais** de antecedência não gera ocorrência nem penalidade. | 🟢 | `02 §9.2` |
 | RF-CAN-15 | O cancelamento com menos de 24 horas registra ocorrência contra quem cancelou. | 🟢 | `02 §9.2` |
 | RF-CAN-16 | O sistema informa ao solicitante, antes de confirmar o cancelamento, se ele gerará ocorrência. | 🟢 | `—` |
+| RF-CAN-17 | A justificativa é obrigatória no cancelamento pelo ajudante e opcional no cancelamento pelo solicitante. | 🟢 | `02 §9.2` |
+| RF-CAN-18 | O solicitante cancela também a solicitação ainda não confirmada, sem reserva de ticket a desfazer. | 🟢 | `02 §9.2` |
 | RF-CAN-09 | O sistema mantém contador de cancelamentos por usuário e por papel. | 🟢 | `03 §4.10` |
 | RF-CAN-10 | Ambas as partes registram ocorrência relacionada à prestação do favor. | 🟢 | `02 §10` |
 | RF-CAN-11 | As ocorrências são encaminhadas à fila de análise da Operação. | 🟢 | `03 §4.10` |
@@ -683,7 +691,7 @@ Todos são parâmetros versionados com vigência, nunca constantes de código (`
 
 ---
 
-**Versão:** 1.4
+**Versão:** 1.5
 **Produto:** Ajude.me
 **Documento:** Requisitos Funcionais
 
@@ -692,6 +700,7 @@ Todos são parâmetros versionados com vigência, nunca constantes de código (`
 | Versão | Alterações |
 |---|---|
 | 1.0 | Especificação inicial dos requisitos funcionais |
+| 1.5 | Novos RF-SOL-24 a RF-SOL-28 e RF-CAN-17 e RF-CAN-18, decorrentes de `02 §8` e `§9.2` na versão 2.5. A tabela de §10.1 passa a prever `SOLICITADA → CANCELADA_SOLICITANTE`, exigido por RF-CAN-07: o solicitante cancela a qualquer momento, e isso inclui antes da confirmação do ajudante. |
 | 1.4 | Novos requisitos RF-NEG-19, RF-NEG-20 e RF-NEG-21, decorrentes de `02 §5.4` na versão 2.4: trocabilidade vale para os dois lados da proposta, contrapartida pode ser vazia, e o aceite após revisão cabe à outra parte. |
 | 1.3 | **Fase 0 fechada.** Parâmetros temporais com valor (§19.2). Cancelamento pelo solicitante deixa de ser bloqueado e passa a registrar ocorrência quando em cima da hora — RF-CAN-07, RF-CAN-08, RF-CAN-15 e RF-CAN-16. Validade do ticket limitada a 1 ano e nível congelado no favor — RF-FAV-21 e RF-FAV-22. |
 | 1.2 | Busca por necessidade — RF-BUS-16 a RF-BUS-30 e nova seção 8.1. Manutenção de termos populares e análise de cobertura no módulo ADM — RF-ADM-15 a RF-ADM-18. Nova notificação RF-NOT-18. |

@@ -88,6 +88,18 @@ class Ticket extends Model
         return $this->hasMany(TransicaoTicket::class)->orderBy('ocorrido_em');
     }
 
+    /**
+     * 02 §5.2 — 1 ticket = 1 realização.
+     *
+     * A lista tem mais de um item quando pedidos anteriores foram recusados
+     * ou cancelados: só uma solicitação fica viva por vez, e o índice único
+     * parcial da tabela é quem garante isso.
+     */
+    public function solicitacoes(): HasMany
+    {
+        return $this->hasMany(Solicitacao::class)->orderBy('inicio_previsto');
+    }
+
     public function ocupaVaga(): bool
     {
         return in_array($this->estado, self::EM_CIRCULACAO, true);

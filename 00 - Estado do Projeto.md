@@ -45,7 +45,7 @@ A ordem é a de `06 §5.3`. Cada fatia entra com migração, modelo, ação de d
 | Oferta | ✅ | Favor, janelas, congelamento na primeira emissão, descritor de dois eixos |
 | Ticket | ✅ | Emissão sob limite de circulação, máquina de estados, cadeia de propriedade, expiração por avaliação de estado |
 | Negociação | ✅ | Proposta versionada, bloqueio de tickets, revisão, aceite atômico, chat |
-| Consumo | ⬜ | Solicitação, agendamento, janela de contestação, confirmação tácita |
+| Consumo | ✅ | Solicitação contra a condição publicada, agendamento sem sobreposição, comparecimento, janela de contestação, confirmação tácita, cancelamento |
 | Segurança e Moderação | ⬜ | Bloqueio, denúncia, chamado, ocorrência |
 | Reputação | ⬜ | Avaliação bilateral obrigatória |
 | Descoberta e Notificações | ⬜ | Busca por necessidade, termos populares |
@@ -56,6 +56,13 @@ A ordem é a de `06 §5.3`. Cada fatia entra com migração, modelo, ação de d
 |---|---|
 | RF-NEG-14 / I17 — sem proposta entre usuários com bloqueio | Segurança e Moderação |
 | RF-NEG-15 — avaliação pendente impede nova proposta | Reputação |
+| RF-SOL-12 — a contestação abre chamado para a Operação | Segurança e Moderação |
+| RF-SOL-16 a RF-SOL-19 — desfechos da análise pela Operação | Segurança e Moderação |
+| RF-CAN-06 / RF-CAN-15 — registro da ocorrência de cancelamento | Segurança e Moderação |
+| RF-SEG-02 / RF-SEG-10 — avisos ao contato de confiança | Descoberta e Notificações |
+| RF-AVA-10 / I21 — solicitação encerra com as duas avaliações | Reputação |
+
+O que o Consumo já faz nesses pontos é o que é dele: a contestação move a solicitação e bloqueia o ticket no ato, e `CancelarSolicitacao::geraOcorrencia()` já responde a pergunta de RF-CAN-16. Falta o registro do outro lado da fronteira.
 
 ## Como rodar
 
@@ -90,9 +97,9 @@ Toda a série está escrita e sincronizada entre si. Cada documento referencia o
 | Documento | Versão | Conteúdo |
 |---|---|---|
 | `01 - Visão do Produto.md` | 1.0 | Identidade, propósito, princípios |
-| `02 - Conceito e Regras de Negócio.md` | 2.4 | Conceitos e regras — **a fonte de verdade** |
+| `02 - Conceito e Regras de Negócio.md` | 2.5 | Conceitos e regras — **a fonte de verdade** |
 | `03 - MVP.md` | 1.3 | Escopo da primeira versão e dívidas assumidas |
-| `04 - Requisitos Funcionais.md` | 1.4 | Requisitos rastreáveis em 14 módulos |
+| `04 - Requisitos Funcionais.md` | 1.5 | Requisitos rastreáveis em 14 módulos |
 | `05 - Arquitetura Conceitual.md` | 1.2 | Contextos, entidades, 27 invariantes, decisões técnicas |
 | `06 - Roadmap do Produto.md` | 1.0 | Seis fases com portões de evidência |
 
