@@ -47,21 +47,33 @@ A ordem é a de `06 §5.3`. Cada fatia entra com migração, modelo, ação de d
 | Negociação | ✅ | Proposta versionada, bloqueio de tickets, revisão, aceite atômico, chat |
 | Consumo | ✅ | Solicitação contra a condição publicada, agendamento sem sobreposição, comparecimento, janela de contestação, confirmação tácita, cancelamento |
 | Segurança e Moderação | ✅ | Termo de ciência versionado, bloqueio, denúncia, ocorrência, chamado com decisão e efeitos, suspensão, trilha de auditoria |
-| Reputação | ⬜ | Avaliação bilateral obrigatória |
-| Descoberta e Notificações | ⬜ | Busca por necessidade, termos populares |
+| Reputação | ✅ | Avaliação bilateral obrigatória e imutável, notas por critério, reputação calculada e segmentada, encerramento do ciclo |
+| Descoberta e Notificações | ⬜ | Busca por necessidade, termos populares, convites, avisos |
 
 **Requisitos adiados por dependência de fatia**, não por decisão — estão anotados no próprio código:
 
 | Requisito | Espera por |
 |---|---|
-| RF-NEG-15 — avaliação pendente impede nova proposta | Reputação |
-| RF-AVA-10 / I21 — solicitação encerra com as duas avaliações | Reputação |
 | RF-SEG-02 / RF-SEG-10 — avisos ao contato de confiança | Descoberta e Notificações |
+| RF-AVA-12 — aviso de avaliação pendente antes da restrição | Descoberta e Notificações |
 | RF-ADM-08 — convites de acesso da base restrita | Descoberta e Notificações |
 
-A fatia Segurança e Moderação fechou as pendências que o Consumo e a Negociação tinham deixado: RF-NEG-14/I17, RF-SOL-12, RF-SOL-16 a 19 e RF-CAN-06/15 estão ligados.
+Todas as pendências anteriores foram fechadas: a fatia Reputação ligou RF-NEG-15 e I21, e a fatia Segurança e Moderação já havia ligado RF-NEG-14/I17, RF-SOL-12, RF-SOL-16 a 19 e RF-CAN-06/15.
+
+Do que resta, **só falta o disparo**: `AvaliacaoPendente::aAvisar()` já sabe quem avisar; falta o canal que envia.
 
 **RF-ADM-08 é pré-requisito do piloto fechado** (`06 §5.2`) — não deve ficar para o fim por descuido.
+
+## O que falta para a Fase 1
+
+O domínio está construído até aqui. Faltam **duas coisas de natureza diferente**:
+
+| Falta | Natureza |
+|---|---|
+| Descoberta + Notificações | Última fatia de domínio |
+| **Camada web** (Blade + Livewire, PWA) | Ainda não existe uma única tela de usuário |
+
+O portão de saída da Fase 1 (`06 §5.4`) é "duas pessoas percorrem o loop completo sem intervenção técnica" — e isso depende da camada web, não de mais domínio. As 18 telas em `design/` são HTML estático e não falam com o banco.
 
 ## Como rodar
 
@@ -96,9 +108,9 @@ Toda a série está escrita e sincronizada entre si. Cada documento referencia o
 | Documento | Versão | Conteúdo |
 |---|---|---|
 | `01 - Visão do Produto.md` | 1.0 | Identidade, propósito, princípios |
-| `02 - Conceito e Regras de Negócio.md` | 2.6 | Conceitos e regras — **a fonte de verdade** |
+| `02 - Conceito e Regras de Negócio.md` | 2.7 | Conceitos e regras — **a fonte de verdade** |
 | `03 - MVP.md` | 1.3 | Escopo da primeira versão e dívidas assumidas |
-| `04 - Requisitos Funcionais.md` | 1.6 | Requisitos rastreáveis em 14 módulos |
+| `04 - Requisitos Funcionais.md` | 1.7 | Requisitos rastreáveis em 14 módulos |
 | `05 - Arquitetura Conceitual.md` | 1.2 | Contextos, entidades, 27 invariantes, decisões técnicas |
 | `06 - Roadmap do Produto.md` | 1.0 | Seis fases com portões de evidência |
 

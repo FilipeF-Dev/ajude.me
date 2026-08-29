@@ -744,6 +744,17 @@ Como usuários podem atuar nos dois papéis, os conjuntos de critérios são dis
 
 O critério **Qualidade** deverá ser acompanhado de motivos pré-determinados, de forma a reduzir acusações genéricas e infundadas.
 
+Os motivos são **descritores neutros**: dizem sobre o quê a nota fala, não que alguém foi ruim. Por isso são exigidos em qualquer nota, alta ou baixa — apontar a dimensão avaliada é o que torna a avaliação legível para quem a lê depois, sem transformar o formulário em lista de defeitos.
+
+| Motivo |
+|---|
+| Pontualidade |
+| Acabamento |
+| Preparo técnico |
+| Cuidado com o espaço |
+| Clareza do combinado |
+| Tempo de execução |
+
 As notas por critério são obrigatórias. O comentário em texto é opcional.
 
 ---
@@ -758,7 +769,11 @@ A obrigatoriedade será garantida por **restrição de novas operações**: o us
 
 O objetivo é assegurar o cumprimento sem recorrer a penalidades punitivas.
 
-**Status:** 🟡 Prazo limite para avaliação pendente de definição.
+A restrição alcança **enviar** proposta, e não aceitar nem revisar proposta já recebida. O propósito é destravar o ciclo de quem está esperando; travar a resposta a uma proposta já enviada prenderia tickets de terceiros por conta de uma pendência que não é deles.
+
+A restrição cai sozinha assim que a avaliação é registrada. Nada se perde e nada é retirado de quem se atrasou.
+
+**Prazo:** 7 dias, contados a partir da liberação da avaliação (seção 21).
 
 ---
 
@@ -1084,7 +1099,7 @@ Esses conceitos poderão ser desenvolvidos posteriormente sem alterar a essênci
 
 ---
 
-**Versão:** 2.6
+**Versão:** 2.7
 **Produto:** Ajude.me
 **Documento:** Conceito e Regras de Negócio
 
@@ -1095,6 +1110,7 @@ Esses conceitos poderão ser desenvolvidos posteriormente sem alterar a essênci
 | Versão | Alterações |
 |---|---|
 | 1.0 | Definição inicial dos conceitos e regras de negócio |
+| 2.7 | Seção 11.3 — a lista fechada de motivos do critério Qualidade, como descritores neutros exigidos em qualquer nota. Seção 11.4 — a restrição por avaliação pendente alcança o envio de proposta, não o aceite nem a revisão; prazo de 7 dias contado da liberação. Decidido na construção da fatia Reputação. |
 | 2.6 | Seção 8.2 — o termo de ciência é aceito pelas **duas** partes e por atendimento, e o texto é versionado com registro de qual versão foi aceita. Seção 18.2 — a recusa por bloqueio não revela o bloqueio nem quem o fez; denunciar não bloqueia automaticamente; o bloqueio não interrompe compromisso já agendado. Decidido na construção da fatia Segurança e Moderação. |
 | 2.5 | Seção 8 — três consequências da medição contra a condição publicada, decididas na construção do contexto Consumo: o atendimento inteiro cabe na janela, a data não ultrapassa a validade do ticket, e ninguém solicita a si mesmo. Explicitado que favor desativado continua atendendo ticket já emitido. Seção 9.2 — justificativa obrigatória para o ajudante e opcional para o solicitante, e cancelamento admitido também antes da confirmação. |
 | 2.4 | Seção 5.4 — três regras que a construção da fatia Negociação obrigou a decidir: ticket não trocável não circula por proposta em nenhum dos dois lados; a contrapartida pode ser vazia, exigido ao menos um ticket solicitado; e quem revisa a oferta devolve a decisão à outra parte. |

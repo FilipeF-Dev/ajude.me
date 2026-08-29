@@ -40,8 +40,10 @@ Laravel 13 · PHP 8.4 · PostgreSQL 16 com PostGIS · Filament 5
 
 ## Estado atual
 
-Construídas: **Identidade + Catálogo**, **Painel da Operação**, **Oferta**, **Ticket**, **Negociação**, **Consumo** e **Segurança + Moderação**. O acompanhamento por fatia está em `../00 - Estado do Projeto.md §3`, junto com os requisitos que ficaram à espera das fatias de que dependem.
+Construídas: **Identidade + Catálogo**, **Painel da Operação**, **Oferta**, **Ticket**, **Negociação**, **Consumo**, **Segurança + Moderação** e **Reputação**. O loop de domínio de `03 §3` fecha ponta a ponta. O acompanhamento por fatia está em `../00 - Estado do Projeto.md §3`.
 
-A seguir, o contexto **Reputação**: avaliação bilateral obrigatória, imutável, por favor, com escala de 0 a 7 (02 §11). É a fatia que fecha o ciclo — a solicitação só chega a `ENCERRADA` com as duas avaliações (I21).
+A seguir, **Descoberta + Notificações** — a última fatia de domínio — e depois a **camada web**, que ainda não existe: não há uma única tela de usuário fora do painel da Operação.
+
+**Reputação é calculada, nunca armazenada.** Não deve existir coluna de média, nota consolidada ou contador de estrelas. Se um dia pesar, a saída é cache reconstruível a partir das avaliações — nunca uma coluna que vira a verdade.
 
 **Cuidado com defaults de coluna.** Um `->default()` na migração não preenche o atributo do modelo recém-criado: o banco grava, o objeto em memória fica nulo, e qualquer checagem feita logo em seguida responde errado. Onde o default importa para uma regra, espelhe-o em `protected $attributes` (ver `Usuario` e `Denuncia`). Esse defeito já apareceu duas vezes.

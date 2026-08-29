@@ -483,6 +483,9 @@ A confirmação bilateral encerra a janela imediatamente, sem aguardar o prazo (
 | RF-AVA-11 | O sistema impede o envio de novas propostas por usuário com avaliação pendente além do prazo. | 🟢 | `02 §11.4` |
 | RF-AVA-12 | O sistema notifica o usuário sobre avaliação pendente antes de aplicar a restrição. | 🟢 | `—` |
 | RF-AVA-13 | A avaliação não altera o nível de proficiência declarado. | 🟢 | `02 §11.2` |
+| RF-AVA-14 | O critério Qualidade admite motivos de uma lista fechada de descritores neutros. | 🟢 | `02 §11.3` |
+| RF-AVA-15 | A restrição por avaliação pendente alcança o **envio** de proposta, não o aceite nem a revisão. | 🟢 | `02 §11.4` |
+| RF-AVA-16 | O prazo de avaliação corre a partir da liberação, e vale o parâmetro vigente naquele instante. | 🟢 | `02 §11.4` |
 
 ---
 
@@ -698,7 +701,7 @@ Todos são parâmetros versionados com vigência, nunca constantes de código (`
 
 ---
 
-**Versão:** 1.6
+**Versão:** 1.7
 **Produto:** Ajude.me
 **Documento:** Requisitos Funcionais
 
@@ -707,6 +710,7 @@ Todos são parâmetros versionados com vigência, nunca constantes de código (`
 | Versão | Alterações |
 |---|---|
 | 1.0 | Especificação inicial dos requisitos funcionais |
+| 1.7 | Novos RF-AVA-14 a RF-AVA-16, decorrentes de `02 §11.3` e `§11.4` na versão 2.7. |
 | 1.6 | Novos RF-SEG-11, RF-SEG-12, RF-BLO-10, RF-BLO-11 e RF-ADM-19 a RF-ADM-21, decorrentes de `02 §8.2`, `§18.2` e `§20.3` na versão 2.6. |
 | 1.5 | Novos RF-SOL-24 a RF-SOL-28 e RF-CAN-17 e RF-CAN-18, decorrentes de `02 §8` e `§9.2` na versão 2.5. A tabela de §10.1 passa a prever `SOLICITADA → CANCELADA_SOLICITANTE`, exigido por RF-CAN-07: o solicitante cancela a qualquer momento, e isso inclui antes da confirmação do ajudante. |
 | 1.4 | Novos requisitos RF-NEG-19, RF-NEG-20 e RF-NEG-21, decorrentes de `02 §5.4` na versão 2.4: trocabilidade vale para os dois lados da proposta, contrapartida pode ser vazia, e o aceite após revisão cabe à outra parte. |

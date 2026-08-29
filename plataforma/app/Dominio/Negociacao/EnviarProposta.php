@@ -2,6 +2,7 @@
 
 namespace App\Dominio\Negociacao;
 
+use App\Dominio\Reputacao\AvaliacaoPendente;
 use App\Models\ItemProposta;
 use App\Models\ParametroNegocio;
 use App\Models\Proposta;
@@ -20,20 +21,15 @@ use LogicException;
  * à proposta. Bloquear sem criar a versão prenderia tickets órfãos; criar a
  * versão sem bloquear deixaria o mesmo ticket em duas propostas (I14).
  *
- * Pendências conhecidas, que dependem de contextos ainda não construídos:
- *
- *  RF-NEG-14 / I17 — não existe proposta entre usuários com bloqueio em
- *                    qualquer direção. Depende do contexto Moderação.
- *  RF-NEG-15       — quem tem avaliação pendente além do prazo não envia
- *                    nova proposta. Depende do contexto Reputação.
- *
- * Ambas entram aqui quando suas fatias existirem; estão registradas no
- * `00 - Estado do Projeto.md` para não se perderem.
+ * RF-NEG-14 e I17 — a ausência de bloqueio entre as partes é conferida em
+ * `VerificarComposicao`, junto com o restante da elegibilidade.
  */
 class EnviarProposta
 {
-    public function __construct(private readonly VerificarComposicao $verificador = new VerificarComposicao())
-    {
+    public function __construct(
+        private readonly VerificarComposicao $verificador = new VerificarComposicao(),
+        private readonly AvaliacaoPendente $avaliacoes = new AvaliacaoPendente(),
+    ) {
     }
 
     public function executar(
@@ -47,6 +43,22 @@ class EnviarProposta
         }
 
         $momento ??= Carbon::now();
+
+        /**
+         * RF-NEG-15 e RF-AVA-11 — quem tem avaliação vencida não envia
+         * proposta nova.
+         *
+         * A restrição é sobre **enviar**, não sobre aceitar nem revisar:
+         * 02 §11.4 quer destravar o ciclo de quem está esperando, e travar a
+         * resposta a uma proposta já enviada prenderia tickets de terceiros
+         * por conta de uma pendência que não é deles.
+         */
+        if ($this->avaliacoes->restringeNovasPropostas($remetente, $momento)) {
+            throw new LogicException(
+                'Você tem avaliação pendente além do prazo. '
+                .'Avalie os favores concluídos para voltar a enviar propostas.'
+            );
+        }
 
         return DB::transaction(function () use ($remetente, $destinatario, $composicao, $momento) {
             $tickets = $this->verificador->executar(

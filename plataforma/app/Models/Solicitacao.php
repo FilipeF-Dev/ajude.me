@@ -104,6 +104,31 @@ class Solicitacao extends Model
         return $this->hasMany(TransicaoSolicitacao::class)->orderBy('ocorrido_em');
     }
 
+    public function avaliacoes(): HasMany
+    {
+        return $this->hasMany(Avaliacao::class);
+    }
+
+    /**
+     * O instante em que a avaliação foi liberada (RF-SOL-20).
+     *
+     * Sai da trilha de transições, e não de uma coluna própria: a trilha já é
+     * a fonte de verdade sobre quando cada estado aconteceu, e duplicá-la
+     * criaria duas datas que podem divergir.
+     */
+    public function realizadaEm(): ?Carbon
+    {
+        return $this->transicoes()
+            ->where('para_estado', self::REALIZADA)
+            ->first()?->ocorrido_em;
+    }
+
+    /** I21 — o ciclo encerra somente com as duas avaliações (RF-AVA-10). */
+    public function ambasAvaliaram(): bool
+    {
+        return $this->avaliacoes()->count() === 2;
+    }
+
     public function favor(): ?Favor
     {
         return $this->ticket?->favor;
