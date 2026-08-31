@@ -585,6 +585,11 @@ A confirmação bilateral encerra a janela imediatamente, sem aguardar o prazo (
 | RF-ADM-19 | Existe no máximo um chamado por solicitação. | 🟢 | `02 §8.5` |
 | RF-ADM-20 | A suspensão de um favor impede novas emissões e **não** invalida tickets já emitidos. | 🟢 | `02 §20.3` |
 | RF-ADM-21 | A Operação decide o chamado sem depender do esgotamento do prazo de manifestação. | 🟢 | `02 §8.5` |
+| RF-ADM-22 | A Operação emite convites em lote, com destinatário e prazo opcionais. | 🟢 | `06 §5.2` |
+| RF-ADM-23 | Um convite serve a **uma** conta: usado, não vale de novo. | 🟢 | `06 §5.2` |
+| RF-ADM-24 | A Operação cancela convite ainda não usado; convite já usado não se cancela. | 🟢 | `—` |
+| RF-ADM-25 | O código do convite evita caracteres que se confundem lidos ou escritos à mão. | 🟢 | `—` |
+| RF-ADM-26 | A exigência de convite é parâmetro de fase, desligável sem alteração de código. | 🟢 | `06 §8` |
 
 > **RF-ADM-17 é o mecanismo de correção da busca.** Uma necessidade que não reconhece proficiência alguma é falha de vocabulário, não ausência de oferta — e as duas situações exigem respostas opostas: incluir um termo, ou recrutar um ajudante. Sem distinguir uma da outra, a análise de cobertura (RF-ADM-16) mede a coisa errada.
 
@@ -612,6 +617,7 @@ Os requisitos abaixo não decorrem de regra explícita nos documentos 02 e 03. S
 | RF-SEG-10 | Ausência de check-out dispara alerta ao contato de confiança. |
 | RF-BLO-06 | Bloqueio não desfaz relação já agendada nem invalida tickets transferidos. |
 | RF-CAD-10 | CPF imutável após o cadastro. |
+| RF-CAD-17 | Cadastro exige declarar ao menos uma proficiência — mitigação de `06 R2`. |
 | RF-CAD-16 | Desativação imediata quando não há tickets em circulação. |
 | RF-ADM-01 a 10 | Existência de um módulo administrativo e de trilha de auditoria. |
 
@@ -708,7 +714,7 @@ Todos são parâmetros versionados com vigência, nunca constantes de código (`
 
 ---
 
-**Versão:** 1.8
+**Versão:** 1.9
 **Produto:** Ajude.me
 **Documento:** Requisitos Funcionais
 
@@ -717,6 +723,7 @@ Todos são parâmetros versionados com vigência, nunca constantes de código (`
 | Versão | Alterações |
 |---|---|
 | 1.0 | Especificação inicial dos requisitos funcionais |
+| 1.9 | Convites de acesso da base restrita — RF-ADM-22 a RF-ADM-26 e RF-CAD-17, decorrentes de `06 §5.2`, `06 R2` e `06 §8`. O cadastro passa a exigir a declaração de ao menos uma proficiência, que é a mitigação prevista para o risco de rede assimétrica. |
 | 1.8 | Novos RF-BUS-31 a RF-BUS-33, decorrentes de `02 §3.4` na versão 2.8. Novos RF-NOT-19 e RF-NOT-20, sobre repetição de aviso pelas rotinas temporais e a separação entre registrar e entregar a notificação. |
 | 1.7 | Novos RF-AVA-14 a RF-AVA-16, decorrentes de `02 §11.3` e `§11.4` na versão 2.7. |
 | 1.6 | Novos RF-SEG-11, RF-SEG-12, RF-BLO-10, RF-BLO-11 e RF-ADM-19 a RF-ADM-21, decorrentes de `02 §8.2`, `§18.2` e `§20.3` na versão 2.6. |

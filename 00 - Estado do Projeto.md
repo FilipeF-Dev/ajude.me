@@ -4,7 +4,7 @@
 >
 > **Atualize este documento sempre que uma decisão estrutural for tomada.**
 
-**Última atualização:** 28 de agosto de 2026
+**Última atualização:** 31 de agosto de 2026
 
 ---
 
@@ -54,12 +54,9 @@ A ordem é a de `06 §5.3`. Cada fatia entra com migração, modelo, ação de d
 
 | Requisito | Espera por |
 |---|---|
-| RF-SEG-02 / RF-SEG-10 / RF-NOT-08 / RF-NOT-11 — avisos ao **contato de confiança** | Canal externo |
-| RF-ADM-08 — convites de acesso da base restrita | Camada web |
+| RF-SEG-02 / RF-SEG-10 / RF-NOT-08 / RF-NOT-11 — avisos ao **contato de confiança** | Provedor de SMS |
 
 O contato de confiança não é usuário da plataforma e nunca aceitou termo algum (`05 §14.3`): o aviso a ele não cabe na tabela de notificações, que é endereçada a contas. Depende do provedor de SMS, ainda não escolhido (`05 §15.1`).
-
-**RF-ADM-08 é pré-requisito do piloto fechado** (`06 §5.2`) — não deve ficar para o fim por descuido.
 
 ## O domínio está completo
 
@@ -89,8 +86,11 @@ Blade + Livewire sobre o domínio, na linguagem visual da seção 7.2, instaláv
 | Cancelar, com a consequência dita antes | ✅ |
 | Avaliar | ✅ |
 | Diagnóstico do aparelho (instrumento de A1) | ✅ |
-| Telas de moderação: denunciar, bloquear | ⬜ |
-| Fila de chamados e denúncias na Operação (Filament) | ⬜ |
+| Moderação no aplicativo: denunciar e bloquear | ✅ |
+| Painel da Operação: chamados, denúncias, ocorrências, termo, auditoria | ✅ |
+| Convites de acesso da base restrita (RF-ADM-08) | ✅ |
+| Métricas de `03 §7` no painel (RF-ADM-09) | ⬜ |
+| Necessidades não atendidas e vocabulário (RF-ADM-16 a 18) | ⬜ |
 
 ```
 cd plataforma
@@ -104,7 +104,15 @@ Entre em `http://localhost:8000` com `marta@exemplo.br` ou `joel@exemplo.br`, se
 
 ## O que falta para a Fase 1
 
-As telas de consumo e moderação da tabela acima. Depois delas, o portão de saída (`06 §5.4`) — "duas pessoas percorrem o loop completo sem intervenção técnica" — passa a ser verificável de ponta a ponta.
+O loop está completo e o piloto tem como ser operado. Restam três coisas:
+
+| Falta | Natureza |
+|---|---|
+| Métricas de `03 §7` no painel (RF-ADM-09) | Sem elas, o portão da Fase 2 não é apurável |
+| Necessidades não atendidas e vocabulário (RF-ADM-16 a 18) | O mapa do que falta na região já é coletado; falta a tela |
+| Fechar a verificação de A1 | Ver abaixo — dois toques num aparelho |
+
+O portão de saída (`06 §5.4`) — "duas pessoas percorrem o loop completo sem intervenção técnica" — já é verificável de ponta a ponta.
 
 ## Verificação de A1 em aparelho real — parcial
 
@@ -139,17 +147,6 @@ O `vendor/` foi movido para um volume Docker. O bootstrap do Laravel abre centen
 
 Consequência: `composer install` roda dentro do contêiner, e o `vendor/` do host fica desatualizado de propósito — coerente com a decisão de que tudo roda em contêiner.
 
-## O que falta para a Fase 1
-
-O domínio está construído até aqui. Faltam **duas coisas de natureza diferente**:
-
-| Falta | Natureza |
-|---|---|
-| Descoberta + Notificações | Última fatia de domínio |
-| **Camada web** (Blade + Livewire, PWA) | Ainda não existe uma única tela de usuário |
-
-O portão de saída da Fase 1 (`06 §5.4`) é "duas pessoas percorrem o loop completo sem intervenção técnica" — e isso depende da camada web, não de mais domínio. As 18 telas em `design/` são HTML estático e não falam com o banco.
-
 ## Como rodar
 
 O projeto vive em `plataforma/`. **Não é preciso ter PHP instalado** — tudo roda em contêiner:
@@ -183,9 +180,9 @@ Toda a série está escrita e sincronizada entre si. Cada documento referencia o
 | Documento | Versão | Conteúdo |
 |---|---|---|
 | `01 - Visão do Produto.md` | 1.0 | Identidade, propósito, princípios |
-| `02 - Conceito e Regras de Negócio.md` | 2.8 | Conceitos e regras — **a fonte de verdade** |
+| `02 - Conceito e Regras de Negócio.md` | 2.9 | Conceitos e regras — **a fonte de verdade** |
 | `03 - MVP.md` | 1.3 | Escopo da primeira versão e dívidas assumidas |
-| `04 - Requisitos Funcionais.md` | 1.8 | Requisitos rastreáveis em 14 módulos |
+| `04 - Requisitos Funcionais.md` | 1.9 | Requisitos rastreáveis em 14 módulos |
 | `05 - Arquitetura Conceitual.md` | 1.2 | Contextos, entidades, 27 invariantes, decisões técnicas |
 | `06 - Roadmap do Produto.md` | 1.0 | Seis fases com portões de evidência |
 

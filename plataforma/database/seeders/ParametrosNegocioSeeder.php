@@ -51,6 +51,11 @@ class ParametrosNegocioSeeder extends Seeder
                 '90',
                 'Prazo após o qual o texto original da busca é apagado, restando apenas o agregado (02 §18.3).',
             ],
+            [
+                ParametroNegocio::CADASTRO_POR_CONVITE,
+                '1',
+                'Base restrita: o cadastro exige convite. Desligar na Fase 4, quando o cadastro abrir (06 §8).',
+            ],
         ];
 
         foreach ($parametros as [$chave, $valor, $descricao]) {

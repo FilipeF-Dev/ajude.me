@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Parâmetro de negócio versionado por vigência (P6, 05 §9).
@@ -21,6 +22,13 @@ class ParametroNegocio extends Model
     public const CANCELAMENTO_SEM_OCORRENCIA_HORAS = 'cancelamento_sem_ocorrencia_horas';
     public const VALIDADE_MAXIMA_TICKET_DIAS = 'validade_maxima_ticket_dias';
     public const RETENCAO_TEXTO_BUSCA_DIAS = 'retencao_texto_busca_dias';
+
+    /**
+     * Modo de base restrita (RF-ADM-08, 06 §5.2). `1` exige convite no
+     * cadastro; `0` abre. Vive aqui, e não numa constante, porque abrir a
+     * base é decisão de fase (06 §8) e não pode exigir reimplantação.
+     */
+    public const CADASTRO_POR_CONVITE = 'cadastro_por_convite';
 
     protected $table = 'parametros_negocio';
 
@@ -65,18 +73,32 @@ class ParametroNegocio extends Model
      */
     public static function definir(string $chave, string $valor, ?int $alteradoPor = null): self
     {
-        $agora = Carbon::now();
+        return DB::transaction(function () use ($chave, $valor, $alteradoPor) {
+            $vigente = static::query()
+                ->where('chave', $chave)
+                ->whereNull('vigente_ate')
+                ->lockForUpdate()
+                ->first();
 
-        static::query()
-            ->where('chave', $chave)
-            ->whereNull('vigente_ate')
-            ->update(['vigente_ate' => $agora, 'updated_at' => $agora]);
+            /**
+             * O corte é um só: onde a vigência anterior termina, a nova
+             * começa. Sem vão e sem sobreposição.
+             *
+             * Se as duas caírem no mesmo segundo, a vigência anterior fica
+             * com duração zero — o que é o registro fiel de um valor
+             * corrigido no mesmo instante em que foi posto, e `valorEm()`
+             * a ignora sozinha.
+             */
+            $corte = Carbon::now();
 
-        return static::create([
-            'chave' => $chave,
-            'valor' => $valor,
-            'vigente_de' => $agora,
-            'alterado_por' => $alteradoPor,
-        ]);
+            $vigente?->forceFill(['vigente_ate' => $corte])->save();
+
+            return static::create([
+                'chave' => $chave,
+                'valor' => $valor,
+                'vigente_de' => $corte,
+                'alterado_por' => $alteradoPor,
+            ]);
+        });
     }
 }

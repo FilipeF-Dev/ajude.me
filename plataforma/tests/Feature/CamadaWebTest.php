@@ -138,7 +138,18 @@ class CamadaWebTest extends TestCase
 
     public function test_o_cadastro_recusa_cpf_invalido(): void
     {
+        $ajudante = $this->usuario('Marta Vilela');
+        $favor = $this->favorComTicket($ajudante);
+        $convite = app(\App\Dominio\Identidade\GerirConvites::class)
+            ->emitir(\App\Models\Operador::create([
+                'nome' => 'Operação',
+                'email' => 'operacao@ajude.me',
+                'senha' => 'segredo123',
+            ]))
+            ->first();
+
         Livewire::test(Cadastrar::class)
+            ->set('codigoConvite', $convite->codigo)
             ->set('nome', 'Ana Prado')
             ->set('email', 'ana@exemplo.br')
             ->set('telefone', '11988420000')
@@ -147,6 +158,8 @@ class CamadaWebTest extends TestCase
             ->set('cpf', '111.111.111-11')
             ->set('senha', 'segredo123')
             ->set('senha_confirmation', 'segredo123')
+            // RF-CAD-17 — o cadastro passou a exigir uma proficiência (06 R2).
+            ->set('proficienciaId', $favor->proficienciaUsuario->proficiencia_id)
             ->call('cadastrar')
             ->assertHasErrors(['cpf']);
 
@@ -382,6 +395,53 @@ class CamadaWebTest extends TestCase
             ->assertRedirect(route('carteira'));
 
         $this->assertSame(1, $solicitacao->avaliacoes()->count());
+    }
+
+    // ------------------------------------------------------------ Moderação
+
+    public function test_bloquear_e_desbloquear_do_perfil(): void
+    {
+        $eu = $this->usuario('Joel Batista');
+        $outro = $this->usuario('Marta Vilela');
+
+        $tela = Livewire::actingAs($eu)->test(\App\Livewire\Moderar::class, ['alvo' => $outro]);
+
+        $tela->call('bloquear')->assertSet('bloqueado', true);
+        $this->assertTrue(\App\Models\Bloqueio::existeEntre($eu->id, $outro->id));
+
+        $tela->call('desbloquear')->assertSet('bloqueado', false);
+        $this->assertFalse(\App\Models\Bloqueio::existeEntre($eu->id, $outro->id));
+    }
+
+    public function test_denunciar_nao_bloqueia_e_a_tela_diz_isso(): void
+    {
+        $eu = $this->usuario('Joel Batista');
+        $outro = $this->usuario('Marta Vilela');
+
+        Livewire::actingAs($eu)
+            ->test(\App\Livewire\Moderar::class, ['alvo' => $outro])
+            ->call('abrirDenuncia')
+            // RF-BLO-11 — são dois atos com propósitos diferentes, e a tela
+            // precisa deixar isso claro.
+            ->assertSee('não bloqueia')
+            ->set('motivo', 'Pediu dinheiro por fora.')
+            ->call('denunciar')
+            ->assertSet('denunciando', false);
+
+        $this->assertSame(1, \App\Models\Denuncia::count());
+        $this->assertFalse(\App\Models\Bloqueio::existeEntre($eu->id, $outro->id));
+    }
+
+    public function test_o_perfil_publico_avisa_o_que_o_bloqueio_nao_faz(): void
+    {
+        $eu = $this->usuario('Joel Batista');
+        $outro = $this->usuario('Marta Vilela');
+
+        // RF-BLO-06 — dito antes, para ninguém bloquear esperando escapar de
+        // um atendimento combinado.
+        Livewire::actingAs($eu)
+            ->test(\App\Livewire\Moderar::class, ['alvo' => $outro])
+            ->assertSee('não cancela atendimento já combinado');
     }
 
     /** Leva um atendimento até `REALIZADA`, quando a avaliação é liberada. */

@@ -52,5 +52,7 @@
                 @endforeach
             </div>
         @endif
+
+        <livewire:moderar :alvo="$usuario" :key="'moderar-'.$usuario->id" />
     </div>
 </div>
