@@ -77,6 +77,11 @@ class ParametrosNegocioSeeder extends Seeder
                 'Espera entre pedidos de recuperação, para o formulário não virar torneira de mensagens.',
             ],
             [
+                ParametroNegocio::CHECKOUT_ATRASO_MINUTOS,
+                '60',
+                'Tolerância após o fim previsto antes de avisar o contato de confiança de que o check-out não veio (RF-SEG-10).',
+            ],
+            [
                 ParametroNegocio::CADASTRO_POR_CONVITE,
                 '1',
                 'Base restrita: o cadastro exige convite. Desligar na Fase 4, quando o cadastro abrir (06 §8).',
