@@ -71,6 +71,21 @@ Em `/operacao/cobertura`, duas listas que nunca devem ser somadas: **falta vocab
 
 O contato de confiança não é usuário da plataforma e nunca aceitou termo algum (`05 §14.3`): o aviso a ele não cabe na tabela de notificações, que é endereçada a contas. Depende do provedor de SMS, ainda não escolhido (`05 §15.1`).
 
+## Lacunas de implementação
+
+Encontradas em auditoria, e diferentes das acima: **não estão adiadas por dependência, estão simplesmente ausentes.**
+
+| Requisito | Situação |
+|---|---|
+| `RF-CAD-04` a `RF-CAD-06` — verificação de e-mail e telefone | Tabela, modelo e o método `contatoVerificado()` existem. **Nada cria verificação, nada envia código, o selo não aparece em tela nenhuma.** |
+| `RF-CAD-08` — recuperação de senha | Não há rota nem tela. Quem esquecer a senha perde a conta. |
+| `RF-CAD-11` a `RF-CAD-16` — encerramento de conta | O estado `ENCERRANDO` e as regras `podeOfertar` / `deveAtender` existem no modelo e estão testadas, mas **nenhuma ação da aplicação coloca a conta nesse estado.** |
+| Envio de e-mail e SMS | `MAIL_MAILER=log` e nenhuma chamada de envio no domínio. As notificações são gravadas e ficam na tabela — ninguém é avisado fora do aplicativo. |
+
+Os quatro convergem no mesmo ponto: **nenhum canal de saída foi escolhido nem ligado.** Escolher o provedor destrava os três primeiros de uma vez.
+
+A verificação de contato é a mais séria: o `03 §4.1` promete o selo "Contato verificado" como a garantia do MVP, e sem telefone verificado a dívida `D1` fica pior do que a assumida.
+
 ## O domínio está completo
 
 Todas as sete fatias de `06 §5.3` foram construídas, e as rotinas temporais fazem os prazos correrem sozinhos: proposta vencida, janela de contestação, confirmação tácita, expiração de ticket, cobrança de avaliação e fila de aviso.
