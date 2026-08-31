@@ -31,4 +31,6 @@ Nunca use: serviço, preço, comprar, vender, contratar, profissional, cliente.
 
 Decisão tomada volta aos documentos afetados **na mesma sessão**, com a versão do documento incrementada e o histórico de versões atualizado. O `04` e o `05` derivam do `02`; drift entre eles é o modo de falha mais provável do projeto.
 
+**Um PR por fatia.** Cada fatia entregue abre a própria branch e o próprio PR, e não continua numa branch já enviada. Empilhar commits depois de um merge deixa trabalho órfão: o GitHub fecha o PR ao mesclar e não o reabre — já aconteceu uma vez, com seis commits.
+
 Idiomas: documentação e interface em português do Brasil.
