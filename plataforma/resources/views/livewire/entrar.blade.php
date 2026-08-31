@@ -36,6 +36,11 @@
                 <span wire:loading wire:target="entrar">Entrando…</span>
             </button>
         </form>
+
+        <a href="{{ route('esqueci-senha') }}" wire:navigate
+           class="text-center text-[15px] font-semibold text-acento">
+            Esqueci a senha
+        </a>
     </div>
 
     <p class="mt-8 text-center text-[15px] text-tinta-suave">

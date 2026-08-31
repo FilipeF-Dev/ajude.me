@@ -78,11 +78,11 @@ Encontradas em auditoria, e diferentes das acima: **não estão adiadas por depe
 | Requisito | Situação |
 |---|---|
 | ~~`RF-CAD-04` a `RF-CAD-06` — verificação de e-mail e telefone~~ | ✅ **Feita.** Código cifrado, validade e limite de erros por parâmetro, tela em `/perfil/contato` e selo no perfil. Enquanto não há provedor, o código fica legível em `envios` — é assim que um cadastro se completa hoje. |
-| `RF-CAD-08` — recuperação de senha | Não há rota nem tela. Quem esquecer a senha perde a conta. |
+| ~~`RF-CAD-08` — recuperação de senha~~ | ✅ **Feita.** Token cifrado, uso único, validade por parâmetro. O pedido é silencioso por decisão: e-mail que existe e que não existe respondem igual (NF-SEG-05). |
 | `RF-CAD-11` a `RF-CAD-16` — encerramento de conta | O estado `ENCERRANDO` e as regras `podeOfertar` / `deveAtender` existem no modelo e estão testadas, mas **nenhuma ação da aplicação coloca a conta nesse estado.** |
 | Envio de e-mail e SMS | `MAIL_MAILER=log` e nenhuma chamada de envio no domínio. As notificações são gravadas e ficam na tabela — ninguém é avisado fora do aplicativo. |
 
-Os quatro convergem no mesmo ponto: **nenhum canal de saída foi escolhido nem ligado.** Escolher o provedor destrava os três primeiros de uma vez.
+Sobraram duas. A primeira, o **envio de verdade**, é o que falta para as demais servirem a alguém: verificação e recuperação estão construídas e testadas, mas os códigos e os links ficam presos em `envios`.
 
 ### A camada de saída já existe
 
@@ -94,7 +94,7 @@ Contratar um provedor é escrever a classe que implementa a interface, registrá
 
 O canal em uso é o `registrado`: grava e não envia. Ele **nunca marca "entregue"**, e é assim que se enxerga, olhando o painel, que nada saiu da plataforma.
 
-A verificação de contato é a mais séria: o `03 §4.1` promete o selo "Contato verificado" como a garantia do MVP, e sem telefone verificado a dívida `D1` fica pior do que a assumida.
+**Enquanto o canal for o `registrado`, o piloto depende de alguém abrir a lista de envios** para ler um código de verificação ou um link de recuperação. Funciona para testar o produto entre pessoas próximas; não funciona com gente que você não pode ligar e avisar.
 
 ## O domínio está completo
 
@@ -127,8 +127,10 @@ Blade + Livewire sobre o domínio, na linguagem visual da seção 7.2, instaláv
 | Moderação no aplicativo: denunciar e bloquear | ✅ |
 | Painel da Operação: chamados, denúncias, ocorrências, termo, auditoria | ✅ |
 | Convites de acesso da base restrita (RF-ADM-08) | ✅ |
-| Métricas de `03 §7` no painel (RF-ADM-09) | ⬜ |
-| Necessidades não atendidas e vocabulário (RF-ADM-16 a 18) | ⬜ |
+| Métricas de `03 §7` no painel (RF-ADM-09) | ✅ |
+| Necessidades não atendidas e vocabulário (RF-ADM-16 a 18) | ✅ |
+| Confirmar contato, com o selo no perfil (RF-CAD-04 a 06) | ✅ |
+| Recuperação de senha (RF-CAD-08) | ✅ |
 
 ```
 cd plataforma

@@ -7,6 +7,8 @@ use App\Livewire\Carteira;
 use App\Livewire\Conversas;
 use App\Livewire\Diagnostico;
 use App\Livewire\Entrar;
+use App\Livewire\EscolherSenha;
+use App\Livewire\EsqueciSenha;
 use App\Livewire\Inicio;
 use App\Livewire\Negociacao;
 use App\Livewire\Oferecer;
@@ -35,6 +37,8 @@ Route::get('/manifesto.webmanifest', fn () => response(
 Route::middleware('guest')->group(function () {
     Route::get('/entrar', Entrar::class)->name('entrar');
     Route::get('/criar-conta', Cadastrar::class)->name('cadastrar');
+    Route::get('/esqueci-a-senha', EsqueciSenha::class)->name('esqueci-senha');
+    Route::get('/senha-nova/{token}', EscolherSenha::class)->name('redefinir-senha');
 });
 
 Route::middleware('auth')->group(function () {

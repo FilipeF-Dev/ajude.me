@@ -67,6 +67,16 @@ class ParametrosNegocioSeeder extends Seeder
                 'Espera entre pedidos de código. SMS custa por mensagem e pedir código é gatilho de abuso (05 §15.1).',
             ],
             [
+                ParametroNegocio::RECUPERACAO_VALIDADE_MINUTOS,
+                '60',
+                'Quanto tempo o link de recuperação de senha continua valendo (RF-CAD-08).',
+            ],
+            [
+                ParametroNegocio::RECUPERACAO_INTERVALO_SEGUNDOS,
+                '60',
+                'Espera entre pedidos de recuperação, para o formulário não virar torneira de mensagens.',
+            ],
+            [
                 ParametroNegocio::CADASTRO_POR_CONVITE,
                 '1',
                 'Base restrita: o cadastro exige convite. Desligar na Fase 4, quando o cadastro abrir (06 §8).',
