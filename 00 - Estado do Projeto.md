@@ -84,6 +84,16 @@ Encontradas em auditoria, e diferentes das acima: **não estão adiadas por depe
 
 Os quatro convergem no mesmo ponto: **nenhum canal de saída foi escolhido nem ligado.** Escolher o provedor destrava os três primeiros de uma vez.
 
+### A camada de saída já existe
+
+O que falta é o provedor, não a estrutura. `app/Dominio/Saida/` traz a interface `CanalDeSaida`, o valor `Mensagem`, o despachante e a tabela `envios`.
+
+Contratar um provedor é escrever a classe que implementa a interface, registrá-la em `config/saida.php` e mudar `SAIDA_CANAL` no ambiente. Nada mais na aplicação precisa saber quem entrega.
+
+**A saída é endereçada a um endereço, não a uma conta** — e essa distinção é a razão de ela não caber em `notificacoes`. O contato de confiança não tem conta (`05 §14.3`), então sem esta camada `RF-SEG-02` não teria onde existir.
+
+O canal em uso é o `registrado`: grava e não envia. Ele **nunca marca "entregue"**, e é assim que se enxerga, olhando o painel, que nada saiu da plataforma.
+
 A verificação de contato é a mais séria: o `03 §4.1` promete o selo "Contato verificado" como a garantia do MVP, e sem telefone verificado a dívida `D1` fica pior do que a assumida.
 
 ## O domínio está completo

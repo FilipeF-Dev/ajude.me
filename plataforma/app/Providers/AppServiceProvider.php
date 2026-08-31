@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Dominio\Saida\CanalDeSaida;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use InvalidArgumentException;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -33,5 +35,26 @@ class AppServiceProvider extends ServiceProvider
          * surte efeito nenhum.
          */
         Route::pattern('record', '[0-9]+');
+
+        /**
+         * O canal de saída é resolvido por configuração (05 §15.1).
+         *
+         * Quem manda mensagem pede a interface e não sabe quem entrega. Isso
+         * é o que permite construir e testar verificação de contato e
+         * recuperação de senha antes de existir provedor contratado — e o que
+         * fará a troca por um provedor real ser uma linha de ambiente.
+         */
+        $this->app->bind(CanalDeSaida::class, function ($app) {
+            $escolhido = config('saida.canal');
+            $classe = config("saida.canais.{$escolhido}");
+
+            if ($classe === null) {
+                throw new InvalidArgumentException(
+                    "Canal de saída \"{$escolhido}\" não está configurado em config/saida.php."
+                );
+            }
+
+            return $app->make($classe);
+        });
     }
 }
