@@ -154,5 +154,45 @@
         </div>
 
         <button type="button" wire:click="sair" class="botao botao-secundario w-full">Sair</button>
+
+        @if (session('recado'))
+            <p class="text-[14px] leading-relaxed text-emergencia">{{ session('recado') }}</p>
+        @endif
+
+        @if ($confirmandoEncerramento)
+            <div class="flex flex-col gap-3 rounded-[14px] border border-aviso-borda bg-aviso-fundo p-4">
+                <p class="text-[15px] font-semibold text-aviso-tinta">Encerrar sua conta?</p>
+
+                @if ($ticketsPendentes > 0)
+                    {{-- 02 §20, princípio 3: ticket emitido não desaparece
+                         porque quem o emitiu quis sair. A pessoa precisa saber
+                         disso antes de confirmar, não depois. --}}
+                    <p class="text-[14px] leading-relaxed text-aviso-tinta">
+                        Você ainda deve
+                        <strong>{{ $ticketsPendentes }} {{ $ticketsPendentes === 1 ? 'favor' : 'favores' }}</strong>
+                        para quem já tem seus tickets. Sua conta para de aparecer e você não oferece
+                        mais nada, mas continua precisando atender esses pedidos até o último ticket
+                        ser usado ou vencer.
+                    </p>
+                @else
+                    <p class="text-[14px] leading-relaxed text-aviso-tinta">
+                        Você não deve nenhum favor. Sua conta será encerrada agora, e os tickets que
+                        estão na sua carteira deixam de valer.
+                    </p>
+                @endif
+
+                <div class="flex gap-2">
+                    <button type="button" wire:click="desistirDoEncerramento"
+                            class="botao botao-secundario flex-1">Voltar</button>
+                    <button type="button" wire:click="encerrarConta"
+                            class="botao botao-secundario flex-1 text-emergencia">Encerrar</button>
+                </div>
+            </div>
+        @else
+            <button type="button" wire:click="pedirEncerramento"
+                    class="text-center text-[14px] text-tinta-suave">
+                Encerrar minha conta
+            </button>
+        @endif
     </div>
 </div>

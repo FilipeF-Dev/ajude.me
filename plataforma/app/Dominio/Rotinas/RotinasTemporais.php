@@ -5,6 +5,7 @@ namespace App\Dominio\Rotinas;
 use App\Dominio\Consumo\ApurarRealizacao;
 use App\Dominio\Descoberta\ApagarTextoDasBuscas;
 use App\Dominio\Descoberta\AvisarProficienciaDisponivel;
+use App\Dominio\Identidade\EncerrarConta;
 use App\Dominio\Negociacao\EncerrarProposta;
 use App\Dominio\Notificacao\Notificar;
 use App\Dominio\Reputacao\AvaliacaoPendente;
@@ -44,6 +45,7 @@ class RotinasTemporais
         private readonly AvisarProficienciaDisponivel $avisos = new AvisarProficienciaDisponivel(),
         private readonly ApagarTextoDasBuscas $retencao = new ApagarTextoDasBuscas(),
         private readonly Notificar $notificacoes = new Notificar(),
+        private readonly EncerrarConta $encerramentos = new EncerrarConta(),
     ) {
     }
 
@@ -61,7 +63,32 @@ class RotinasTemporais
             'avisos_de_avaliacao' => $this->avisarAvaliacaoPendente($momento),
             'avisos_de_proficiencia' => $this->avisos->executar($momento),
             'textos_de_busca_apagados' => $this->retencao->executar($momento),
+            'contas_encerradas' => $this->concluirEncerramentos($momento),
         ];
+    }
+
+    /**
+     * RF-CAD-15 — a conta em encerramento sai quando não deve mais nada.
+     *
+     * Vem depois da expiração de tickets, e a ordem não é acidental: o último
+     * ticket de quem está saindo costuma sair de cena por vencimento, e
+     * vencimento não avisa ninguém. Sem esta rotina, a conta ficaria presa
+     * até alguém tocar nela por acaso.
+     */
+    private function concluirEncerramentos(Carbon $momento): int
+    {
+        $encerradas = 0;
+
+        Usuario::query()
+            ->where('estado_conta', Usuario::ESTADO_ENCERRANDO)
+            ->orderBy('id')
+            ->each(function (Usuario $usuario) use ($momento, &$encerradas) {
+                if ($this->encerramentos->concluir($usuario, $momento)) {
+                    $encerradas++;
+                }
+            });
+
+        return $encerradas;
     }
 
     /** RF-NEG-13 — esgotado o prazo, os tickets são liberados. */
