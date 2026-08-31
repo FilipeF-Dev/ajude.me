@@ -9,7 +9,11 @@ use App\Dominio\Identidade\EncerrarConta;
 use App\Dominio\Negociacao\EncerrarProposta;
 use App\Dominio\Notificacao\Notificar;
 use App\Dominio\Reputacao\AvaliacaoPendente;
+use App\Dominio\Seguranca\AvisarContatoDeConfianca;
+use App\Models\Favor;
 use App\Models\ItemProposta;
+use App\Models\ParametroNegocio;
+use App\Models\RegistroComparecimento;
 use App\Models\Notificacao;
 use App\Models\Proposta;
 use App\Models\Solicitacao;
@@ -46,6 +50,9 @@ class RotinasTemporais
         private readonly ApagarTextoDasBuscas $retencao = new ApagarTextoDasBuscas(),
         private readonly Notificar $notificacoes = new Notificar(),
         private readonly EncerrarConta $encerramentos = new EncerrarConta(),
+        // Resolvido pelo contêiner quando não injetado: depende do canal de
+        // saída configurado, que não cabe em valor padrão de parâmetro.
+        private readonly ?AvisarContatoDeConfianca $avisosDeSeguranca = null,
     ) {
     }
 
@@ -64,7 +71,67 @@ class RotinasTemporais
             'avisos_de_proficiencia' => $this->avisos->executar($momento),
             'textos_de_busca_apagados' => $this->retencao->executar($momento),
             'contas_encerradas' => $this->concluirEncerramentos($momento),
+            'avisos_de_checkout' => $this->avisarCheckoutAusente($momento),
         ];
+    }
+
+    /**
+     * RF-SEG-10 e RF-NOT-11 — o check-out que não veio.
+     *
+     * Registro de saída que ninguém observa não protege ninguém: a ausência
+     * dele é o sinal. Avisa apenas quem **fez check-in e não fez check-out**,
+     * passada a tolerância — quem nunca entrou provavelmente não foi, e isso
+     * é outro problema.
+     */
+    private function avisarCheckoutAusente(Carbon $momento): int
+    {
+        $tolerancia = ParametroNegocio::inteiroEm(
+            ParametroNegocio::CHECKOUT_ATRASO_MINUTOS,
+            $momento,
+        ) ?? 60;
+
+        $avisos = 0;
+
+        Solicitacao::query()
+            ->whereIn('estado', [Solicitacao::AGENDADA, Solicitacao::AGUARDANDO_CONFIRMACAO])
+            ->where('fim_previsto', '<=', $momento->copy()->subMinutes($tolerancia))
+            ->with(['comparecimentos', 'solicitante', 'ajudante', 'ticket.favor'])
+            ->each(function (Solicitacao $solicitacao) use ($momento, &$avisos) {
+                if ($solicitacao->ticket->favor->modalidade !== Favor::MODALIDADE_PRESENCIAL) {
+                    return;
+                }
+
+                foreach ([Solicitacao::PARTE_SOLICITANTE, Solicitacao::PARTE_AJUDANTE] as $parte) {
+                    $entrou = $solicitacao->comparecimentos
+                        ->where('parte', $parte)
+                        ->where('tipo', RegistroComparecimento::INICIO)
+                        ->isNotEmpty();
+
+                    $saiu = $solicitacao->comparecimentos
+                        ->where('parte', $parte)
+                        ->where('tipo', RegistroComparecimento::FIM)
+                        ->isNotEmpty();
+
+                    if (! $entrou || $saiu) {
+                        continue;
+                    }
+
+                    $pessoa = $parte === Solicitacao::PARTE_SOLICITANTE
+                        ? $solicitacao->solicitante
+                        : $solicitacao->ajudante;
+
+                    // A idempotência da camada de saída impede repetir o
+                    // mesmo aviso a cada dez minutos enquanto o check-out
+                    // não vier.
+                    $avisador = $this->avisosDeSeguranca ?? app(AvisarContatoDeConfianca::class);
+
+                    if ($avisador->daAusenciaDeCheckout($solicitacao, $pessoa, $momento)) {
+                        $avisos++;
+                    }
+                }
+            });
+
+        return $avisos;
     }
 
     /**

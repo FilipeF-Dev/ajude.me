@@ -34,6 +34,7 @@ class ParametroNegocio extends Model
     public const VERIFICACAO_INTERVALO_REENVIO_SEGUNDOS = 'verificacao_intervalo_reenvio_segundos';
     public const RECUPERACAO_VALIDADE_MINUTOS = 'recuperacao_validade_minutos';
     public const RECUPERACAO_INTERVALO_SEGUNDOS = 'recuperacao_intervalo_segundos';
+    public const CHECKOUT_ATRASO_MINUTOS = 'checkout_atraso_minutos';
 
     protected $table = 'parametros_negocio';
 

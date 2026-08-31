@@ -3,6 +3,7 @@
 namespace App\Dominio\Consumo;
 
 use App\Dominio\Notificacao\Notificar;
+use App\Dominio\Seguranca\AvisarContatoDeConfianca;
 use App\Dominio\Seguranca\GerirTermoDeCiencia;
 use App\Models\Favor;
 use App\Models\Notificacao;
@@ -130,6 +131,11 @@ class ResponderSolicitacao
                 ['desfecho' => Solicitacao::AGENDADA],
                 $momento,
             );
+
+            // RF-SEG-02 e RF-NOT-08 — alguém de fora precisa saber onde cada
+            // um vai estar. Falha de envio não derruba o agendamento: a camada
+            // de saída registra e segue (NF-DIS-03).
+            app(AvisarContatoDeConfianca::class)->doAgendamento($solicitacao, $momento);
 
             return $solicitacao;
         });

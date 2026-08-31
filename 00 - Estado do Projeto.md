@@ -65,11 +65,15 @@ Em `/operacao/cobertura`, duas listas que nunca devem ser somadas: **falta vocab
 
 **Requisitos adiados por dependência de fatia**, não por decisão — estão anotados no próprio código:
 
-| Requisito | Espera por |
+| Requisito | Situação |
 |---|---|
-| RF-SEG-02 / RF-SEG-10 / RF-NOT-08 / RF-NOT-11 — avisos ao **contato de confiança** | Provedor de SMS |
+| ~~RF-SEG-02 / RF-SEG-10 / RF-NOT-08 / RF-NOT-11 — avisos ao **contato de confiança**~~ | ✅ **Construídos.** Saem pela camada de saída, não por `notificacoes`: o contato não tem conta (`05 §14.3`). Falta apenas o provedor para saírem de fato. |
 
-O contato de confiança não é usuário da plataforma e nunca aceitou termo algum (`05 §14.3`): o aviso a ele não cabe na tabela de notificações, que é endereçada a contas. Depende do provedor de SMS, ainda não escolhido (`05 §15.1`).
+O agendamento presencial avisa os contatos dos **dois** lados, com nome, endereço e horário da contraparte. A primeira mensagem se apresenta e diz como sair; a recusa vale sempre, inclusive em emergência.
+
+A ausência de check-out passada a tolerância também aciona o contato — registro de saída que ninguém observa não protege ninguém, e a ausência dele é o sinal.
+
+**Lacuna do modelo anotada:** não existe campo que registre em qual endereço o atendimento acontece. O aplicativo e o aviso mostram o endereço da contraparte, que é a informação útil, mas é convenção e não dado.
 
 ## Lacunas de implementação
 
