@@ -138,7 +138,18 @@ class CamadaWebTest extends TestCase
 
     public function test_o_cadastro_recusa_cpf_invalido(): void
     {
+        $ajudante = $this->usuario('Marta Vilela');
+        $favor = $this->favorComTicket($ajudante);
+        $convite = app(\App\Dominio\Identidade\GerirConvites::class)
+            ->emitir(\App\Models\Operador::create([
+                'nome' => 'Operação',
+                'email' => 'operacao@ajude.me',
+                'senha' => 'segredo123',
+            ]))
+            ->first();
+
         Livewire::test(Cadastrar::class)
+            ->set('codigoConvite', $convite->codigo)
             ->set('nome', 'Ana Prado')
             ->set('email', 'ana@exemplo.br')
             ->set('telefone', '11988420000')
@@ -147,6 +158,8 @@ class CamadaWebTest extends TestCase
             ->set('cpf', '111.111.111-11')
             ->set('senha', 'segredo123')
             ->set('senha_confirmation', 'segredo123')
+            // RF-CAD-17 — o cadastro passou a exigir uma proficiência (06 R2).
+            ->set('proficienciaId', $favor->proficienciaUsuario->proficiencia_id)
             ->call('cadastrar')
             ->assertHasErrors(['cpf']);
 

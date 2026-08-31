@@ -1022,6 +1022,14 @@ Valores definidos para o MVP. Todos são **parâmetros versionados com vigência
 | Validade máxima do ticket | **1 ano** | Seção 4.2 | Limita por quanto tempo uma conta pode ficar em encerramento |
 | Prazo máximo da conta em Encerrando | **Sem prazo** | Seção 2.2 | A conta encerra quando os tickets forem consumidos ou expirarem. Encurtar esse prazo destruiria tickets válidos, contra o princípio 3 da seção 20. A validade máxima de 1 ano é o que mantém isso tolerável |
 
+### Parâmetro de fase
+
+Nem todo parâmetro é prazo. O **modo de base restrita** também vive aqui, pela mesma razão: abrir o cadastro é decisão de fase (`06 §8`) e não pode exigir reimplantação da aplicação.
+
+| Parâmetro | Valor no MVP | Regra | Por quê |
+|---|---|---|---|
+| Cadastro por convite | **Ligado** | `06 §5.2` | Base restrita é mitigação de risco **e** estratégia de liquidez: convidar concentra em vez de espalhar. Desligado na Fase 4 |
+
 ### Revisão da regra de cancelamento pelo solicitante
 
 A antecedência de 24 horas **não impede** o cancelamento. Cancelar dentro da janela é permitido e registra uma ocorrência.
@@ -1103,7 +1111,7 @@ Esses conceitos poderão ser desenvolvidos posteriormente sem alterar a essênci
 
 ---
 
-**Versão:** 2.8
+**Versão:** 2.9
 **Produto:** Ajude.me
 **Documento:** Conceito e Regras de Negócio
 
@@ -1114,6 +1122,7 @@ Esses conceitos poderão ser desenvolvidos posteriormente sem alterar a essênci
 | Versão | Alterações |
 |---|---|
 | 1.0 | Definição inicial dos conceitos e regras de negócio |
+| 2.9 | Seção 21 — o modo de base restrita passa a constar como parâmetro de fase, ao lado dos prazos. Nem todo parâmetro é prazo, e abrir o cadastro (`06 §8`) não pode exigir reimplantação. |
 | 2.8 | Seção 3.4 — critério de ordenação quando a frase aciona mais de uma proficiência, e registro do descarte feito pelo usuário. Decidido na construção da fatia Descoberta. |
 | 2.7 | Seção 11.3 — a lista fechada de motivos do critério Qualidade, como descritores neutros exigidos em qualquer nota. Seção 11.4 — a restrição por avaliação pendente alcança o envio de proposta, não o aceite nem a revisão; prazo de 7 dias contado da liberação. Decidido na construção da fatia Reputação. |
 | 2.6 | Seção 8.2 — o termo de ciência é aceito pelas **duas** partes e por atendimento, e o texto é versionado com registro de qual versão foi aceita. Seção 18.2 — a recusa por bloqueio não revela o bloqueio nem quem o fez; denunciar não bloqueia automaticamente; o bloqueio não interrompe compromisso já agendado. Decidido na construção da fatia Segurança e Moderação. |
