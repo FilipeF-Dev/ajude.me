@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Filament\Models\Contracts\FilamentUser;
+use Filament\Models\Contracts\HasName;
 use Filament\Panel;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -12,7 +13,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * Não é um Usuario com poderes: é outro ator. Ver a migração
  * 2026_08_25_100700_criar_operadores para o porquê.
  */
-class Operador extends Authenticatable implements FilamentUser
+class Operador extends Authenticatable implements FilamentUser, HasName
 {
     protected $table = 'operadores';
 
@@ -34,7 +35,13 @@ class Operador extends Authenticatable implements FilamentUser
     }
 
     /**
-     * Filament usa `name` para exibir quem está autenticado.
+     * O contrato `HasName` é obrigatório, não decorativo.
+     *
+     * Sem ele o Filament ignora este método e vai buscar o atributo `name`,
+     * que não existe em `operadores` porque o domínio fala português. O
+     * resultado era a página inteira do painel quebrar ao montar o menu do
+     * usuário — falha que só aparece em renderização completa, e por isso
+     * passou despercebida enquanto os testes exercitavam só componentes.
      */
     public function getFilamentName(): string
     {

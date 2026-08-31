@@ -49,6 +49,19 @@ A ordem é a de `06 §5.3`. Cada fatia entra com migração, modelo, ação de d
 | Segurança e Moderação | ✅ | Termo de ciência versionado, bloqueio, denúncia, ocorrência, chamado com decisão e efeitos, suspensão, trilha de auditoria |
 | Reputação | ✅ | Avaliação bilateral obrigatória e imutável, notas por critério, reputação calculada e segmentada, encerramento do ciclo |
 | Descoberta e Notificações | ✅ | Reconhecimento por termos populares, feed com filtros e proximidade, fila de aviso, retenção de 90 dias, notificações do loop e **rotinas temporais** |
+| Métricas e cobertura | ✅ | Painel do piloto por coorte mensal, vocabulário faltante e cobertura faltante separados |
+
+## Fase 1 — portão fechado
+
+As cinco condições de saída de `06 §5.4` estão cumpridas. A última era esta:
+
+> As métricas de `03 §7` são apuráveis a partir dos eventos.
+
+O painel em `/operacao/metricas` apura as cinco hipóteses do MVP, mais cancelamento, contestação e **profundidade de circulação** — o indicador que testa se o ticket transferível funciona como rede ou apenas como vale nominal (`06 §10.3`).
+
+A leitura é **por coorte mensal**, não em números absolutos: não existe referência publicada para redes de troca sem dinheiro em comunidades de baixa renda no Brasil, e critério direcional resiste ao viés dos primeiros usuários (`06 §10.1`).
+
+Em `/operacao/cobertura`, duas listas que nunca devem ser somadas: **falta vocabulário** (a busca não reconheceu nada — acrescente um termo) e **falta quem ofereça** (reconheceu e não achou — recrute alguém). Medir as duas juntas mandaria a Operação recrutar quando bastava um sinônimo.
 
 **Requisitos adiados por dependência de fatia**, não por decisão — estão anotados no próprio código:
 
@@ -320,13 +333,18 @@ Convenções que mantiveram a documentação coerente até aqui:
 
 # 10. Próximo passo
 
-A Fase 0 está fechada. O caminho está livre para a **Fase 1 — construção do núcleo** (`06 §5`), com a ordem de construção sugerida em `06 §5.3`:
+**As fases 0 e 1 estão fechadas.** O domínio está completo, a camada web tem a primeira volta do loop, o painel da Operação decide e mede.
 
-> Identidade + Catálogo → Oferta → Ticket → Negociação e Consumo → Segurança e Moderação → Reputação → Descoberta e Notificações
+O que separa o projeto da **Fase 2 — piloto fechado** (`06 §6.2`) não é mais código:
 
-Duas coisas correm em paralelo e não devem esperar:
+| Pré-requisito | Situação |
+|---|---|
+| Termo de ciência, termos de uso e política de privacidade **publicados** | 🟡 Depende do trabalho jurídico (seção 6.3) |
+| Base legal do contato de confiança **definida** | 🟡 Depende do trabalho jurídico |
+| Categorias de risco físico e cuidado de vulneráveis **bloqueadas** | ✅ Curadoria disponível no painel |
+| Canal de emergência testado ponta a ponta | 🟡 Depende do provedor de SMS (`05 §15.1`) |
+| Comunidade-piloto escolhida | 🟡 Pendente (`06 §4.5`) |
 
-1. **Contratar o trabalho jurídico** (seção 6.3). É o item mais lento e bloqueia a Fase 2, não a construção.
-2. **Escolher a comunidade-piloto** (`06 §4.5`). Determina a qualidade de toda a evidência das fases seguintes.
+Três dos cinco itens dependem de decisões externas ao código — e o jurídico é o mais lento, então é o que deve começar primeiro.
 
-Antes de construir demais, vale considerar o que está registrado em `06 §11`: as duas hipóteses que decidem o produto — reciprocidade e aceitação da troca sem dinheiro — podem ser observadas com um grupo pequeno e mediação manual, sem esperar o software ficar pronto.
+Continua valendo o que está em `06 §11`: as duas hipóteses que decidem o produto — reciprocidade e aceitação da troca sem dinheiro — podem ser observadas com um grupo pequeno e mediação manual. Agora que o software existe, essa alternativa deixou de economizar meses, mas continua servindo para testar a comunidade antes de convidá-la para o aplicativo.
