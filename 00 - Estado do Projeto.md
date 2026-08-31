@@ -71,6 +71,31 @@ Em `/operacao/cobertura`, duas listas que nunca devem ser somadas: **falta vocab
 
 O contato de confiança não é usuário da plataforma e nunca aceitou termo algum (`05 §14.3`): o aviso a ele não cabe na tabela de notificações, que é endereçada a contas. Depende do provedor de SMS, ainda não escolhido (`05 §15.1`).
 
+## Lacunas de implementação
+
+Encontradas em auditoria, e diferentes das acima: **não estão adiadas por dependência, estão simplesmente ausentes.**
+
+| Requisito | Situação |
+|---|---|
+| ~~`RF-CAD-04` a `RF-CAD-06` — verificação de e-mail e telefone~~ | ✅ **Feita.** Código cifrado, validade e limite de erros por parâmetro, tela em `/perfil/contato` e selo no perfil. Enquanto não há provedor, o código fica legível em `envios` — é assim que um cadastro se completa hoje. |
+| ~~`RF-CAD-08` — recuperação de senha~~ | ✅ **Feita.** Token cifrado, uso único, validade por parâmetro. O pedido é silencioso por decisão: e-mail que existe e que não existe respondem igual (NF-SEG-05). |
+| ~~`RF-CAD-11` a `RF-CAD-16` — encerramento de conta~~ | ✅ **Feito.** Sai na hora quem não deve nada; quem tem ticket circulando entra em `ENCERRANDO`, para de ofertar e continua atendendo até o último ticket ser usado ou vencer. A rotina temporal encerra sozinha. |
+| Envio de e-mail e SMS | `MAIL_MAILER=log` e nenhuma chamada de envio no domínio. As notificações são gravadas e ficam na tabela — ninguém é avisado fora do aplicativo. |
+
+Sobrou uma: o **envio de verdade**. É o que falta para as demais servirem a alguém — verificação e recuperação estão construídas e testadas, mas os códigos e os links ficam presos em `envios`.
+
+### A camada de saída já existe
+
+O que falta é o provedor, não a estrutura. `app/Dominio/Saida/` traz a interface `CanalDeSaida`, o valor `Mensagem`, o despachante e a tabela `envios`.
+
+Contratar um provedor é escrever a classe que implementa a interface, registrá-la em `config/saida.php` e mudar `SAIDA_CANAL` no ambiente. Nada mais na aplicação precisa saber quem entrega.
+
+**A saída é endereçada a um endereço, não a uma conta** — e essa distinção é a razão de ela não caber em `notificacoes`. O contato de confiança não tem conta (`05 §14.3`), então sem esta camada `RF-SEG-02` não teria onde existir.
+
+O canal em uso é o `registrado`: grava e não envia. Ele **nunca marca "entregue"**, e é assim que se enxerga, olhando o painel, que nada saiu da plataforma.
+
+**Enquanto o canal for o `registrado`, o piloto depende de alguém abrir a lista de envios** para ler um código de verificação ou um link de recuperação. Funciona para testar o produto entre pessoas próximas; não funciona com gente que você não pode ligar e avisar.
+
 ## O domínio está completo
 
 Todas as sete fatias de `06 §5.3` foram construídas, e as rotinas temporais fazem os prazos correrem sozinhos: proposta vencida, janela de contestação, confirmação tácita, expiração de ticket, cobrança de avaliação e fila de aviso.
@@ -102,8 +127,11 @@ Blade + Livewire sobre o domínio, na linguagem visual da seção 7.2, instaláv
 | Moderação no aplicativo: denunciar e bloquear | ✅ |
 | Painel da Operação: chamados, denúncias, ocorrências, termo, auditoria | ✅ |
 | Convites de acesso da base restrita (RF-ADM-08) | ✅ |
-| Métricas de `03 §7` no painel (RF-ADM-09) | ⬜ |
-| Necessidades não atendidas e vocabulário (RF-ADM-16 a 18) | ⬜ |
+| Métricas de `03 §7` no painel (RF-ADM-09) | ✅ |
+| Necessidades não atendidas e vocabulário (RF-ADM-16 a 18) | ✅ |
+| Confirmar contato, com o selo no perfil (RF-CAD-04 a 06) | ✅ |
+| Recuperação de senha (RF-CAD-08) | ✅ |
+| Encerrar a conta, com o que se deve dito antes (RF-CAD-11 a 16) | ✅ |
 
 ```
 cd plataforma

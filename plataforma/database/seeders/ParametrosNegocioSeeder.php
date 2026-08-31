@@ -52,6 +52,31 @@ class ParametrosNegocioSeeder extends Seeder
                 'Prazo após o qual o texto original da busca é apagado, restando apenas o agregado (02 §18.3).',
             ],
             [
+                ParametroNegocio::VERIFICACAO_VALIDADE_MINUTOS,
+                '30',
+                'Quanto tempo um código de verificação continua valendo (RF-CAD-04, RF-CAD-05).',
+            ],
+            [
+                ParametroNegocio::VERIFICACAO_TENTATIVAS_MAXIMAS,
+                '5',
+                'Erros de código antes de travar a verificação. Limita adivinhação (NF-SEG-06).',
+            ],
+            [
+                ParametroNegocio::VERIFICACAO_INTERVALO_REENVIO_SEGUNDOS,
+                '60',
+                'Espera entre pedidos de código. SMS custa por mensagem e pedir código é gatilho de abuso (05 §15.1).',
+            ],
+            [
+                ParametroNegocio::RECUPERACAO_VALIDADE_MINUTOS,
+                '60',
+                'Quanto tempo o link de recuperação de senha continua valendo (RF-CAD-08).',
+            ],
+            [
+                ParametroNegocio::RECUPERACAO_INTERVALO_SEGUNDOS,
+                '60',
+                'Espera entre pedidos de recuperação, para o formulário não virar torneira de mensagens.',
+            ],
+            [
                 ParametroNegocio::CADASTRO_POR_CONVITE,
                 '1',
                 'Base restrita: o cadastro exige convite. Desligar na Fase 4, quando o cadastro abrir (06 §8).',

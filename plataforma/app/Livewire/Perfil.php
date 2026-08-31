@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Dominio\Identidade\EncerrarConta;
 use App\Dominio\Reputacao\AvaliacaoPendente;
 use App\Dominio\Reputacao\ConsultarReputacao;
 use App\Models\Solicitacao;
@@ -9,6 +10,7 @@ use App\Models\Usuario;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use LogicException;
 
 /**
  * Perfil próprio (04 §14).
@@ -20,6 +22,8 @@ use Livewire\Component;
 #[Layout('components.layouts.app')]
 class Perfil extends Component
 {
+    public bool $confirmandoEncerramento = false;
+
     public function sair(): void
     {
         Auth::logout();
@@ -27,6 +31,34 @@ class Perfil extends Component
         session()->regenerateToken();
 
         $this->redirect(route('entrar'));
+    }
+
+    public function pedirEncerramento(): void
+    {
+        $this->confirmandoEncerramento = true;
+    }
+
+    public function desistirDoEncerramento(): void
+    {
+        $this->confirmandoEncerramento = false;
+    }
+
+    /**
+     * RF-CAD-11. Encerrar não apaga o que se deve: quem tem ticket seu
+     * circulando entra em `ENCERRANDO` e continua obrigado a atender.
+     */
+    public function encerrarConta(EncerrarConta $encerrar): void
+    {
+        try {
+            $encerrar->solicitar(Auth::user());
+        } catch (LogicException $erro) {
+            $this->confirmandoEncerramento = false;
+            session()->flash('recado', $erro->getMessage());
+
+            return;
+        }
+
+        $this->sair();
     }
 
     public function render()
@@ -44,6 +76,9 @@ class Perfil extends Component
             'dias' => $reputacao->diasDeParticipacao($usuario),
             'proficiencias' => $usuario->proficiencias()->with('proficiencia')->get(),
             'avaliacoesPendentes' => app(AvaliacaoPendente::class)->de($usuario),
+            // Quantos favores a pessoa ainda deve. É o número que muda o
+            // significado de encerrar a conta, e por isso é dito antes.
+            'ticketsPendentes' => app(EncerrarConta::class)->ticketsEmitidosEmCirculacao($usuario),
         ]);
     }
 
