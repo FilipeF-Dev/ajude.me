@@ -226,6 +226,7 @@ Toda a série está escrita e sincronizada entre si. Cada documento referencia o
 | `04 - Requisitos Funcionais.md` | 1.9 | Requisitos rastreáveis em 14 módulos |
 | `05 - Arquitetura Conceitual.md` | 1.2 | Contextos, entidades, 27 invariantes, decisões técnicas |
 | `06 - Roadmap do Produto.md` | 1.0 | Seis fases com portões de evidência |
+| `07 - Minutas Jurídicas.md` | 1.0 | Briefing de fatos, perguntas e minutas para a consultoria jurídica |
 
 `_arquivo/` guarda o rascunho fundador `CoreV1`, **encerrado e sem valor de referência**.
 
