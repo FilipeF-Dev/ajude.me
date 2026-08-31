@@ -77,7 +77,7 @@ Encontradas em auditoria, e diferentes das acima: **não estão adiadas por depe
 
 | Requisito | Situação |
 |---|---|
-| `RF-CAD-04` a `RF-CAD-06` — verificação de e-mail e telefone | Tabela, modelo e o método `contatoVerificado()` existem. **Nada cria verificação, nada envia código, o selo não aparece em tela nenhuma.** |
+| ~~`RF-CAD-04` a `RF-CAD-06` — verificação de e-mail e telefone~~ | ✅ **Feita.** Código cifrado, validade e limite de erros por parâmetro, tela em `/perfil/contato` e selo no perfil. Enquanto não há provedor, o código fica legível em `envios` — é assim que um cadastro se completa hoje. |
 | `RF-CAD-08` — recuperação de senha | Não há rota nem tela. Quem esquecer a senha perde a conta. |
 | `RF-CAD-11` a `RF-CAD-16` — encerramento de conta | O estado `ENCERRANDO` e as regras `podeOfertar` / `deveAtender` existem no modelo e estão testadas, mas **nenhuma ação da aplicação coloca a conta nesse estado.** |
 | Envio de e-mail e SMS | `MAIL_MAILER=log` e nenhuma chamada de envio no domínio. As notificações são gravadas e ficam na tabela — ninguém é avisado fora do aplicativo. |

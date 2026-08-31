@@ -29,6 +29,9 @@ class ParametroNegocio extends Model
      * base é decisão de fase (06 §8) e não pode exigir reimplantação.
      */
     public const CADASTRO_POR_CONVITE = 'cadastro_por_convite';
+    public const VERIFICACAO_VALIDADE_MINUTOS = 'verificacao_validade_minutos';
+    public const VERIFICACAO_TENTATIVAS_MAXIMAS = 'verificacao_tentativas_maximas';
+    public const VERIFICACAO_INTERVALO_REENVIO_SEGUNDOS = 'verificacao_intervalo_reenvio_segundos';
 
     protected $table = 'parametros_negocio';
 

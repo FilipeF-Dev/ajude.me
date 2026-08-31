@@ -15,6 +15,7 @@ use App\Livewire\Perfil;
 use App\Livewire\PerfilPublico;
 use App\Livewire\Propor;
 use App\Livewire\Solicitar;
+use App\Livewire\VerificarContato;
 use Illuminate\Support\Facades\Route;
 
 /**
@@ -43,6 +44,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/oferecer', Oferecer::class)->name('oferecer');
     Route::get('/conversas', Conversas::class)->name('conversas');
     Route::get('/perfil', Perfil::class)->name('perfil');
+    Route::get('/perfil/contato', VerificarContato::class)->name('verificar-contato');
 
     Route::get('/favor/{favor}', PaginaFavor::class)->name('favor');
     Route::get('/favor/{favor}/propor', Propor::class)->name('propor');
